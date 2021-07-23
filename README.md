@@ -12,3 +12,13 @@ The target audience is users who type often, including but not limited to:
 
 ## Why is this project of interest to you?
 There are many online typing practices like [monkeytype](https://monkeytype.com/), [typeracer](https://play.typeracer.com/), and [Typing.com Games](https://www.typing.com/student/games). My go-to is monkeytype for its simple graphics, but I love the interactive game aspect of the latter sites. So, I would like to mix these two for a simple typing practice with a clean design that initially focuses solely on typing, then encourages the user to improve with the accuracy discipline system. 
+
+
+## User Stories
+- As a user, I want to be able to view my typing speed and accuracy 
+- As a user, I want to be able to select between timed and word count-modes
+- As a user, I want to be able to select which area I want to focus on (punctuation, numbers, top row, everything, alphabets only, etc.)
+- As a user, I want to be able to add my current typing run to my record of typing results
+- As a user, I want to be able to view a list of previous typing results
+- As a user, I want to be able to view a quantitative measurement of my typing improvements
+- As a user, I want to be able to choose which "genre" of quizzes to solve at the end of each run
