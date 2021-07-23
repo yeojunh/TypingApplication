@@ -1,4 +1,4 @@
-# **My Personal Project - Typing Practice**
+# 210 FINAL PROJECT - TYPING MASTER
 
 ## A subtitle
 
