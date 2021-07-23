@@ -1,7 +1,7 @@
 # CPSC 210 FINAL PROJECT - TYPING MASTER
 
 ## What will the application do?
-For my CPSC 210 project, I will be creating a **typing practice application** that measures the user's *typing speed and accuracy*. For every 2% loss in accuracy, the user will need to solve a problem in order to save their progress. They will have the option to choose between *math, logic, trivia, or a 50/50 coin toss* (where they have to guess the correct side to pass) after they complete their typing test. This additonal feature promotes the user to improve their accuracy. The user will be able to track their previous typing test records and improvements in both typing speed and accuracy. 
+For my CPSC 210 project, I will be creating a **typing practice application** that measures the user's *typing speed and accuracy*. For every 2% loss in accuracy, the user will need to solve a problem in order to save their progress. They will have the option to choose between *math, logic, trivia, or a 50/50 coin toss* (where they have to guess the correct side to pass) after they complete their typing test. For every 10% loss in accuracy, the user will receive an extra-challenging problem. This additonal feature promotes the user to improve their accuracy. The user will be able to track their previous typing test records and improvements in both typing speed and accuracy. 
 
 ## Who will use it?
 Anyone who wants to improve their typing speed and accuracy is welcome and encouraged to use this application! 
