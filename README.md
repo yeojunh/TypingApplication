@@ -1,4 +1,4 @@
-#** My Personal Project - Typing Practice**
+# **My Personal Project - Typing Practice**
 
 ## A subtitle
 
