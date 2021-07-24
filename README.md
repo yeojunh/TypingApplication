@@ -5,7 +5,7 @@ For my CPSC 210 project, I will be creating a **typing practice application** th
 
 ## Who will use it?
 Anyone who wants to improve their typing speed and accuracy is welcome and encouraged to use this application! 
-The target audience is users who type often, including but not limited to:
+The target audience is users who type frequently, including but not limited to:
 - Students (especially in computer science)
 - Typists
 - Writers
@@ -16,9 +16,7 @@ There are many online typing practices like [monkeytype](https://monkeytype.com/
 
 ## User Stories
 - As a user, I want to be able to view my typing speed and accuracy 
-- As a user, I want to be able to select between timed and word count-modes
-- As a user, I want to be able to select which area I want to focus on (punctuation, numbers, top row, everything, alphabets only, etc.)
+- As a user, I want to be able to select which area I want to focus on (punctuation, numbers, alphabets only, etc.)
 - As a user, I want to be able to add my current typing run to my record of typing results
 - As a user, I want to be able to view a list of previous typing results
 - As a user, I want to be able to view a quantitative measurement of my typing improvements
-- As a user, I want to be able to choose which "genre" of quizzes to solve at the end of each run
