@@ -4,7 +4,6 @@ import exception.EmptyStringException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,18 +11,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TypingPracticeTest {
     public TypingPractice testTyping;
-    public TypingPractice testPunctuation;
-    public TypingPractice testNumber;
 
     @BeforeEach
     public void setup() {
-        testTyping = new TypingPractice("overall");
+        testTyping = new TypingPractice("regular");
     }
 
     @Test
-    public void testChoosePhraseToTypeOverall() {
-        String phraseToType = testTyping.choosePhraseToType("overall");
-        assertTrue(testTyping.getOverallPrac().contains(phraseToType));
+    public void testChoosePhraseToTypeRegular() {
+        String phraseToType = testTyping.choosePhraseToType("regular");
+        assertTrue(testTyping.getRegularPrac().contains(phraseToType));
     }
 
     @Test
@@ -44,13 +41,12 @@ class TypingPracticeTest {
         assertTrue(testTyping.getNumberPrac().contains(phraseToType));
     }
 
-    // just check with contains? not sure if i can redo the random part
     @Test
-    public void testChoosePhraseByFocusOverall() {
-        testTyping.setupOverallPhrases();
-        testTyping.choosePhraseByFocus(testTyping.getOverallPrac());
+    public void testChoosePhraseByFocusRegular() {
+        testTyping.setupRegularPhrases();
+        testTyping.choosePhraseByFocus(testTyping.getRegularPrac());
         assertFalse(testTyping.getPhraseToType() == null);
-        assertTrue(testTyping.getOverallPrac().contains(testTyping.getPhraseToType()));
+        assertTrue(testTyping.getRegularPrac().contains(testTyping.getPhraseToType()));
     }
 
     @Test
@@ -78,33 +74,25 @@ class TypingPracticeTest {
     }
 
     @Test
-    public void testSetupOverallPhrases() {
-        testTyping.setupOverallPhrases();
-        assertEquals(5, testTyping.getOverallPrac().size());
-        assertTrue(testTyping.getOverallPrac().contains("He walked down the steps from the train station in a bit of "
+    public void testSetupRegularPhrases() {
+        testTyping.setupRegularPhrases();
+        assertEquals(6, testTyping.getRegularPrac().size());
+        assertTrue(testTyping.getRegularPrac().contains("He walked down the steps from the train station in a bit of "
                 + "a hurry knowing the secrets in the "
-                + "briefcase must be secured as quickly as possible. Bounding down the steps, he heard "
+                + "briefcase must be secured as quickly as possible.\n"));
+        assertTrue(testTyping.getRegularPrac().contains("Bounding down the steps, he heard "
                 + "something behind him and quickly turned in a panic. There was nobody there but a pair of "
-                + "old worn-out shoes were placed neatly on the steps he had just come down."
-                + "He was about to turn and be on his way when a deep chill filled his body.\n"));
-        assertTrue(testTyping.getOverallPrac().contains("One dollar and eighty-seven cents. That was all. "
+                + "old worn-out shoes were placed neatly on the steps he had just come down.\n"));
+        assertTrue(testTyping.getRegularPrac().contains("One dollar and eighty-seven cents. That was all. "
                 + "And sixty cents of it was in pennies. Pennies saved "
-                + "one and two at a time by bulldozing the grocer and the vegetable man and the butcher until "
-                + "one’s cheeks burned with the silent imputation of parsimony that such close dealing "
-                + "implied. One dollar and eighty-seven cents. And the next day would be Christmas...\n"));
-        assertTrue(testTyping.getOverallPrac().contains("Sometimes it's the first moment of the day that catches "
+                + "one and two at a time by bulldozing the grocer and the vegetable man and the butcher.\n"));
+        assertTrue(testTyping.getRegularPrac().contains("Sometimes it's the first moment of the day that catches "
                 + "you off guard. That's what Wendy was thinking."
-                + " She opened her window to see fire engines screeching down the street. "
-                + "While this wasn't something completely unheard of, it also wasn't normal. "
-                + "It was a sure sign of what was going to happen that day.\n"));
-        assertTrue(testTyping.getOverallPrac().contains("He took a sip of the drink. He wasn't sure whether "
-                + "he liked it or not, but at this moment it didn't "
-                + "matter. She had made it especially for him so he would have forced it down even if he had "
-                + "absolutely hated it. That's simply the way things worked. She made him a new-fangled drink "
-                + "each day and he took a sip of it and smiled, saying it was excellent.\n"));
-        assertTrue(testTyping.getOverallPrac().contains("There was a time when he would have embraced the "
+                + " She opened her window to see fire engines screeching down the street.\n"));
+        assertTrue(testTyping.getRegularPrac().contains("There was a time when he would have embraced the "
                 + "change that was coming. In his youth, he sought "
-                + "adventure and the unknown, but that had been years ago. He wished he could go back and "
+                + "adventure and the unknown, but that had been years ago.\n"));
+        assertTrue(testTyping.getRegularPrac().contains("He wished he could go back and "
                 + "find the excitement that came with change but it was useless. That curiosity had long left "
                 + "him to where he had come to loathe anything that put him out of his comfort zone.\n"));
     }
@@ -121,50 +109,33 @@ class TypingPracticeTest {
                 + "but cows... cows are docile creatures."));
     }
 
-    // TODO: shorten this somehow
     @Test
     public void testSetupPunctuationPhrases() {
         testTyping.setupPunctuationPhrases();
-        assertEquals(5, testTyping.getPunctuationPrac().size());
-        assertTrue(testTyping.getPunctuationPrac().contains("Facing his greatest fear, he ate his first marshmallow. "
-                + "It was a slippery slope and he was willing "
-                + "to 'slide' all the way to the deepest depths. My biggest joy is roasting almonds while "
-                + "stalking prey! Why are you never at home on Sundays? Tom got a small piece of pie.\n"));
-        assertTrue(testTyping.getPunctuationPrac().contains("It was difficult for Mary to admit that most of her "
-                + "workout consisted of - well - poor judgment. "
-                + "As he looked out the window, he saw a clown walk by. There's a message for you if you look "
-                + "up. Never underestimate the willingness of the greedy to throw you under the bus! "
-                + "Doris enjoyed tapping her nails on the table to annoy everyone.\n"));
-        assertTrue(testTyping.getPunctuationPrac().contains("At that moment he wasn't listening to music, "
-                + "he was living an experience. The miniature pet elephant "
-                + "became the envy of the neighborhood. Please tell me you don't work in a morgue! "
-                + "When he asked her favorite number, she answered without hesitation that it was diamonds. "
-                + "The swirled lollipop had issues with the pop rock candy.\n"));
-        assertTrue(testTyping.getPunctuationPrac().contains("He had \"accidentally\" hacked into his company's server."
-                + " Excitement replaced fear until the "
-                + "final moment. As he entered the church, he could hear the soft voice of someone whispering "
-                + "into a cell phone. It was the first time he had ever seen someone cook dinner on an... "
-                + "elephant? It's obvious she is hungry, sweaty, and tired.\n"));
-        assertTrue(testTyping.getPunctuationPrac().contains( "Van life is difficult with 2 cats and a dog. "
-                + "It must be five o'clock somewhere! "
-                + "He figured a few sticks of dynamite were easier than a fishing pole to catch fish. "
-                + "As the rental car rolled to a stop on the dark road, her fear increased by the moment. "
+        assertEquals(4, testTyping.getPunctuationPrac().size());
+        assertTrue(testTyping.getPunctuationPrac().contains("Facing his greatest fear, he ate his first marshmallow! "
+                + "It was a slippery slope, but was he willing to 'slide' all the way to the deepest depths?\n"));
+        assertTrue(testTyping.getPunctuationPrac().contains("Sit down and cross your legs, please! "
+                        + "How big you have grown - I can't even believe it!\n"));
+        assertTrue(testTyping.getPunctuationPrac().contains("He had \"accidentally\" hacked into his company's server. "
+                + "Excitement replaced fear, guilt, and shame until the final moment.\n"));
+        assertTrue(testTyping.getPunctuationPrac().contains("It must be five o'clock somewhere! "
                 + "The waves were crashing on the shore; it was a lovely sight.\n"));
     }
 
     @Test
     public void testSetupNumberPhrases() {
         testTyping.setupNumberPhrases();
-        assertEquals(3, testTyping.getNumberPrac().size());
+        assertEquals(4, testTyping.getNumberPrac().size());
         assertTrue(testTyping.getNumberPrac().contains("The tart lemonade cost 3 dollars and 79 cents. "
-                + "Our zoo showcases 5 killer whales and 23 emperor penguins. "
-                + "Well, he tried to eat 40 pancakes this morning, but he could only eat 5 before "
-                + "he got absolutely disgusted by the thought of eating anymore.\n"));
+                + "Our zoo showcases 5 killer whales and 23 emperor penguins.\n"));
+        assertTrue(testTyping.getNumberPrac().contains("Well, he tried to eat 40 pancakes this morning, "
+                + "but he could only eat 5 before he got absolutely disgusted by the thought of eating any more.\n"));
         assertTrue(testTyping.getNumberPrac().contains("The award-winning game, The Witcher 3: Wild Hunt, "
-                + "had over 1.5 million pre-orders "
-                + "even before its release. It sold 67, 385 copies in the first week and 4 million copies "
-                + "in the second week. By the end of 2019, "
-                + "the game had sold over 40 million copies worldwide.\n"));
+                        + "had over 1.5 million pre-orders "
+                        + "even before its release. It sold 67, 385 copies in the first week and 4 million copies"
+                        + "in the second week. By the end of 2019, "
+                        + "the game had sold over 40 million copies worldwide.\n"));
         assertTrue(testTyping.getNumberPrac().contains("The Witcher 3: Wild Hunt received the best RPG game "
                 + "at the IGN Best of E3 Awards in 2013 and 2014. "
                 + "It received 260 game of the year awards and remained the most awarded game of all time "
@@ -172,15 +143,97 @@ class TypingPracticeTest {
     }
 
     @Test
-    public void testCountdown() {
-        // countdown() works the same regardless of focus
-        try {
-            testTyping.countdown();
-        } catch (InterruptedException e) {
-            fail();
-        }
-        assertTrue(testTyping.getIsTyping());
+    public void testComparePhraseToTypeAndUserTypedNone() {
+        ArrayList<String> phrase = new ArrayList<String>();
+        phrase.add("Hello,");
+        phrase.add("world!");
+        ArrayList<String> userTyped = new ArrayList<String>();
+        testTyping.setPhraseToTypeInWords(phrase);
+        testTyping.setUserTypedInWords(userTyped);
+        testTyping.comparePhraseToTypeAndUserTyped();
+        assertEquals(2,testTyping.getNumWordsTypedIncorrectly());
     }
+
+    @Test
+    public void testComparePhraseToTypeAndUserTypedEqual() {
+        ArrayList<String> phrase = new ArrayList<String>();
+        phrase.add("Hello,");
+        phrase.add("world!");
+        ArrayList<String> userTyped = new ArrayList<String>();
+        userTyped.add("Hello,");
+        userTyped.add("world!");
+        testTyping.setPhraseToTypeInWords(phrase);
+        testTyping.setUserTypedInWords(userTyped);
+        testTyping.comparePhraseToTypeAndUserTyped();
+        assertEquals(0,testTyping.getNumWordsTypedIncorrectly());
+    }
+
+    @Test
+    public void testComparePhraseToTypedAndUserTypedTooShort() {
+        ArrayList<String> phrase = new ArrayList<String>();
+        phrase.add("Hello,");
+        phrase.add("world!");
+        ArrayList<String> userTyped = new ArrayList<String>();
+        userTyped.add("Hello,");
+        testTyping.setPhraseToTypeInWords(phrase);
+        testTyping.setUserTypedInWords(userTyped);
+        testTyping.comparePhraseToTypeAndUserTyped();
+        assertEquals(1,testTyping.getNumWordsTypedIncorrectly());
+    }
+
+    @Test
+    public void testComparePhraseToTypedAndUserTypedTooLong() {
+        ArrayList<String> phrase = new ArrayList<String>();
+        phrase.add("Hello,");
+        phrase.add("world!");
+        ArrayList<String> userTyped = new ArrayList<String>();
+        userTyped.add("Hello,");
+        userTyped.add("world!");
+        userTyped.add(":)");
+        testTyping.setPhraseToTypeInWords(phrase);
+        testTyping.setUserTypedInWords(userTyped);
+        testTyping.comparePhraseToTypeAndUserTyped();
+        assertEquals(1,testTyping.getNumWordsTypedIncorrectly());
+    }
+
+    @Test
+    public void testComparePhraseToTypedAndUserTypedWrong() {
+        ArrayList<String> phrase = new ArrayList<String>();
+        phrase.add("Hello,");
+        phrase.add("world!");
+        ArrayList<String> userTyped = new ArrayList<String>();
+        userTyped.add("Hello,");
+        userTyped.add("world????");
+        userTyped.add(":)");
+        testTyping.setPhraseToTypeInWords(phrase);
+        testTyping.setUserTypedInWords(userTyped);
+        testTyping.comparePhraseToTypeAndUserTyped();
+        assertEquals(2,testTyping.getNumWordsTypedIncorrectly());
+    }
+
+    @Test
+    public void testComparePhraseToTypeAndUserTypedTooFewWordsAndTypo() {
+        ArrayList<String> phrase = new ArrayList<String>();
+        phrase.add("Hello,");
+        phrase.add("world!");
+        ArrayList<String> userTyped = new ArrayList<String>();
+        userTyped.add("world????");
+        testTyping.setPhraseToTypeInWords(phrase);
+        testTyping.setUserTypedInWords(userTyped);
+        testTyping.comparePhraseToTypeAndUserTyped();
+        assertEquals(2,testTyping.getNumWordsTypedIncorrectly());
+    }
+
+//    @Test
+//    public void testCountdown() {
+//        // countdown() works the same regardless of focus
+//        try {
+//            testTyping.countdown();
+//        } catch (InterruptedException e) {
+//            fail();
+//        }
+//        assertTrue(testTyping.getIsTyping());
+//    }
 
     @Test
     public void testDetermineNumWordsAttemptedZero() {
@@ -201,6 +254,30 @@ class TypingPracticeTest {
         testTyping.setPhraseToType("Set phrase to type... Yes");
         testTyping.determineNumWordsAttempted();
         assertEquals(5, testTyping.getNumWordsAttempted());
+    }
+
+
+    @Test
+    public void testDetermineNumWordsTypedZero() {
+        testTyping.setUserTypingInput("");
+        testTyping.determineNumWordsTyped();
+        assertEquals(0, testTyping.getNumWordsTyped());
+    }
+
+    @Test
+    public void testDetermineNumWordsTypedOne() {
+        testTyping.setUserTypingInput("Hello!");
+        testTyping.determineNumWordsTyped();
+        assertEquals(1, testTyping.getNumWordsTyped());
+
+    }
+
+    @Test
+    public void testDetermineNumWordsTypedMultiple() {
+        testTyping.setUserTypingInput("Trust the natural recursion.");
+        testTyping.determineNumWordsTyped();
+        assertEquals(4, testTyping.getNumWordsTyped());
+
     }
 
     @Test
@@ -337,7 +414,7 @@ class TypingPracticeTest {
     @Test
     public void testCalculateTypingAccuracyOnlyGivenOneWord() {
         testTyping.setPhraseToType("Hello, world!");
-        testTyping.setUserTypingInput("Hello");
+        testTyping.setUserTypingInput("Hello,");
         assertEquals(50.0, testTyping.calculateAccuracy());
     }
 
@@ -364,6 +441,22 @@ class TypingPracticeTest {
         testTyping.setTimeElapsed(10);
         assertEquals(0.2, testTyping.calculateTypingSpeed());
     }
+
+    @Test
+    public void testRoundToTwoDecimalPlaces() {
+        assertEquals(0, testTyping.roundToTwoDecimalPlaces(0));
+        assertEquals(10.0, testTyping.roundToTwoDecimalPlaces(10));
+        assertEquals(10.0, testTyping.roundToTwoDecimalPlaces(10.0001));
+        assertEquals(100.12, testTyping.roundToTwoDecimalPlaces(100.123));
+    }
+
+    // testing getters to see changes to coverage
+    @Test
+    public void testGetWpm() {
+        testTyping.setWpm(10.0);
+        assertEquals(10.0, testTyping.getWpm());
+    }
+
 
     // testing setters
     @Test
@@ -395,5 +488,23 @@ class TypingPracticeTest {
         assertEquals(100, testTyping.getAccuracy());
         testTyping.setAccuracy(45);
         assertEquals(45, testTyping.getAccuracy());
+    }
+
+    @Test
+    public void testSetNumWordsAttempted() {
+        testTyping.setNumWordsAttempted(10);
+        assertEquals(10, testTyping.getNumWordsAttempted());
+    }
+
+    @Test
+    public void testSetNumWordsTypedIncorrectly() {
+        testTyping.setNumWordsTypedIncorrectly(10);
+        assertEquals(10, testTyping.getNumWordsTypedIncorrectly());
+    }
+
+    @Test
+    public void testSetIsTyping() {
+        testTyping.setIsTyping(true);
+        assertTrue(testTyping.getIsTyping());
     }
 }
