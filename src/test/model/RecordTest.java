@@ -140,6 +140,7 @@ public class RecordTest {
     public void testSizeZero() {
         assertEquals(0, testRecord.size());
     }
+
     @Test
     public void testSizeMultiple() {
         TypingPractice tp2 = new TypingPractice("number");
@@ -148,5 +149,17 @@ public class RecordTest {
         testRecord.addUserHistory(tp2);
         testRecord.addUserHistory(tp3);
         assertEquals(3, testRecord.size());
+    }
+
+    @Test
+    public void testGetNthTypingPrac() {
+        TypingPractice tp2 = new TypingPractice("number");
+        TypingPractice tp3 = new TypingPractice("short");
+        testRecord.addUserHistory(testTp);
+        testRecord.addUserHistory(tp2);
+        testRecord.addUserHistory(tp3);
+        assertEquals(testTp, testRecord.getNthTypingPrac(0));
+        assertEquals(tp2, testRecord.getNthTypingPrac(1));
+        assertEquals(tp3, testRecord.getNthTypingPrac(2));
     }
 }

@@ -79,4 +79,8 @@ public class Record {
     public List<TypingPractice> getUserHistory() {
         return record;
     }
+
+    public TypingPractice getNthTypingPrac(int n) {
+        return record.get(n);
+    }
 }
