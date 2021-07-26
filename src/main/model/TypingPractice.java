@@ -28,7 +28,8 @@ public class TypingPractice {
     private ArrayList<String> userTypedInWords = new ArrayList<String>();
     private String userTypingInput;
 
-    // EFFECTS: creates a new typing practice given the focus of typing test and whether it is timed
+    // constructor
+    // EFFECTS: creates a new typing practice given the focus of typing test
     public TypingPractice(String focus) {
         this.focus = focus;
     }
@@ -86,7 +87,7 @@ public class TypingPractice {
     }
 
     // MODIFIES: this
-    // EFFECTS: determines the number of words the user was prompted to type
+    // EFFECTS: determines the number of words the user was prompted to type (given by system)
     public void determineNumWordsAttempted() {
         if (phraseToType.equals("") || phraseToType.equals(" ")) {
             numWordsAttempted = 0;
@@ -97,7 +98,7 @@ public class TypingPractice {
     }
 
     // MODIFIES: this
-    // EFFECTS: determines the number of words the user typed
+    // EFFECTS: determines the number of words the user typed (user input)
     public void determineNumWordsTyped() {
         if (userTypingInput.equals("") || userTypingInput.equals(" ")) {
             numWordsTyped = 0;
@@ -109,8 +110,9 @@ public class TypingPractice {
         }
     }
 
+    // REQUIRES: user input must not be empty
     // MODIFIES: this
-    // EFFECTS: determines the number of words the user typed incorrectly
+    // EFFECTS: determines the number of words the user typed incorrectly, including empty inputs
     public void determineNumWordsTypedIncorrectly() {
         try {
             this.setupWordsAndArrayLists(userTypingInput);
@@ -148,7 +150,7 @@ public class TypingPractice {
         }
     }
 
-    // helper
+    // helper for determineNumWordsTypedIncorrectly
     // MODIFIES: this
     // EFFECTS: splits phraseToType by words into phraseToTypeInWords
     public void setupWordsAndArrayLists(String userTyped) throws EmptyStringException {
@@ -176,9 +178,9 @@ public class TypingPractice {
         }
     }
 
-    // MODIFIES: this
-    // EFFECTS: adds a list of all phrases available to type for regularPrac
     // phrase setup for each focus. hard coded phrases
+    // MODIFIES: this
+    // EFFECTS: adds all phrases available to type for regularPrac
     public void setupRegularPhrases() {
         String[] regularPhrases = new String[]{
                 "He walked down the steps from the train station in a bit of a hurry knowing the secrets in the "
@@ -199,7 +201,7 @@ public class TypingPractice {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a list of all phrases available to type for shortPrac
+    // EFFECTS: adds all phrases available to type for shortPrac
     public void setupShortPhrases() {
         String[] shortPhrases = new String[] {
                 "The quick brown fox jumps over the lazy dog.",
@@ -210,7 +212,7 @@ public class TypingPractice {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a list of all phrases available to type for punctuationPrac
+    // EFFECTS: adds all phrases available to type for punctuationPrac
     public void setupPunctuationPhrases() {
         String[] punctuationPhrases = new String[] {
                 "Facing his greatest fear, he ate his first marshmallow! It was a slippery slope, but was he willing "
@@ -224,7 +226,7 @@ public class TypingPractice {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a list of all phrases available to type for numberPrac
+    // EFFECTS: adds all phrases available to type for numberPrac
     public void setupNumberPhrases() {
         String[] numberPhrases = new String[] {
                 "The tart lemonade cost 3 dollars and 79 cents. "
@@ -260,6 +262,7 @@ public class TypingPractice {
         return phraseToType;
     }
 
+    // helper for choosePhraseToType
     // MODIFIES: this
     // EFFECTS: chooses a random phrase to give the user based on the given list of possible phrases
     public void choosePhraseByFocus(List<String> focus) {

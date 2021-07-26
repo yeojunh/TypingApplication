@@ -5,12 +5,13 @@ import java.util.List;
 
 import static java.lang.Math.round;
 
-// Represents a list for a user's typing runs including the average wpm and accuracy.
+// Represents a list for a user's typing runs including the average wpm and accuracy
 public class Record {
     List<TypingPractice> record;
     private double averageWpm;
     private double averageAccuracy;
 
+    // constructor
     // EFFECTS: creates a new list of past typing practices for the current user
     public Record() {
         record = new ArrayList<TypingPractice>();
@@ -20,11 +21,11 @@ public class Record {
     // EFFECTS: adds given typing practice result to user history
     public void addUserHistory(TypingPractice tp) {
         record.add(tp);
-        // we will not remove certain runs from user history - it defeat the purpose of having a history
+        // we will not remove certain runs from user history - it defeats the purpose of having a history
     }
 
     // MODIFIES: this
-    // EFFECTS: calculates, sets, and returns the average typing speed of the user
+    // EFFECTS: calculates, sets, and returns the average typing speed across all recorded runs
     public double calculateAverageTypingSpeed() {
         double avgWpm = 0;
         if (record.isEmpty()) {
@@ -40,7 +41,7 @@ public class Record {
     }
 
     // MODIFIES: this
-    // EFFECTS: calculates, sets, and returns the average accuracy of  user
+    // EFFECTS: calculates, sets, and returns the average accuracy across all recorded runs
     public double calculateAverageAccuracy() {
         double avgAcc = 0;
         if (record.isEmpty()) {

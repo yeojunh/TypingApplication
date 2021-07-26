@@ -13,7 +13,7 @@ public class TypingApp {
     private Record record;
     private Scanner input;
 
-    // EFFECTS: runs runTyping() method
+    // EFFECTS: starts runTyping() method
     public TypingApp() {
         runTyping();
     }
@@ -38,6 +38,7 @@ public class TypingApp {
                 try {
                     processCommand(command);
                 } catch (InterruptedException e) {
+                    // unlikely to occur, but still need to catch this exception
                     System.out.println("Something interrupted execution. Quitting program.");
                     appOn = false;
                     e.printStackTrace();
