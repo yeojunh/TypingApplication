@@ -13,10 +13,13 @@ public class TypingApp {
     private Record record;
     private Scanner input;
 
+    // EFFECTS: runs runTyping() method
     public TypingApp() {
         runTyping();
     }
 
+    // EFFECTS: while the app is on, keeps the typing test going
+    //          and prompts the user to choose an option OR prompts the user to type for the test
     private void runTyping() {
         boolean appOn = true;
         String command = null;
@@ -43,6 +46,7 @@ public class TypingApp {
         }
     }
 
+    // EFFECTS: displays menu of options to user
     private void displayMenu() {
         System.out.println("\n Select from:");
         System.out.println("\tType r for a regular practice");
@@ -53,6 +57,8 @@ public class TypingApp {
         System.out.println("\tTo quit, type q.");
     }
 
+    // MODIFIES: this
+    // EFFECTS: processes user command
     private void processCommand(String command) throws InterruptedException {
         if (command.equals("r")) {
             runRegular();
@@ -74,18 +80,8 @@ public class TypingApp {
         }
     }
 
-    private void runRecord() {
-        if (record.size() == 0) {
-            System.out.println("You have no previous typing practice records. Try one out now!\n");
-            runTyping();
-        } else {
-            System.out.println("You have practiced " + record.size() + " times.");
-            System.out.println("Your average typing speed is " + record.calculateAverageTypingSpeed()
-                    + " words per minute.");
-            System.out.println("Your average accuracy is " + record.calculateAverageAccuracy() + "%.\n");
-        }
-    }
-
+    // MODIFIES: this
+    // EFFECTS: starts the typing test run and asks the user if they want to add this run to their typing history
     private void runTypingTest() throws InterruptedException {
         System.out.println(typingPractice.getPhraseToType());
         countdown();
@@ -99,6 +95,9 @@ public class TypingApp {
         askToAddRun();
     }
 
+    // MODIFIES: this
+    // EFFECTS: asks user if they want to add this run to their hyping history
+    //          if user replies yes, then stores the data, otherwise leaves the history as is
     private void askToAddRun() {
         System.out.println("Add this run to your typing history? (y/n)");
         String command = input.next();
@@ -113,28 +112,51 @@ public class TypingApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: runs the regular typing practice
     private void runRegular() {
         typingPractice = new TypingPractice("regular");
         System.out.println("A regular typing practice will start in 3 seconds...");
         typingPractice.choosePhraseToType("regular");
     }
 
+    // MODIFIES: this
+    // EFFECTS: runs the short typing practice
     private void runShort() {
         typingPractice = new TypingPractice("short");
         System.out.println("A short typing practice will start in 3 seconds...");
         typingPractice.choosePhraseToType("short");
     }
 
+    // MODIFIES: this
+    // EFFECTS: runs the punctuation-focused typing practice
     private void runPunctuation() {
         typingPractice = new TypingPractice("punctuation");
         System.out.println("A punctuation-focused typing practice will start in 3 seconds...");
         typingPractice.choosePhraseToType("punctuation");
     }
 
+    // MODIFIES: this
+    // EFFECTS: runs the number-focused typing practice
     private void runNumber() {
         typingPractice = new TypingPractice("number");
         System.out.println("A number-focused typing practice will start in 3 seconds...");
         typingPractice.choosePhraseToType("number");
+    }
+
+    // MODIFIES: this
+    // EFFECTS: displays the user's previous typing history including number of times practiced, average wpm, accuracy
+    //          if the user has no previous records, prompt the user to start a typing test
+    private void runRecord() {
+        if (record.size() == 0) {
+            System.out.println("You have no previous typing practice records. Try one out now!\n");
+            runTyping();
+        } else {
+            System.out.println("You have practiced " + record.size() + " times.");
+            System.out.println("Your average typing speed is " + record.calculateAverageTypingSpeed()
+                    + " words per minute.");
+            System.out.println("Your average accuracy is " + record.calculateAverageAccuracy() + "%.\n");
+        }
     }
 
     // MODIFIES: typingPractice
@@ -149,7 +171,5 @@ public class TypingApp {
         System.out.println("GO!");
 
         typingPractice.startedTyping();
-        // more information about this exception below:
-        // https://stackoverflow.com/questions/1087475/when-does-javas-thread-sleep-throw-interruptedexception
     }
 }

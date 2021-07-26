@@ -4,7 +4,6 @@ import exception.EmptyStringException;
 
 import java.util.*;
 
-// TODO: add specifications for all methods
 // Represents a typing practice run with a specific focus (regular, short, punctuation, numbers)
 // Records the run's typing speed (in wpm) and accuracy
 public class TypingPractice {
