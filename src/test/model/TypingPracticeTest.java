@@ -265,6 +265,13 @@ class TypingPracticeTest {
     }
 
     @Test
+    public void testDetermineNumWordsTypedSpace() {
+        testTyping.setUserTypingInput(" ");
+        testTyping.determineNumWordsTyped();
+        assertEquals(0, testTyping.getNumWordsTyped());
+    }
+
+    @Test
     public void testDetermineNumWordsTypedOne() {
         testTyping.setUserTypingInput("Hello!");
         testTyping.determineNumWordsTyped();
