@@ -3,9 +3,11 @@ package ui;
 import model.Record;
 import model.TypingPractice;
 
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+// Typing practice application
 public class TypingApp {
     private TypingPractice typingPractice;
     private Record record;
@@ -73,13 +75,13 @@ public class TypingApp {
     }
 
     private void runRecord() {
-        // TODO: this
         if (record.size() == 0) {
             System.out.println("You have no previous typing practice records. Try one out now!\n");
             runTyping();
         } else {
             System.out.println("You have practiced " + record.size() + " times.");
-            System.out.println("Your average typing speed is " + record.calculateAverageTypingSpeed() + " words per minute.");
+            System.out.println("Your average typing speed is " + record.calculateAverageTypingSpeed()
+                    + " words per minute.");
             System.out.println("Your average accuracy is " + record.calculateAverageAccuracy() + "%.\n");
         }
     }
@@ -94,7 +96,21 @@ public class TypingApp {
         System.out.println("Your typing speed is: " + typingPractice.calculateTypingSpeed() + " words per minute.");
         System.out.println("Your accuracy (percentage of words spelt correctly) is: "
                 + typingPractice.calculateAccuracy() + "%.");
-        record.addUserHistory(typingPractice);
+        askToAddRun();
+    }
+
+    private void askToAddRun() {
+        System.out.println("Add this run to your typing history? (y/n)");
+        String command = input.next();
+        command = command.toLowerCase();
+        if (command.equals("y")) {
+            record.addUserHistory(typingPractice);
+        } else if (command.equals("n")) {
+            // do nothing
+        } else {
+            System.out.println("Invalid input. Your options are y (yes) and n (no).");
+            askToAddRun();
+        }
     }
 
     private void runRegular() {

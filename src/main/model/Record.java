@@ -5,23 +5,15 @@ import java.util.List;
 
 import static java.lang.Math.round;
 
+// Represents a list for a user's typing runs including the average wpm and accuracy.
 public class Record {
     List<TypingPractice> record;
     private double averageWpm;
     private double averageAccuracy;
-    // regex or substring
-    // keep a counter for n of wrongs
-    // can also track the number of string length difference
 
-
-    // EFFECTS: creates a new list of past typing practices for the given user number (unique)
+    // EFFECTS: creates a new list of past typing practices for the current user
     public Record() {
         record = new ArrayList<TypingPractice>();
-    }
-
-    // EFFECTS: return the typing history for the given user
-    public List<TypingPractice> getUserHistory() {
-        return record;
     }
 
     // MODIFIES: this
@@ -31,7 +23,8 @@ public class Record {
         // we will not remove certain runs from user history - it defeat the purpose of having a history
     }
 
-    // EFFECTS: returns the average typing speed of  user
+    // MODIFIES: this
+    // EFFECTS: calculates, sets, and returns the average typing speed of the user
     public double calculateAverageTypingSpeed() {
         double avgWpm = 0;
         if (record.isEmpty()) {
@@ -46,7 +39,8 @@ public class Record {
         return averageWpm;
     }
 
-    // EFFECTS: returns the average accuracy of  user
+    // MODIFIES: this
+    // EFFECTS: calculates, sets, and returns the average accuracy of  user
     public double calculateAverageAccuracy() {
         double avgAcc = 0;
         if (record.isEmpty()) {
@@ -61,6 +55,7 @@ public class Record {
         return averageAccuracy;
     }
 
+    // EFFECTS: returns the given num rounded to 2 decimal places
     public double roundToTwoDecimalPlaces(double average) {
         average = average * 100;
         average = Math.round(average);
@@ -68,6 +63,7 @@ public class Record {
         return average;
     }
 
+    // getters
     public int size() {
         return record.size();
     }
@@ -78,5 +74,9 @@ public class Record {
 
     public double getAverageAccuracy() {
         return averageAccuracy;
+    }
+
+    public List<TypingPractice> getUserHistory() {
+        return record;
     }
 }

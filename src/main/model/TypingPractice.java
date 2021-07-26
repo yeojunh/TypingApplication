@@ -4,13 +4,13 @@ import exception.EmptyStringException;
 
 import java.util.*;
 
-// TODO: add class level comments
-// TODO: do we need to test setters and getters
 // TODO: add specifications for all methods
+// Represents a typing practice run with a specific focus (regular, short, punctuation, numbers)
+// Records the run's typing speed (in wpm) and accuracy
 public class TypingPractice {
     private double wpm;
     private double accuracy;
-    private String focus;                   // regular, punctuation, numbers
+    private String focus;                   // regular, short punctuation, numbers
     private boolean isTyping;               // true if the user can type, false otherwise
     private String phraseToType;
     private int numWordsTyped;              // for wpm calculation
@@ -29,13 +29,11 @@ public class TypingPractice {
     private ArrayList<String> userTypedInWords = new ArrayList<String>();
     private String userTypingInput;
 
-    // TODO: throw an exception if it is not one of the four focuses
     // EFFECTS: creates a new typing practice given the focus of typing test and whether it is timed
     public TypingPractice(String focus) {
         this.focus = focus;
     }
 
-    // REQUIRES: isTyping must be false
     // MODIFIES: this
     // EFFECTS: begins timer and sets isTyping to true
     public void startedTyping() {
@@ -43,16 +41,15 @@ public class TypingPractice {
         isTyping = true;
     }
 
-    // TODO: decide on this and exceptions
-    // REQUIRE: isTyping must be true
     // MODIFIES: this
-    // EFFECTS: stops timer and sets isTyping to false and calculates timeElapsed in minutes
+    // EFFECTS: stops timer, sets isTyping to false and calculates timeElapsed in minutes
     public void finishedTyping() {
         endTime = System.currentTimeMillis();
         isTyping = false;
         timeElapsed = (endTime - startTime) / 1000 / 60;
     }
 
+    // MODIFIES: this
     // EFFECTS: calculates the typing speed of this run
     public double calculateTypingSpeed() {
         this.determineNumWordsTyped();
@@ -81,14 +78,16 @@ public class TypingPractice {
         return accuracy;
     }
 
+    // EFFECTS: returns the given num rounded to 2 decimal places
     public double roundToTwoDecimalPlaces(double num) {
         num = num * 100;
         num = Math.round(num);
         num = num / 100;
         return num;
     }
-    // TODO: public or private?
 
+    // MODIFIES: this
+    // EFFECTS: determines the number of words the user was prompted to type
     public void determineNumWordsAttempted() {
         if (phraseToType.equals("") || phraseToType.equals(" ")) {
             numWordsAttempted = 0;
@@ -98,6 +97,8 @@ public class TypingPractice {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: determines the number of words the user typed
     public void determineNumWordsTyped() {
         if (userTypingInput.equals("") || userTypingInput.equals(" ")) {
             numWordsTyped = 0;
@@ -109,6 +110,8 @@ public class TypingPractice {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: determines the number of words the user typed incorrectly
     public void determineNumWordsTypedIncorrectly() {
         try {
             this.setupWordsAndArrayLists(userTypingInput);
@@ -119,7 +122,9 @@ public class TypingPractice {
         this.comparePhraseToTypeAndUserTyped();
     }
 
-    // helper
+    // helper for determineNumWordsTypedIncorrectly
+    // MODIFIES: this
+    // EFFECTS: calculates the number of words the user typed incorrectly
     public void comparePhraseToTypeAndUserTyped() {
         if (phraseToTypeInWords.size() == userTypedInWords.size()) {
             for (int i = 0; i < phraseToTypeInWords.size(); i++) {
@@ -145,7 +150,8 @@ public class TypingPractice {
     }
 
     // helper
-    //
+    // MODIFIES: this
+    // EFFECTS: splits phraseToType by words into phraseToTypeInWords
     public void setupWordsAndArrayLists(String userTyped) throws EmptyStringException {
         if (userTyped.equals("")) {
             String[] phraseToTypeWords0 = phraseToType.split(" ");
@@ -171,6 +177,8 @@ public class TypingPractice {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds a list of all phrases available to type for regularPrac
     // phrase setup for each focus. hard coded phrases
     public void setupRegularPhrases() {
         String[] regularPhrases = new String[]{
@@ -191,6 +199,8 @@ public class TypingPractice {
         regularPrac.addAll(Arrays.asList(regularPhrases));
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds a list of all phrases available to type for shortPrac
     public void setupShortPhrases() {
         String[] shortPhrases = new String[] {
                 "The quick brown fox jumps over the lazy dog.",
@@ -200,6 +210,8 @@ public class TypingPractice {
         shortPrac.addAll(Arrays.asList(shortPhrases));
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds a list of all phrases available to type for punctuationPrac
     public void setupPunctuationPhrases() {
         String[] punctuationPhrases = new String[] {
                 "Facing his greatest fear, he ate his first marshmallow! It was a slippery slope, but was he willing "
@@ -212,6 +224,8 @@ public class TypingPractice {
         punctuationPrac.addAll(Arrays.asList(punctuationPhrases));
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds a list of all phrases available to type for numberPrac
     public void setupNumberPhrases() {
         String[] numberPhrases = new String[] {
                 "The tart lemonade cost 3 dollars and 79 cents. "
@@ -229,14 +243,8 @@ public class TypingPractice {
     }
 
     // MODIFIES: this
-    // EFFECTS: gets a random phrase for the user to type based on the given focus
-    // MODIFIES: phraseToType, this
-    // EFFECTS: fetches a phrase for the user to type based on the given focus
-    // could change it to be here since they're just hard coded
+    // EFFECTS: choose a random phrase for the user to type based on the given focus
     public String choosePhraseToType(String focus) {
-        int focusLength;
-        Random random = new Random();
-
         if (focus.equals("regular")) {
             this.setupRegularPhrases();
             choosePhraseByFocus(regularPrac);
@@ -253,6 +261,8 @@ public class TypingPractice {
         return phraseToType;
     }
 
+    // MODIFIES: this
+    // EFFECTS: chooses a random phrase to give the user based on the given list of possible phrases
     public void choosePhraseByFocus(List<String> focus) {
         int phraseNum;
         int focusLength = focus.size();
