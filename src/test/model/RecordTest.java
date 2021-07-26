@@ -141,7 +141,7 @@ public class RecordTest {
         assertEquals(0, testRecord.size());
     }
     @Test
-    public void testSizeMulitple() {
+    public void testSizeMultiple() {
         TypingPractice tp2 = new TypingPractice("number");
         TypingPractice tp3 = new TypingPractice("short");
         testRecord.addUserHistory(testTp);
