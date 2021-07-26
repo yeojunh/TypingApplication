@@ -89,7 +89,9 @@ public class TypingPractice {
     // MODIFIES: this
     // EFFECTS: determines the number of words the user was prompted to type
     public void determineNumWordsAttempted() {
-        if (phraseToType.equals("") || phraseToType.equals(" ")) {
+        if (phraseToType.equals("")) {
+            numWordsAttempted = 0;
+        } else if (phraseToType.equals(" ")) {
             numWordsAttempted = 0;
         } else {
             String[] phraseToTypeWords = phraseToType.split(" ");

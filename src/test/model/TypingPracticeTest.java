@@ -358,8 +358,6 @@ class TypingPracticeTest {
         assertEquals(1, testTyping.getNumWordsTypedIncorrectly());
     }
 
-    // depends on how we're throwing exceptions/specifications
-    // TODO: DECIDE ON THIS
     @Test
     public void testFinishedTyping() {
         testTyping.setIsTyping(true);
@@ -381,6 +379,15 @@ class TypingPracticeTest {
         testTyping.startedTyping();
         assertTrue(testTyping.getIsTyping());
         assertTrue(testTyping.getStartTime() > 0);
+    }
+
+    @Test
+    public void testStartedTypingAlreadyStarted() {
+        double initStartTime = testTyping.getStartTime();
+        testTyping.setIsTyping(true);
+        testTyping.startedTyping();
+        assertTrue(testTyping.getIsTyping());
+        assertTrue(initStartTime < testTyping.getStartTime());
     }
 
     @Test
