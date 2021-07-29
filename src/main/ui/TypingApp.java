@@ -156,8 +156,8 @@ public class TypingApp {
             System.out.println("You have practiced " + record.size() + " times.");
             for (int i = 0; i < record.size(); i++) {
                 System.out.println("Your run #" + (i + 1) + "\n Typing Speed (wpm):  "
-                        + record.getNthTypingPrac(i).calculateTypingSpeed() + "\n Accuracy: "
-                        + record.getNthTypingPrac(i).calculateAccuracy() + "\n");
+                        + record.getNthTypingPrac(i).getAccuracy() + "\n Accuracy (%): "
+                        + record.getNthTypingPrac(i).getAccuracy() + "\n");
             }
             System.out.println("Your average typing speed is " + record.calculateAverageTypingSpeed()
                     + " words per minute.");
