@@ -3,6 +3,7 @@ package model;
 import exception.EmptyStringException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -471,6 +472,17 @@ class TypingPracticeTest {
         assertEquals(10.0, testTyping.getWpm());
     }
 
+    @Test
+    public void testGetFocus() {
+        TypingPractice shortPrac = new TypingPractice("short");
+        TypingPractice numberPrac = new TypingPractice("number");
+        TypingPractice puncPrac = new TypingPractice("punctuation");
+        assertEquals("regular", testTyping.getFocus());
+        assertEquals("short", shortPrac.getFocus());
+        assertEquals("number", numberPrac.getFocus());
+        assertEquals("punctuation", puncPrac.getFocus());
+
+    }
 
     // testing setters
     @Test

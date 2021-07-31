@@ -2,6 +2,7 @@ package ui;
 
 import model.Record;
 import model.TypingPractice;
+import org.json.JSONArray;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -66,6 +67,7 @@ public class TypingApp {
         System.out.println("\tType n for number practice");
         System.out.println("\tType h to view user typing history");
         System.out.println("\tType save to save typing history");
+//        System.out.println("\tType clear to clear typing history");
         System.out.println("\tType load to load typing history");
         System.out.println("\tTo quit, type q.");
     }
@@ -91,12 +93,14 @@ public class TypingApp {
             saveHistory();
         } else if (command.equals("load")) {
             loadHistory();
+//        } else if (command.equals("clear")) {
+//            clearHistory();
         } else {
             System.out.println("Selection is not valid...");
             runTyping();
         }
     }
-    // todo: make loading default and allow user to start from scratch if wanted
+    // todo: if extra time: make loading default and allow user to start from scratch if wanted
 
     // MODIFIES: this
     // EFFECTS: starts the typing test run and asks the user if they want to add this run to their typing history
@@ -133,13 +137,15 @@ public class TypingApp {
             System.out.println("Loaded previous typing history from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file " + JSON_STORE);
-            System.out.println("Creating a new record history."); // do nothing because it makes a new save anyway
+            // if the user has never used the app before, it's normal for them to not have any history
+            // ^ this isn't implemented yet - cannot write an empty record
+//            System.out.println("Creating a new record history."); // do nothing because it makes a new save anyway
         }
     }
 
-    // todo: this and specifications
-    private void clearHistory() {
-    }
+//    private void clearHistory() {
+//        jsonWriter.clear(record);
+//    }
 
     // MODIFIES: this
     // EFFECTS: asks user if they want to add this run to their hyping history

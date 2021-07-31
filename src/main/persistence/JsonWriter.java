@@ -2,6 +2,7 @@ package persistence;
 
 import model.Record;
 import model.TypingPractice;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import ui.TypingApp;
 
@@ -9,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+// Represents a writer that writes JSON representation of record to file
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
@@ -32,6 +34,14 @@ public class JsonWriter {
         JSONObject json = rec.toJson();
         saveToFile(json.toString(TAB));
     }
+
+//    public void clear(Record rec) {
+//        JSONArray jsonArray = rec.toJson().getJSONArray("history");
+//        for (int i = 0; i < jsonArray.length(); i++) {
+//            jsonArray.remove(i);
+//        }
+//        write(rec);
+//    }
 
     // MODIFIES: this
     // EFFECTS: writes string to file

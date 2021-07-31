@@ -392,8 +392,4 @@ public class TypingPractice implements Writable {
     public void setUserTypedInWords(ArrayList<String> arr) {
         userTypedInWords = arr;
     }
-
-    public void setFocus(String focus) {
-        this.focus = focus;
-    }
 }

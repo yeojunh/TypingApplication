@@ -70,11 +70,11 @@ public class Record implements Writable {
 
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
-        json.put("history", historyToJson());
+        json.put("history", recordToJson());
         return json;
     }
 
-    private JSONArray historyToJson() {
+    public JSONArray recordToJson() {
         JSONArray jsonArray = new JSONArray();
         for (TypingPractice tp : record) {
             jsonArray.put(tp.toJson());
@@ -86,9 +86,6 @@ public class Record implements Writable {
     // EFFECTS: adds typing practice to this record
     public void addTypingPractice(TypingPractice typingPractice) {
         record.add(typingPractice);
-    }
-
-    public void setRunRecordFeedback(String feedback) {
     }
 
     // getters
