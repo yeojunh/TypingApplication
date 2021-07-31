@@ -36,9 +36,7 @@ public class TypingApp {
         boolean appOn = true;
         String command = null;
         record = new Record();
-        if (firstRun) {
-            loadHistory();
-        }
+        runIfFirstTimeRunning();
 
         while (appOn) {
             firstRun = false;
@@ -54,12 +52,18 @@ public class TypingApp {
                 try {
                     processCommand(command);
                 } catch (InterruptedException e) {
-                    // unlikely to occur, but still need to catch this exception
                     System.out.println("Something interrupted execution. Quitting program.");
                     appOn = false;
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    // EFFECTS: runs loadHistory if the application was just opened
+    private void runIfFirstTimeRunning() {
+        if (firstRun) {
+            loadHistory();
         }
     }
 

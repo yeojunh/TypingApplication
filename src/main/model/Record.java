@@ -68,12 +68,14 @@ public class Record implements Writable {
         return average;
     }
 
+    @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("history", recordToJson());
         return json;
     }
 
+    // EFFECTS: returns typing practices in this record as JSONArray
     public JSONArray recordToJson() {
         JSONArray jsonArray = new JSONArray();
         for (TypingPractice tp : record) {
