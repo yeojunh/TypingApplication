@@ -35,14 +35,6 @@ public class JsonWriter {
         saveToFile(json.toString(TAB));
     }
 
-//    public void clear(Record rec) {
-//        JSONArray jsonArray = rec.toJson().getJSONArray("history");
-//        for (int i = 0; i < jsonArray.length(); i++) {
-//            jsonArray.remove(i);
-//        }
-//        write(rec);
-//    }
-
     // MODIFIES: this
     // EFFECTS: writes string to file
     private void saveToFile(String json) {

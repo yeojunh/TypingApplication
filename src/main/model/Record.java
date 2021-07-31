@@ -88,6 +88,7 @@ public class Record implements Writable {
         record.add(typingPractice);
     }
 
+
     // getters
     public int size() {
         return record.size();

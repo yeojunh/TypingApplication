@@ -22,4 +22,6 @@ There are many online typing practices like [monkeytype](https://monkeytype.com/
 - As a user, I want to be able to view a list of previous typing results 
             with their respective typing speed and accuracy, and the overall typing speed and accuracy
 - As a user, I want to be able to save my typing history to file
-- As a user, I want to be able to reload my typing history and continue to add to my typing history
+- As a user, I want to be able to continue my last typing history as soon as I open the application
+- As a user, I want to be able to clear my typing history
+- As a user, I want to be able to reload my last deleted typing history, just in case I accidentally clear it

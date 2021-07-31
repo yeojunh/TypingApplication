@@ -21,6 +21,7 @@ public class TypingApp {
     private Scanner input;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
+    private boolean firstRun = true;
 
     // EFFECTS: starts runTyping() method
     public TypingApp() {
@@ -35,8 +36,12 @@ public class TypingApp {
         boolean appOn = true;
         String command = null;
         record = new Record();
+        if (firstRun) {
+            loadHistory();
+        }
 
         while (appOn) {
+            firstRun = false;
             displayMenu();
 
             input = new Scanner(System.in);
@@ -67,8 +72,8 @@ public class TypingApp {
         System.out.println("\tType n for number practice");
         System.out.println("\tType h to view user typing history");
         System.out.println("\tType save to save typing history");
-//        System.out.println("\tType clear to clear typing history");
         System.out.println("\tType load to load typing history");
+        System.out.println("\tType clear to clear typing history");
         System.out.println("\tTo quit, type q.");
     }
 
@@ -77,24 +82,20 @@ public class TypingApp {
     private void processCommand(String command) throws InterruptedException {
         if (command.equals("r")) {
             runRegular();
-            runTypingTest();
         } else if (command.equals("s")) {
             runShort();
-            runTypingTest();
         } else if (command.equals("p")) {
             runPunctuation();
-            runTypingTest();
         } else if (command.equals("n")) {
             runNumber();
-            runTypingTest();
         } else if (command.equals("h")) {
             runHistory();
         } else if (command.equals("save")) {
             saveHistory();
         } else if (command.equals("load")) {
             loadHistory();
-//        } else if (command.equals("clear")) {
-//            clearHistory();
+        } else if (command.equals("clear")) {
+            clearHistory();
         } else {
             System.out.println("Selection is not valid...");
             runTyping();
@@ -137,15 +138,17 @@ public class TypingApp {
             System.out.println("Loaded previous typing history from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file " + JSON_STORE);
-            // if the user has never used the app before, it's normal for them to not have any history
-            // ^ this isn't implemented yet - cannot write an empty record
-//            System.out.println("Creating a new record history."); // do nothing because it makes a new save anyway
         }
     }
 
-//    private void clearHistory() {
-//        jsonWriter.clear(record);
-//    }
+    // MODIFIES: this
+    // EFFECTS: clears user typing history
+    //          user can still access the most recent deleted history if they load before saving again
+    private void clearHistory() {
+        record = new Record();
+        System.out.println("Successfully cleared typing history.");
+        System.out.println("If you want to revert your history, please enter LOAD.");
+    }
 
     // MODIFIES: this
     // EFFECTS: asks user if they want to add this run to their hyping history
@@ -166,34 +169,38 @@ public class TypingApp {
 
     // MODIFIES: this
     // EFFECTS: runs the regular typing practice
-    private void runRegular() {
+    private void runRegular() throws InterruptedException {
         typingPractice = new TypingPractice("regular");
         System.out.println("A regular typing practice will start in 3 seconds...");
         typingPractice.choosePhraseToType("regular");
+        runTypingTest();
     }
 
     // MODIFIES: this
     // EFFECTS: runs the short typing practice
-    private void runShort() {
+    private void runShort() throws InterruptedException {
         typingPractice = new TypingPractice("short");
         System.out.println("A short typing practice will start in 3 seconds...");
         typingPractice.choosePhraseToType("short");
+        runTypingTest();
     }
 
     // MODIFIES: this
     // EFFECTS: runs the punctuation-focused typing practice
-    private void runPunctuation() {
+    private void runPunctuation() throws InterruptedException {
         typingPractice = new TypingPractice("punctuation");
         System.out.println("A punctuation-focused typing practice will start in 3 seconds...");
         typingPractice.choosePhraseToType("punctuation");
+        runTypingTest();
     }
 
     // MODIFIES: this
     // EFFECTS: runs the number-focused typing practice
-    private void runNumber() {
+    private void runNumber() throws InterruptedException {
         typingPractice = new TypingPractice("number");
         System.out.println("A number-focused typing practice will start in 3 seconds...");
         typingPractice.choosePhraseToType("number");
+        runTypingTest();
     }
 
     // MODIFIES: this
