@@ -2,19 +2,29 @@ package ui;
 
 import model.Record;
 import model.TypingPractice;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
-import java.util.Locale;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 // Typing practice application
+// Reference: CPSC 210 TellerApp example
+// https://github.students.cs.ubc.ca/CPSC210/TellerApp
 public class TypingApp {
+    private static final String JSON_STORE = "./data/record.json";
     private TypingPractice typingPractice;
     private Record record;
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: starts runTyping() method
     public TypingApp() {
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runTyping();
     }
 
@@ -55,6 +65,8 @@ public class TypingApp {
         System.out.println("\tType p for punctuation practice");
         System.out.println("\tType n for number practice");
         System.out.println("\tType h to view user typing history");
+        System.out.println("\tType save to save typing history");
+        System.out.println("\tType load to load typing history");
         System.out.println("\tTo quit, type q.");
     }
 
@@ -74,12 +86,17 @@ public class TypingApp {
             runNumber();
             runTypingTest();
         } else if (command.equals("h")) {
-            runRecord();
+            runHistory();
+        } else if (command.equals("save")) {
+            saveWorkRoom();
+        } else if (command.equals("load")) {
+            loadWorkRoom();
         } else {
             System.out.println("Selection is not valid...");
             runTyping();
         }
     }
+    // todo: make loading default and allow user to start from scratch if wanted
 
     // MODIFIES: this
     // EFFECTS: starts the typing test run and asks the user if they want to add this run to their typing history
@@ -94,6 +111,29 @@ public class TypingApp {
         System.out.println("Your accuracy (percentage of words spelt correctly) is: "
                 + typingPractice.calculateAccuracy() + "%.");
         askToAddRun();
+    }
+
+    // EFFECTS: saves history to file
+    private void saveWorkRoom() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(record);
+            jsonWriter.close();
+            System.out.println("Saved current history to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads history from file
+    private void loadWorkRoom() {
+        try {
+            record = jsonReader.read();
+            System.out.println("Loaded previous typing history from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file " + JSON_STORE);
+        }
     }
 
     // MODIFIES: this
@@ -148,15 +188,15 @@ public class TypingApp {
     // MODIFIES: this
     // EFFECTS: displays the user's previous typing history including number of times practiced, average wpm, accuracy
     //          if the user has no previous records, prompt the user to start a typing test
-    private void runRecord() {
+    private void runHistory() {
         if (record.size() == 0) {
-            System.out.println("You have no previous typing practice records. Try one out now!\n");
+            System.out.println("You have no previous typing practice history. Try one out now!\n");
             runTyping();
         } else {
             System.out.println("You have practiced " + record.size() + " times.");
             for (int i = 0; i < record.size(); i++) {
                 System.out.println("Your run #" + (i + 1) + "\n Typing Speed (wpm):  "
-                        + record.getNthTypingPrac(i).getAccuracy() + "\n Accuracy (%): "
+                        + record.getNthTypingPrac(i).getWpm() + "\n Accuracy (%): "
                         + record.getNthTypingPrac(i).getAccuracy() + "\n");
             }
             System.out.println("Your average typing speed is " + record.calculateAverageTypingSpeed()
@@ -164,6 +204,7 @@ public class TypingApp {
             System.out.println("Your average accuracy is " + record.calculateAverageAccuracy() + "%.");
         }
     }
+    // todo: if extra time, add user's name to persistence it so that they can retrieve their own data
 
     // MODIFIES: typingPractice
     // EFFECTS: counts down 3 seconds until the user can type and starts stopwatch

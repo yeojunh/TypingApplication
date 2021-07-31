@@ -1,12 +1,15 @@
 package model;
 
 import exception.EmptyStringException;
+import org.json.JSONObject;
+import persistence.Writable;
 
+import java.io.WriteAbortedException;
 import java.util.*;
 
 // Represents a typing practice run with a specific focus (regular, short, punctuation, numbers)
 // Records the run's typing speed (in wpm) and accuracy
-public class TypingPractice {
+public class TypingPractice implements Writable {
     private double wpm;
     private double accuracy;
     private String focus;                   // regular, short punctuation, numbers
@@ -274,6 +277,13 @@ public class TypingPractice {
         phraseToType = focus.get(phraseNum);
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("wpm", wpm);
+        json.put("accuracy", accuracy);
+        return json;
+    }
 
     // getters
     public List<String> getRegularPrac() {

@@ -1,12 +1,16 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.round;
 
 // Represents a list for a user's typing runs including the average wpm and accuracy
-public class Record {
+public class Record implements Writable {
     List<TypingPractice> record;
     private double averageWpm;
     private double averageAccuracy;
@@ -62,6 +66,29 @@ public class Record {
         average = Math.round(average);
         average = average / 100;
         return average;
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("history", historyToJson());
+        return json;
+    }
+
+    private JSONArray historyToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (TypingPractice tp : record) {
+            jsonArray.put(tp.toJson());
+        }
+        return jsonArray;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds typing practice to this record
+    public void addTypingPractice(TypingPractice typingPractice) {
+        record.add(typingPractice);
+    }
+
+    public void setRunRecordFeedback(String feedback) {
     }
 
     // getters
