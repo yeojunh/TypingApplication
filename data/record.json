@@ -1,10 +1,5 @@
-{"history": [
-    {
-        "wpm": 73.9,
-        "accuracy": 100
-    },
-    {
-        "wpm": 81.8,
-        "accuracy": 100
-    }
-]}
+{"history": [{
+    "wpm": 123.54,
+    "focus": "regular",
+    "accuracy": 33
+}]}

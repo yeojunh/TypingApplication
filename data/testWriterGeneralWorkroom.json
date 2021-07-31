@@ -1,10 +1,22 @@
 {"history": [
     {
         "wpm": 90,
+        "focus": "regular",
         "accuracy": 100
     },
     {
         "wpm": 80,
+        "focus": "short",
+        "accuracy": 90
+    },
+    {
+        "wpm": 123,
+        "focus": "punctuation",
+        "accuracy": 80
+    },
+    {
+        "wpm": 100,
+        "focus": "number",
         "accuracy": 90
     }
 ]}

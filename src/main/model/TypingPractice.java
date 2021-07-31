@@ -281,6 +281,7 @@ public class TypingPractice implements Writable {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("wpm", wpm);
+        json.put("focus", focus);
         json.put("accuracy", accuracy);
         return json;
     }
@@ -342,6 +343,10 @@ public class TypingPractice implements Writable {
         return userTypedInWords;
     }
 
+    public String getFocus() {
+        return focus;
+    }
+
 
     // setters
     public void setIsTyping(boolean isTyping) {
@@ -386,5 +391,9 @@ public class TypingPractice implements Writable {
 
     public void setUserTypedInWords(ArrayList<String> arr) {
         userTypedInWords = arr;
+    }
+
+    public void setFocus(String focus) {
+        this.focus = focus;
     }
 }

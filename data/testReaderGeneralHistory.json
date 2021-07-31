@@ -1,9 +1,11 @@
 {"history": [
   {
+    "focus": "regular",
     "wpm": 90.0,
     "accuracy": 96
   },
   {
+    "focus": "short",
     "wpm": 80.0,
     "accuracy": 50.0
   }

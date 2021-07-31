@@ -41,8 +41,8 @@ public class JsonReaderTest extends JsonTest {
             Record record = reader.read();
             List<TypingPractice> typingPractices = record.getUserHistory();
             assertEquals(2, typingPractices.size());
-            checkRecord(90, 96, record.getNthTypingPrac(0));
-            checkRecord(80, 50, record.getNthTypingPrac(1));
+            checkRecord(90, 96, "regular", record.getNthTypingPrac(0));
+            checkRecord(80, 50, "short", record.getNthTypingPrac(1));
         } catch (IOException e) {
             fail("Couldn't read from file");
         }

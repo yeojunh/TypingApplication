@@ -57,7 +57,7 @@ public class JsonReader {
     // MODIFIES: record
     // EFFECTS: parses typing practice from JSON object and adds it to record
     private void addTypingPractice(Record record, JSONObject jsonObject) {
-        TypingPractice typingPractice = new TypingPractice("overall");
+        TypingPractice typingPractice = new TypingPractice(jsonObject.getString("focus"));
         typingPractice.setWpm(jsonObject.getDouble("wpm"));
         typingPractice.setAccuracy(jsonObject.getDouble("accuracy"));
         record.addTypingPractice(typingPractice);

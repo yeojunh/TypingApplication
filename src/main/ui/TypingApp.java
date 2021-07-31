@@ -88,9 +88,9 @@ public class TypingApp {
         } else if (command.equals("h")) {
             runHistory();
         } else if (command.equals("save")) {
-            saveWorkRoom();
+            saveHistory();
         } else if (command.equals("load")) {
-            loadWorkRoom();
+            loadHistory();
         } else {
             System.out.println("Selection is not valid...");
             runTyping();
@@ -114,7 +114,7 @@ public class TypingApp {
     }
 
     // EFFECTS: saves history to file
-    private void saveWorkRoom() {
+    private void saveHistory() {
         try {
             jsonWriter.open();
             jsonWriter.write(record);
@@ -127,13 +127,18 @@ public class TypingApp {
 
     // MODIFIES: this
     // EFFECTS: loads history from file
-    private void loadWorkRoom() {
+    private void loadHistory() {
         try {
             record = jsonReader.read();
             System.out.println("Loaded previous typing history from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file " + JSON_STORE);
+            System.out.println("Creating a new record history."); // do nothing because it makes a new save anyway
         }
+    }
+
+    // todo: this and specifications
+    private void clearHistory() {
     }
 
     // MODIFIES: this
@@ -195,8 +200,9 @@ public class TypingApp {
         } else {
             System.out.println("You have practiced " + record.size() + " times.");
             for (int i = 0; i < record.size(); i++) {
-                System.out.println("Your run #" + (i + 1) + "\n Typing Speed (wpm):  "
-                        + record.getNthTypingPrac(i).getWpm() + "\n Accuracy (%): "
+                System.out.println("Your run #" + (i + 1) + "\n  Option selected: "
+                        + record.getNthTypingPrac(i).getFocus() + "\n  Typing Speed (wpm):  "
+                        + record.getNthTypingPrac(i).getWpm() + "\n  Accuracy (%): "
                         + record.getNthTypingPrac(i).getAccuracy() + "\n");
             }
             System.out.println("Your average typing speed is " + record.calculateAverageTypingSpeed()
