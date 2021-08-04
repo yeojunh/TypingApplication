@@ -517,18 +517,6 @@ class TypingPracticeTest {
     }
 
     @Test
-    public void testSetNumWordsAttempted() {
-        testTyping.setNumWordsAttempted(10);
-        assertEquals(10, testTyping.getNumWordsAttempted());
-    }
-
-    @Test
-    public void testSetNumWordsTypedIncorrectly() {
-        testTyping.setNumWordsTypedIncorrectly(10);
-        assertEquals(10, testTyping.getNumWordsTypedIncorrectly());
-    }
-
-    @Test
     public void testSetIsTyping() {
         testTyping.setIsTyping(true);
         assertTrue(testTyping.getIsTyping());

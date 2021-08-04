@@ -4,7 +4,6 @@ import model.Record;
 import model.TypingPractice;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import ui.TypingApp;
 
 import java.io.File;
 import java.io.FileNotFoundException;

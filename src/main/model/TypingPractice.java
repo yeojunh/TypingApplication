@@ -365,14 +365,6 @@ public class TypingPractice implements Writable {
         this.numWordsTyped = num;
     }
 
-    public void setNumWordsAttempted(int num) {
-        this.numWordsAttempted = num;
-    }
-
-    public void setNumWordsTypedIncorrectly(int num) {
-        this.numWordsTypedIncorrectly = num;
-    }
-
     public void setTimeElapsed(double num) {
         this.timeElapsed = num;
     }
