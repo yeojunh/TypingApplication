@@ -55,6 +55,5 @@ public class WelcomeScreen extends Screen {
         };
         typingApplication.addKeyListener(welcomeListener);
         typingApplication.setFocusable(true); // allows this class to receive the focus
-
     }
 }

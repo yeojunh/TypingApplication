@@ -26,12 +26,13 @@ public class TypingApplication extends JFrame {
     private ui.screens.TypingScreen typingScreen;
     private HistoryScreen historyScreen;
     private boolean appOn = true;
+    private Container mainContainer;
 
     public TypingApplication() {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
-        panel.setLayout(new FlowLayout());
+        panel.setLayout(new GridLayout());
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -59,7 +60,7 @@ public class TypingApplication extends JFrame {
 //        add(btn);
 
         welcomeScreen.load();
-        mainScreen.load();
+//        mainScreen.load();
         setVisible(true);
 
 //        while (appOn) {
@@ -114,5 +115,9 @@ public class TypingApplication extends JFrame {
 
     public HistoryScreen getHistoryScreen() {
         return historyScreen;
+    }
+
+    public Container getMainContainer() {
+        return mainContainer;
     }
 }
