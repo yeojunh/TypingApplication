@@ -13,8 +13,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.concurrent.CountDownLatch;
 
-import static java.lang.Thread.sleep;
-
 // Graphical User Interface Implementation with Swing
 // Familiarizing Swing's GUI before actual implementation
 public class TypingApplication extends JFrame {
@@ -30,7 +28,6 @@ public class TypingApplication extends JFrame {
     private MainScreen mainScreen;
     private ui.screens.TypingScreen typingScreen;
     private HistoryScreen historyScreen;
-    private Container mainContainer;
 
     // https://stackoverflow.com/questions/19025366/wait-until-boolean-value-changes-it-state
     public final CountDownLatch latch = new CountDownLatch(1);      // "type anything to continue" from welcomeScreen
@@ -47,31 +44,28 @@ public class TypingApplication extends JFrame {
 
     public void initializeTypingApplication() throws InterruptedException {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         initializeWelcome();
-        welcomeScreen.load();
+        welcomeScreen.load();       // runTyping();
         latch.await();
         initializeMain();
-        mainScreen.load();
         initializeTyping();
         initializeHistory();
         pack(); // basically "packs" it all together
-        setLocationRelativeTo(null);
         setVisible(true);
         setResizable(true);
+        setLocationRelativeTo(null); // this line makes the window centered (only mainScreen though)
 
         runTyping();
-
     }
 
     // EFFECTS: while the app is on, keeps the typing test going
     //          and prompts the user to choose an option 
     public void runTyping() {
         // initial setup for the GUI screen
-        welcomeScreen.load();
-//        mainScreen.load();
+//        welcomeScreen.load();
+        mainScreen.load();      // mainscreen will have the longest runtime
 //        setVisible(true);
 
 //        while (appOn) {
@@ -103,13 +97,6 @@ public class TypingApplication extends JFrame {
         historyScreen.initialize();
     }
 
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Start Regular Practice")) {
-            System.out.println("Starting regular practice!");
-        }
-    }
-
-
     // getters
     public WelcomeScreen getWelcomeScreen() {
         return welcomeScreen;
@@ -125,9 +112,5 @@ public class TypingApplication extends JFrame {
 
     public HistoryScreen getHistoryScreen() {
         return historyScreen;
-    }
-
-    public Container getMainContainer() {
-        return mainContainer;
     }
 }

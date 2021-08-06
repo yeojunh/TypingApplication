@@ -1,6 +1,7 @@
 package ui.screens;
 
 import javafx.beans.property.adapter.JavaBeanLongPropertyBuilder;
+import jdk.nashorn.internal.ir.ContinueNode;
 import ui.TypingApplication;
 
 import javax.swing.*;
@@ -15,25 +16,25 @@ import java.awt.event.ActionListener;
 
 // represents a main screen for the UI, including the top, left, right, and center panels
 public class MainScreen extends Screen implements ActionListener {
-    private TypingApplication typingApplication;
-    private JPanel centrePanel;
-    private JButton regularBtn;
-    private JButton shortBtn;
-    private JButton punctuationBtn;
-    private JButton numberBtn;
-    private JButton viewHistoryBtn;
-    private JButton saveBtn;
-    private JButton loadBtn;
-    private JButton clearBtn;
-    private Container mainContainer;
+    protected TypingApplication typingApplication;
+    protected JPanel centrePanel;
+    protected JButton regularBtn;
+    protected JButton shortBtn;
+    protected JButton punctuationBtn;
+    protected JButton numberBtn;
+    protected JButton viewHistoryBtn;
+    protected JButton saveBtn;
+    protected JButton loadBtn;
+    protected JButton clearBtn;
+    protected Container mainContainer;
     private static final int HGAP = 8;
     private static final int VGAP = 6;
-    private static final Color MAINCONTAINER_COLOR = new Color(10, 46, 79);
+    protected static final Color MAINCONTAINER_COLOR = new Color(10, 46, 79);
 //        private static final Color TOPPANEL_COLOR = new Color(255, 246, 230); // beige
-    private static final Color TOPPANEL_COLOR = new Color(173, 177, 237);
-    private static final Color SIDEPANEL_COLOR = new Color(1,30,61);
-    private static final Color SIDEPANEL_FONT_COLOR = Color.white;
-    private String filler = "    ";
+    protected static final Color TOPPANEL_COLOR = new Color(173, 177, 237);
+    protected static final Color SIDEPANEL_COLOR = new Color(1,30,61);
+    protected static final Color SIDEPANEL_FONT_COLOR = Color.white;
+    protected String filler = "    ";
 
     public MainScreen(TypingApplication typingApplication) {
         this.typingApplication = typingApplication;
@@ -43,9 +44,9 @@ public class MainScreen extends Screen implements ActionListener {
     public void initialize() {
         setupButtons();
         setupMainContainer();
-        setupTopPanel();
-        setupLeftPanel();
-        setupRightPanel();
+        setupTopPanel(mainContainer);
+        setupLeftPanel(mainContainer);
+        setupRightPanel(mainContainer);
         setupCentrePanel();
     }
 
@@ -55,7 +56,7 @@ public class MainScreen extends Screen implements ActionListener {
     }
 
     // higher caller of the top panel creator
-    public void setupTopPanel() {
+    public void setupTopPanel(Container mainContainer) {
         JPanel topPanel = new JPanel();
         JPanel topLabelPanel = new JPanel();
         setupTopLabelPanel(topLabelPanel);
@@ -106,7 +107,7 @@ public class MainScreen extends Screen implements ActionListener {
     }
 
     // higher caller of the left panel creator
-    public void setupLeftPanel() {
+    public void setupLeftPanel(Container mainContainer) {
         JPanel leftPanel = new JPanel();
         JPanel leftLabelPanel = new JPanel();
         setupSidePanelGrid(leftLabelPanel, "left");
@@ -116,7 +117,7 @@ public class MainScreen extends Screen implements ActionListener {
     }
 
     // higher caller of the right panel creator
-    public void setupRightPanel() {
+    public void setupRightPanel(Container mainContainer) {
         JPanel rightPanel = new JPanel();
         JPanel rightLabelPanel = new JPanel();
         setupSidePanelGrid(rightLabelPanel, "right");
@@ -238,7 +239,7 @@ public class MainScreen extends Screen implements ActionListener {
         } else if ("Number".equals(e.getActionCommand())) {
             typingScreen.loadNumberTyping();
         } else if ("View Typing History".equals(e.getActionCommand())) {
-            typingScreen.loadTypingHistory();
+            typingScreen.loadTypingHistory(); // maybe this shouldn't be on typing screen...?
         } else if ("Save Data".equals(e.getActionCommand())) {
             typingScreen.saveData();
         } else if ("Load Data".equals(e.getActionCommand())) {
@@ -246,5 +247,13 @@ public class MainScreen extends Screen implements ActionListener {
         } else {
             typingScreen.clearData();
         }
+    }
+
+    public JPanel getCentrePanel() {
+        return centrePanel;
+    }
+
+    public Container getMainContainer() {
+        return mainContainer;
     }
 }
