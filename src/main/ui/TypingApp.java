@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-// Typing practice application
+// Typing practice application with Console User Interface
 // Reference: CPSC 210 TellerApp example
 // https://github.students.cs.ubc.ca/CPSC210/TellerApp
 public class TypingApp {

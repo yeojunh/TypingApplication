@@ -6,37 +6,38 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 public class WelcomeScreen extends Screen {
     private TypingApplication typingApplication;
-    private MainScreen mainScreen;
-    BufferedImage titleImage;
     JLabel picLabel;
 
     public WelcomeScreen(TypingApplication typingApplication) {
         this.typingApplication = typingApplication;
-        mainScreen = typingApplication.getMainScreen();
     }
 
     @Override
-    // anonymous class information and KeyListener information from Edu4Java
+    // anonymous class and KeyListener information from Edu4Java
     // http://www.edu4java.com/en/game/game4.html
     public void initialize() {
         try {
-            titleImage = ImageIO.read(new File("./images/titleImage.png"));
-            picLabel = new JLabel(new ImageIcon(titleImage));
+            // todo: figure this out
+            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./images/titleImage.png")));
+            picLabel = new JLabel();
+            picLabel.setIcon(icon);
             typingApplication.add(picLabel);
-            picLabel.setVisible(false);
-        } catch (IOException e) {
+            picLabel.setVisible(true);
+            typingApplication.setVisible(true);
+            System.out.println("image should be visible now...");
+        } catch (Exception e) {
             System.err.println("no image found!! bad stuff!!!!!");
+            e.printStackTrace();
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: display the welcome screen and goes away after any key press
     public void load() {
-        picLabel.setVisible(true);
         KeyListener welcomeListener = new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -46,6 +47,8 @@ public class WelcomeScreen extends Screen {
             @Override
             public void keyPressed(KeyEvent e) {
                 picLabel.setVisible(false);
+                typingApplication.latch.countDown();
+                typingApplication.getMainScreen().load();
             }
 
             @Override
@@ -54,6 +57,5 @@ public class WelcomeScreen extends Screen {
             }
         };
         typingApplication.addKeyListener(welcomeListener);
-        typingApplication.setFocusable(true); // allows this class to receive the focus
     }
 }

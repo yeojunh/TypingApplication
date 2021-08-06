@@ -7,6 +7,8 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+// note: not actually used in any of the methods!! just for testing!!!
+
 // Layout tutorial from Madsycode on YouTube
 // https://www.youtube.com/watch?v=Cxp_HvXZh6g
 public class Layout extends JFrame {

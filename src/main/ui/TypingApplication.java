@@ -11,12 +11,18 @@ import ui.screens.TypingScreen;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
+import static java.lang.Thread.sleep;
 
+// Graphical User Interface Implementation with Swing
 // Familiarizing Swing's GUI before actual implementation
 public class TypingApplication extends JFrame {
     private static final int SCREEN_WIDTH = 1600;
     private static final int SCREEN_HEIGHT = 1000;
+    private static final int MIN_WIDTH = 1000;
+    private static final int MIN_HEIGHT = 600;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private static final String JSON_STORE = "./data/record.json";
@@ -28,7 +34,10 @@ public class TypingApplication extends JFrame {
     private boolean appOn = true;
     private Container mainContainer;
 
-    public TypingApplication() {
+    // https://stackoverflow.com/questions/19025366/wait-until-boolean-value-changes-it-state
+    public final CountDownLatch latch = new CountDownLatch(1);
+
+    public TypingApplication() throws InterruptedException {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -36,13 +45,16 @@ public class TypingApplication extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         initializeWelcome();
         initializeMain();
+        welcomeScreen.load();
+        latch.await();
         initializeTyping();
         initializeHistory();
         pack(); // basically displays the item
         setLocationRelativeTo(null);
-        setVisible(false);
+        setVisible(true);
         setResizable(true);
 
         runTyping();
@@ -55,16 +67,13 @@ public class TypingApplication extends JFrame {
     //          and prompts the user to choose an option 
     public void runTyping() {
         // initial setup for the GUI screen
-//        JButton btn = new JButton("Test");
-//        btn.setActionCommand("Start Regular Practice");
-//        add(btn);
-
         welcomeScreen.load();
 //        mainScreen.load();
-        setVisible(true);
+//        setVisible(true);
 
 //        while (appOn) {
-//            // todo
+//            // todo: repetition stuff
+//             setVisible(false);
 //
 //        }
     }
@@ -77,15 +86,12 @@ public class TypingApplication extends JFrame {
     private void initializeMain() {
         mainScreen = new MainScreen(this);
         mainScreen.initialize();
-        // some code here
-        // mainScreen.setVisible(false);
+//        mainScreen.setVisible(false);
     }
 
     private void initializeTyping() {
         typingScreen = new TypingScreen(this);
         typingScreen.initialize();
-        // some code here
-        // mainScreen.setVisible(false);
     }
 
     private void initializeHistory() {

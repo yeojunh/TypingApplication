@@ -11,10 +11,11 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+// note: this class is a tester and a reference for myself!!!
+
 // Typing practice application
 // Reference: CPSC 210 TellerApp example
 // https://github.students.cs.ubc.ca/CPSC210/TellerApp
-// and some other stuff // todo: this
 public class TypingAppGUI extends JFrame {
     private static final String JSON_STORE = "./data/record.json";
     private TypingPractice typingPractice;
