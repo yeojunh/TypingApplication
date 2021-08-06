@@ -4,6 +4,7 @@ import ui.TypingApplication;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -21,13 +22,16 @@ public class WelcomeScreen extends Screen {
     // http://www.edu4java.com/en/game/game4.html
     public void initialize() {
         try {
+//            Container titleContainer = typingApplication.getContentPane();
             ImageIcon icon = new ImageIcon(ImageIO.read(new File("./images/titleImage.png")));
             picLabel = new JLabel();
             picLabel.setIcon(icon);
-            typingApplication.add(picLabel);
+//            titleContainer.add(picLabel);
+//            titleContainer.setVisible(true);
+//            titleContainer.setSize(new Dimension(1600, 800));
+            typingApplication.add(picLabel); // either do titleContainer or this, or else it'll be duplicated
             picLabel.setVisible(true);
             typingApplication.setVisible(true);
-            System.out.println("image should be visible now...");
         } catch (Exception e) {
             System.err.println("no image found!! bad stuff!!!!!");
             e.printStackTrace();
@@ -47,7 +51,6 @@ public class WelcomeScreen extends Screen {
             public void keyPressed(KeyEvent e) {
                 picLabel.setVisible(false);
                 typingApplication.latch.countDown();
-//                typingApplication.getMainScreen().load();
             }
 
             @Override

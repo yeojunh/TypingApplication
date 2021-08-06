@@ -39,22 +39,6 @@ public class MainScreen extends Screen implements ActionListener {
         this.typingApplication = typingApplication;
     }
 
-    // sets all content to the visible boolean value - might not need this // todo: might not need this
-    public void setVisible(boolean visible) {
-        mainContainer.setVisible(visible);
-        centrePanel.setVisible(visible);
-        regularBtn.setVisible(visible);
-        shortBtn.setVisible(visible);
-        punctuationBtn.setVisible(visible);
-        numberBtn.setVisible(visible);
-        viewHistoryBtn.setVisible(visible);
-        saveBtn.setVisible(visible);
-        loadBtn.setVisible(visible);
-        clearBtn.setVisible(visible);
-
-//        typingApplication.getMainScreen().setVisible(visible); // infinite loop
-    }
-
     @Override
     public void initialize() {
         setupButtons();
@@ -63,7 +47,6 @@ public class MainScreen extends Screen implements ActionListener {
         setupLeftPanel();
         setupRightPanel();
         setupCentrePanel();
-        mainContainer.setVisible(true);
     }
 
     @Override
@@ -219,7 +202,6 @@ public class MainScreen extends Screen implements ActionListener {
         mainContainer = typingApplication.getContentPane();
         mainContainer.setLayout(new BorderLayout(HGAP, VGAP));
         mainContainer.setBackground(MAINCONTAINER_COLOR);
-        System.out.println("main container has been set up!");
     }
 
     // sets up the list of buttons for the UI

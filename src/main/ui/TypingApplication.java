@@ -18,9 +18,9 @@ import static java.lang.Thread.sleep;
 // Graphical User Interface Implementation with Swing
 // Familiarizing Swing's GUI before actual implementation
 public class TypingApplication extends JFrame {
-    private static final int SCREEN_WIDTH = 1600;
-    private static final int SCREEN_HEIGHT = 1000;
-    private static final int MIN_WIDTH = 1000;
+    private static final int SCREEN_WIDTH = 1500;       // title image width
+    private static final int SCREEN_HEIGHT = 866;       // title image height
+    private static final int MIN_WIDTH = 1250;
     private static final int MIN_HEIGHT = 600;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
@@ -47,7 +47,8 @@ public class TypingApplication extends JFrame {
 
     public void initializeTypingApplication() throws InterruptedException {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+//        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        setSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         initializeWelcome();
         welcomeScreen.load();
