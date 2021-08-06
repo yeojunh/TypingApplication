@@ -21,7 +21,6 @@ public class WelcomeScreen extends Screen {
     // http://www.edu4java.com/en/game/game4.html
     public void initialize() {
         try {
-            // todo: figure this out
             ImageIcon icon = new ImageIcon(ImageIO.read(new File("./images/titleImage.png")));
             picLabel = new JLabel();
             picLabel.setIcon(icon);
@@ -48,7 +47,7 @@ public class WelcomeScreen extends Screen {
             public void keyPressed(KeyEvent e) {
                 picLabel.setVisible(false);
                 typingApplication.latch.countDown();
-                typingApplication.getMainScreen().load();
+//                typingApplication.getMainScreen().load();
             }
 
             @Override

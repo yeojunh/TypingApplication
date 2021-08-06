@@ -63,7 +63,7 @@ public class MainScreen extends Screen implements ActionListener {
         setupLeftPanel();
         setupRightPanel();
         setupCentrePanel();
-        mainContainer.setVisible(false);
+        mainContainer.setVisible(true);
     }
 
     @Override

@@ -12,7 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import static java.lang.Thread.sleep;
 
@@ -31,36 +30,39 @@ public class TypingApplication extends JFrame {
     private MainScreen mainScreen;
     private ui.screens.TypingScreen typingScreen;
     private HistoryScreen historyScreen;
-    private boolean appOn = true;
     private Container mainContainer;
 
     // https://stackoverflow.com/questions/19025366/wait-until-boolean-value-changes-it-state
-    public final CountDownLatch latch = new CountDownLatch(1);
+    public final CountDownLatch latch = new CountDownLatch(1);      // "type anything to continue" from welcomeScreen
 
     public TypingApplication() throws InterruptedException {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         panel.setLayout(new GridLayout());
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        initializeTypingApplication();
+    }
 
+    public void initializeTypingApplication() throws InterruptedException {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         initializeWelcome();
-        initializeMain();
         welcomeScreen.load();
         latch.await();
+        initializeMain();
+        mainScreen.load();
         initializeTyping();
         initializeHistory();
-        pack(); // basically displays the item
+        pack(); // basically "packs" it all together
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(true);
 
         runTyping();
 
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
     }
 
     // EFFECTS: while the app is on, keeps the typing test going
@@ -80,11 +82,12 @@ public class TypingApplication extends JFrame {
 
     private void initializeWelcome() {
         welcomeScreen = new WelcomeScreen(this);
+        mainScreen = new MainScreen(this);
         welcomeScreen.initialize();
     }
 
     private void initializeMain() {
-        mainScreen = new MainScreen(this);
+//        mainScreen = new MainScreen(this);
         mainScreen.initialize();
 //        mainScreen.setVisible(false);
     }
