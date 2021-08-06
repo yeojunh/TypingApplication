@@ -4,60 +4,59 @@ import model.TypingPractice;
 import ui.TypingApplication;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 // represents the centre panel that shows the typing test area of the application
 public class TypingScreen extends MainScreen {
     private JPanel typingScreenPanel;
     private JLabel typingScreenLabel;
+    private static final int TYPING_AREA_COL = 40;
+    private String userInput; //todo: clear this after
 
     public TypingScreen(TypingApplication typingApplication) {
         super(typingApplication);
         mainContainer = typingApplication.getContentPane();
         centrePanel = typingApplication.getMainScreen().getCentrePanel();
-    }
-
-    @Override
-    public void initialize() {
-        System.out.println("typing screen is initializing...");
-        // might not need this
-    }
-
-    public void load() {
-        JPanel typingScreenPanel = new JPanel();
-        JLabel typingIntroLabel = new JLabel("THIS IS THE TYPING SCREEN");
-        typingScreenPanel.add(typingIntroLabel);
-        mainContainer.remove(typingApplication.getMainScreen().getCentrePanel());
-        typingApplication.getMainScreen().getCentrePanel().setVisible(false);
-        mainContainer.add(typingScreenPanel, BorderLayout.CENTER);
-        mainContainer.validate();
-        mainContainer.revalidate();
+        typingScreenPanel = new JPanel();
+        typingScreenLabel = new JLabel();
     }
 
     public void loadRegularTyping() {
         System.out.println("pretend that the regular typing screen loaded");
-        loadRegularTypingPanel();
+        setupTypingPanel("THIS IS THE TYPING SCREEN", "regular");
     }
 
-    public void loadRegularTypingPanel() {
-        setupTypingPanel(typingScreenPanel, typingScreenLabel, "THIS IS THE TYPING SCREEN", "regular");
+    public void loadShortTyping() {
+        setupTypingPanel("STARTING SHORT TYPING", "short");
+    }
+
+    public void loadPunctuationTyping() {
+        setupTypingPanel("STARTING PUNCTUATION TYPING", "punctuation");
+    }
+
+    public void loadNumberTyping() {
+        setupTypingPanel("STARTING NUMBER TYPING", "number");
     }
 
     // helper that sets up a new typingScreenPanel, label, and validates panel
-    public void setupTypingPanel(JPanel panel, JLabel label, String labelText, String focus) {
-        panel = new JPanel();
-        label = new JLabel(labelText);
-        panel.setBackground(MAINCONTAINER_COLOR);
-        label.setBackground(MAINCONTAINER_COLOR);
-        setLabelFont(label, SIDEPANEL_FONT_COLOR, 20);
-        panel.add(label);
-        mainContainer.remove(getCentrePanel());
-        mainContainer.add(panel, BorderLayout.CENTER);
-        mainContainer.add(setupTypingText(getTypingText(focus)));
-        mainContainer.add(setupTypingArea());
+    public void setupTypingPanel(String labelText, String focus) {
+        typingScreenLabel.setText(labelText);
+        typingScreenPanel.setBackground(MAINCONTAINER_COLOR);
+        typingScreenLabel.setBackground(MAINCONTAINER_COLOR);
+        setLabelFont(typingScreenLabel, SIDEPANEL_FONT_COLOR, 20);
+        typingScreenLabel.setBorder(new EmptyBorder(10, 0, 20,0));
+        typingScreenPanel.removeAll();
+        typingScreenPanel.add(typingScreenLabel);
+        typingScreenPanel.add(setupTypingText(getTypingText(focus)));
+        typingScreenPanel.add(setupTypingArea());
+        mainContainer.add(typingScreenPanel, BorderLayout.CENTER);
         mainContainer.validate();
         mainContainer.revalidate();
     }
+    // try to recycle the panel
 
     public JLabel setupTypingText(String phraseToType) {
         JLabel phraseToTypeLabel = new JLabel(phraseToType);
@@ -73,39 +72,43 @@ public class TypingScreen extends MainScreen {
         TypingPractice typingPractice = new TypingPractice(focus);
         return typingPractice.choosePhraseToType(focus);
     }
+    // todo: setup a typing area and save the data somewhere and return it to somewhere we can process it
 
     public JPanel setupTypingArea() {
         JPanel typingAreaEncapsulator = new JPanel();
         typingAreaEncapsulator.setBackground(MAINCONTAINER_COLOR);
-        JTextField textField = new JTextField(10);
-        textField.setBackground(MAINCONTAINER_COLOR);
-        textField.setForeground(SIDEPANEL_FONT_COLOR);
-        // todo: set font size
-        textField.setEditable(true);
+        JTextField textField = new JTextField(TYPING_AREA_COL);
+        setupTypingAreaTextField(textField);
+        KeyListener doneTypingListener = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // we don't need this
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    userInput = textField.getText();
+                    System.out.println(userInput);
+                    textField.setText("");
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                // we don't need this
+            }
+        };
+        textField.addKeyListener(doneTypingListener);
         typingAreaEncapsulator.add(textField);
-//        textField.setMaximumSize(new Dimension(1, 1));
-        // todo: setup a typing area and save the data somewhere and return it to somewhere we can process it
         return typingAreaEncapsulator;
     }
 
-    public void loadShortTyping() {
-        System.out.println("pretend that the short typing screen loaded");
-        JPanel typingScreenPanel = new JPanel();
-        JLabel typingIntroLabel = new JLabel("THIS IS THE SHORT TYPING SCREEN");
-        typingScreenPanel.add(typingIntroLabel);
-//        mainContainer.remove(typingApplication.getMainScreen().getCentrePanel());
-//        typingApplication.getMainScreen().getCentrePanel().setVisible(false);
-        mainContainer.add(typingScreenPanel, BorderLayout.CENTER);
-        mainContainer.validate();
-        mainContainer.revalidate();
-    }
-
-    public void loadPunctuationTyping() {
-        System.out.println("pretend that the punctuation typing screen loaded");
-    }
-
-    public void loadNumberTyping() {
-        System.out.println("pretend that the number typing screen loaded");
+    public void setupTypingAreaTextField(JTextField textField) {
+        textField.setBackground(MAINCONTAINER_COLOR);
+        textField.setForeground(SIDEPANEL_FONT_COLOR);
+        textField.setFont(new Font(textField.getFont().toString(), Font.PLAIN, 18));
+        textField.setEditable(true);
     }
 
     public void loadTypingHistory() {
