@@ -33,6 +33,7 @@ public class TypingScreen extends MainScreen {
     }
 
     public void loadRegularTyping() {
+        clearScreen();
         setupTypingPanel("REGULAR TYPING PRACTICE", "regular");
 //        countdown();
 // todo: change the body (second or whatever field of the gridpanel and replace with countdown panel)
@@ -40,21 +41,28 @@ public class TypingScreen extends MainScreen {
     }
 
     public void loadShortTyping() {
+        clearScreen();
         setupTypingPanel("STARTING SHORT TYPING", "short");
     }
 
     public void loadPunctuationTyping() {
+        clearScreen();
         setupTypingPanel("STARTING PUNCTUATION TYPING", "punctuation");
     }
 
     public void loadNumberTyping() {
+        clearScreen();
         setupTypingPanel("STARTING NUMBER TYPING", "number");
     }
 
+
+    public void clearScreen() {
+        typingScreenPanel.removeAll();
+        typingScreenPanel.revalidate();
+        typingScreenPanel.repaint();
+    }
     // helper that sets up a new typingScreenPanel, label, and validates panel
     public void setupTypingPanel(String labelText, String focus) {
-        JLabel typingScreenLabel = new JLabel();
-        JPanel typingScreenPanel = new JPanel();
         typingScreenLabel.setText(labelText);
         typingScreenPanel.setBackground(MAINCONTAINER_COLOR);
         typingScreenLabel.setBackground(MAINCONTAINER_COLOR);
@@ -67,6 +75,7 @@ public class TypingScreen extends MainScreen {
         mainContainer.add(typingScreenPanel, BorderLayout.CENTER);
         mainContainer.validate();
         mainContainer.revalidate();
+        System.out.println(userInput);
     }
 
     public JTextArea setupTextToShow(String phraseToType) {
@@ -93,17 +102,16 @@ public class TypingScreen extends MainScreen {
         textArea.setBackground(MAINCONTAINER_COLOR);
         textArea.setForeground(SIDEPANEL_FONT_COLOR);
         textArea.setText(actualPhraseToType);
+        System.out.println(actualPhraseToType);
         return textArea;
     }
 
     // REQUIRES: focus must be one of: regular, short, punctuation, or number //todo: exceptions
     // EFFECTS: returns the typing practice phrase for the user to type
     public String getTypingText(String focus) {
-        // todo: get some info from the typing Practice and load the info here
         TypingPractice typingPractice = new TypingPractice(focus);
         return typingPractice.choosePhraseToType(focus);
     }
-    // todo: setup a typing area and save the data somewhere and return it to somewhere we can process it
 
     public JPanel setupTypingArea() {
         typingArea = new JPanel();
