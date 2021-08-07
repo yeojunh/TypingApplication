@@ -9,37 +9,68 @@ import ui.TypingApplication;
 import javax.swing.*;
 import java.awt.*;
 import java.io.FileNotFoundException;
-import java.rmi.server.RemoteRef;
 
 public class HistoryScreen extends MainScreen {
     private JPanel typingHistoryPanel;
+
     public HistoryScreen(TypingApplication typingApplication) {
         super(typingApplication);
+        typingHistoryPanel = new JPanel();
     }
 
+//    public void loadTypingHistory() {
+//        clearTypingHistoryPanel();
+//        typingHistoryPanel.setVisible(true);
+//        record.getUserHistory();
+//        String loadResult;
+//        if (record.size() == 0) {
+//            loadResult = "You have no previous typing practice history. Try one out now!";
+//        } else {
+//            loadResult = "You have practiced " + record.size() + " time(s).\n\n";
+//            for (int i = 0; i < record.size(); i++) {
+//                loadResult += "Your run #" + (i + 1) + "\n  Option selected: "
+//                        + record.getNthTypingPrac(i).getFocus() + "\n  Typing Speed (wpm):  "
+//                        + record.getNthTypingPrac(i).getWpm() + "\n  Accuracy (%): "
+//                        + record.getNthTypingPrac(i).getAccuracy() + "\n";
+//            }
+//            loadResult += "\nYour average typing speed is " + record.calculateAverageTypingSpeed()
+//                    + " words per minute.\n";
+//            loadResult += "Your average accuracy is " + record.calculateAverageAccuracy() + "%.";
+//        }
+//        setupTypingHistoryPanel(loadResult);
+//        System.out.println(loadResult);
+//    }
+
+    // redo but with labels instead of TypingArea
     public void loadTypingHistory() {
+//        clearTypingHistoryPanel();
+//        typingApplication.getTypingScreen().clearScreen();
+        typingHistoryPanel.setVisible(true);
+
+        JPanel newTypingHistoryPanel = new JPanel();
         record.getUserHistory();
-        String loadResult;
         if (record.size() == 0) {
-            loadResult = "You have no previous typing practice history. Try one out now!";
+            newTypingHistoryPanel.add(new JLabel("You have no previous typing practice history. Try one out now!"));
         } else {
-            loadResult = "You have practiced " + record.size() + " time(s).\n\n";
+            newTypingHistoryPanel.add(new JLabel("You have practiced " + record.size() + " time(s).\n\n"));
             for (int i = 0; i < record.size(); i++) {
-                loadResult += "Your run #" + (i + 1) + "\n  Option selected: "
-                        + record.getNthTypingPrac(i).getFocus() + "\n  Typing Speed (wpm):  "
-                        + record.getNthTypingPrac(i).getWpm() + "\n  Accuracy (%): "
-                        + record.getNthTypingPrac(i).getAccuracy() + "\n";
+                newTypingHistoryPanel.add(new JLabel("Your run #" + (i + 1)));
+                newTypingHistoryPanel.add(new JLabel("Option selected: " + record.getNthTypingPrac(i).getFocus()));
+                newTypingHistoryPanel.add(new JLabel("Typing Speed (wpm): " + record.getNthTypingPrac(i).getWpm()));
+                newTypingHistoryPanel.add(new JLabel("Accuracy (%): " + record.getNthTypingPrac(i).getAccuracy()));
             }
-            loadResult += "\nYour average typing speed is " + record.calculateAverageTypingSpeed()
-                    + " words per minute.\n";
-            loadResult += "Your average accuracy is " + record.calculateAverageAccuracy() + "%.";
+            newTypingHistoryPanel.add(new JLabel("Your average typing speed is " + record.calculateAverageTypingSpeed()
+                    + " words per minute."));
+            newTypingHistoryPanel.add(new JLabel("Your average accuracy is " + record.calculateAverageAccuracy() + "%."));
         }
-        setupTypingHistoryPanel(loadResult);
-        System.out.println(loadResult);
+        typingApplication.add(newTypingHistoryPanel);
+//        setupTypingHistoryPanel(loadResult);
+        System.out.println("ahhhh");
+        newTypingHistoryPanel.revalidate();
+        newTypingHistoryPanel.repaint();
     }
 
     private void setupTypingHistoryPanel(String loadResult) {
-        typingHistoryPanel = new JPanel();
         JTextArea typingHistoryTextArea = new JTextArea();
         typingHistoryTextArea.setText(loadResult);
         typingHistoryPanel.add(typingHistoryTextArea);
@@ -52,10 +83,16 @@ public class HistoryScreen extends MainScreen {
         typingHistoryPanel.setVisible(true);
         typingApplication.getTypingScreen().clearScreen();
         typingApplication.add(typingHistoryPanel);
+        typingHistoryPanel.revalidate();
+        typingHistoryPanel.repaint();
+        typingApplication.revalidate();
+        typingApplication.repaint();
     }
 
     public void clearTypingHistoryPanel() {
-        typingHistoryPanel.removeAll();
+//        typingApplication.remove(typingHistoryPanel);         // works but only for typingScreen, not history
+        typingHistoryPanel.setVisible(false);
+//        typingHistoryPanel.removeAll();                         // removes all components... but doesn't come back?
         typingHistoryPanel.revalidate();
         typingHistoryPanel.repaint();
     }
@@ -84,9 +121,5 @@ public class HistoryScreen extends MainScreen {
 
     public void clearData() {
         System.out.println("pretend that the app successfully cleared the data");
-    }
-
-    public JPanel getTypingHistoryPanel() {
-        return typingHistoryPanel;
     }
 }

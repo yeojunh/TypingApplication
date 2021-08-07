@@ -61,10 +61,10 @@ public class TypingScreen extends MainScreen {
     }
 
     public void clearScreen() {
+        typingApplication.getHistoryScreen().clearTypingHistoryPanel();     // prevents screen issue
         typingScreenPanel.removeAll();
         typingScreenPanel.revalidate();
         typingScreenPanel.repaint();
-//        typingApplication.getHistoryScreen().clearTypingHistoryPanel();
     }
 
     // helper that sets up a new typingScreenPanel, label, and validates panel
