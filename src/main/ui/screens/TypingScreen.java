@@ -19,7 +19,7 @@ public class TypingScreen extends MainScreen {
     private JPanel typingScreenPanel;
     private JLabel typingScreenLabel;
     private static final int TYPING_AREA_COL = 40;
-    private String userInput; //todo: clear this after
+    private String userInput;
     private String phraseToType;
     private ArrayList<String> phraseToTypeArray;
     private JPanel typingArea;
@@ -35,10 +35,28 @@ public class TypingScreen extends MainScreen {
         userInput = "";
     }
 
+    // todo: might not need this
+    public JLabel countdown() {
+        JLabel countdownLabel = new JLabel("Start in 3...");
+        System.out.println("3");
+        try {
+            sleep(1000);
+            countdownLabel.setText("Start in 2...");
+            System.out.println("2");
+            sleep(1000);
+            countdownLabel.setText("Start in 1...");
+            System.out.println("1");
+            sleep(1000);
+        } catch (InterruptedException e) {
+            System.err.println("oh no, countdown was interrupted!!");
+            e.printStackTrace();
+        }
+        return countdownLabel;
+    }
+
     public void loadRegularTyping() {
         clearScreen();
         setupTypingPanel("REGULAR TYPING PRACTICE", "regular");
-//        countdown();
 // todo: change the body (second or whatever field of the gridpanel and replace with countdown panel)
 
     }
@@ -74,12 +92,10 @@ public class TypingScreen extends MainScreen {
         typingScreenPanel.add(typingScreenLabel);
         typingScreenPanel.add(setupTextToShow(getTypingText(focus)));
         typingScreenPanel.add(setupTypingArea());
-//        typingScreenPanel.add(setupResultArea());
         mainContainer.add(centrePanel, BorderLayout.CENTER);
         mainContainer.add(typingScreenPanel, BorderLayout.CENTER);
         mainContainer.validate();
         mainContainer.revalidate();
-        System.out.println(userInput);
     }
 
     public JTextArea setupTextToShow(String phraseToType) {
@@ -106,12 +122,7 @@ public class TypingScreen extends MainScreen {
         textArea.setBackground(MAINCONTAINER_COLOR);
         textArea.setForeground(SIDEPANEL_FONT_COLOR);
         textArea.setText(actualPhraseToType);
-        System.out.println(actualPhraseToType);
         return textArea;
-    }
-
-    public void startCountdown() {
-        typingPractice.startedTyping();
     }
 
     // REQUIRES: focus must be one of: regular, short, punctuation, or number //todo: exceptions
@@ -130,7 +141,9 @@ public class TypingScreen extends MainScreen {
         KeyListener doneTypingListener = new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                // we don't need this
+                if (!typingPractice.getIsTyping()) {
+                    typingPractice.startedTyping();
+                }
             }
 
             @Override
@@ -163,7 +176,6 @@ public class TypingScreen extends MainScreen {
         textField.setForeground(SIDEPANEL_FONT_COLOR);
         textField.setFont(new Font(textField.getFont().toString(), Font.PLAIN, 18));
         textField.setEditable(true);
-        startCountdown();
     }
 
     public JPanel setupResultArea() {
@@ -186,10 +198,6 @@ public class TypingScreen extends MainScreen {
     public void loadTypingHistory() {
         System.out.println("pretend that the app successfully loaded local typing history");
     }
-
-
-
-
 
     public void saveData() {
         System.out.println("pretend that the app successfully saved the file");
