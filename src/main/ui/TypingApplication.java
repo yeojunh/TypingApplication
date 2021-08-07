@@ -67,13 +67,10 @@ public class TypingApplication extends JFrame {
     //          and prompts the user to choose an option 
     public void runTyping() {
         // initial setup for the GUI screen
-//        welcomeScreen.load();
-        mainScreen.load();      // mainscreen will have the longest runtime
-//        setVisible(true);
+        mainScreen.load();
 
 //        while (appOn) {
 //            // todo: repetition stuff
-//             setVisible(false);
 //
 //        }
     }

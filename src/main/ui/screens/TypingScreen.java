@@ -20,9 +20,11 @@ public class TypingScreen extends MainScreen {
     private JLabel typingScreenLabel;
     private static final int TYPING_AREA_COL = 40;
     private String userInput; //todo: clear this after
+    private String phraseToType;
     private ArrayList<String> phraseToTypeArray;
     private JPanel typingArea;
     private JTextArea textArea;
+    private TypingPractice typingPractice;
 
     public TypingScreen(TypingApplication typingApplication) {
         super(typingApplication);
@@ -30,6 +32,7 @@ public class TypingScreen extends MainScreen {
         centrePanel = typingApplication.getMainScreen().getCentrePanel();
         typingScreenPanel = new JPanel();
         typingScreenLabel = new JLabel();
+        userInput = "";
     }
 
     public void loadRegularTyping() {
@@ -55,12 +58,12 @@ public class TypingScreen extends MainScreen {
         setupTypingPanel("STARTING NUMBER TYPING", "number");
     }
 
-
     public void clearScreen() {
         typingScreenPanel.removeAll();
         typingScreenPanel.revalidate();
         typingScreenPanel.repaint();
     }
+
     // helper that sets up a new typingScreenPanel, label, and validates panel
     public void setupTypingPanel(String labelText, String focus) {
         typingScreenLabel.setText(labelText);
@@ -71,6 +74,7 @@ public class TypingScreen extends MainScreen {
         typingScreenPanel.add(typingScreenLabel);
         typingScreenPanel.add(setupTextToShow(getTypingText(focus)));
         typingScreenPanel.add(setupTypingArea());
+//        typingScreenPanel.add(setupResultArea());
         mainContainer.add(centrePanel, BorderLayout.CENTER);
         mainContainer.add(typingScreenPanel, BorderLayout.CENTER);
         mainContainer.validate();
@@ -106,11 +110,16 @@ public class TypingScreen extends MainScreen {
         return textArea;
     }
 
+    public void startCountdown() {
+        typingPractice.startedTyping();
+    }
+
     // REQUIRES: focus must be one of: regular, short, punctuation, or number //todo: exceptions
     // EFFECTS: returns the typing practice phrase for the user to type
     public String getTypingText(String focus) {
-        TypingPractice typingPractice = new TypingPractice(focus);
-        return typingPractice.choosePhraseToType(focus);
+        typingPractice = new TypingPractice(focus);
+        phraseToType = typingPractice.choosePhraseToType(focus);
+        return phraseToType;
     }
 
     public JPanel setupTypingArea() {
@@ -130,6 +139,11 @@ public class TypingScreen extends MainScreen {
                     userInput = textField.getText();
                     System.out.println(userInput);
                     textField.setText("");
+                    textField.setEditable(false);
+                    typingPractice.finishedTyping();
+                    typingScreenPanel.add(setupResultArea());
+                    typingScreenPanel.revalidate();
+                    typingScreenPanel.repaint();
                 }
             }
 
@@ -149,6 +163,24 @@ public class TypingScreen extends MainScreen {
         textField.setForeground(SIDEPANEL_FONT_COLOR);
         textField.setFont(new Font(textField.getFont().toString(), Font.PLAIN, 18));
         textField.setEditable(true);
+        startCountdown();
+    }
+
+    public JPanel setupResultArea() {
+        JPanel resultPanel = new JPanel();
+        JTextArea resultTextArea = new JTextArea();
+        resultPanel.add(resultTextArea);
+        resultPanel.setBackground(MAINCONTAINER_COLOR);
+        typingPractice.setUserTypingInput(userInput);
+        typingPractice.setPhraseToType(phraseToType);
+        typingPractice.calculateTypingSpeed();
+        typingPractice.calculateAccuracy();
+        String output = "  Your typing speed is: " + typingPractice.getWpm() + " wpm  \n"
+                + "  Your accuracy is: " + typingPractice.getAccuracy() + "%  \n";
+        resultTextArea.setText(output);
+        resultTextArea.setBackground(TOPPANEL_COLOR);
+        resultTextArea.setFont(new Font(resultTextArea.getFont().toString(), Font.ITALIC, 15));
+        return resultPanel;
     }
 
     public void loadTypingHistory() {

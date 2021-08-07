@@ -1,7 +1,5 @@
 package ui;
 
-import ui.screens.Layout;
-
 import java.io.IOException;
 
 public class Main {
@@ -12,7 +10,5 @@ public class Main {
         } catch (InterruptedException | IOException e) {
             System.err.println("interrupted latch call");
         }
-//        Layout myLayout = new Layout("My Custom Layout", new TypingApplication());
-//        myLayout.setVisible(true);
     }
 }
