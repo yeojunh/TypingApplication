@@ -26,10 +26,7 @@ public class WelcomeScreen extends Screen {
             ImageIcon icon = new ImageIcon(ImageIO.read(new File("./images/titleImage.png")));
             picLabel = new JLabel();
             picLabel.setIcon(icon);
-//            titleContainer.add(picLabel);
-//            titleContainer.setVisible(true);
-//            titleContainer.setSize(new Dimension(1600, 800));
-            typingApplication.add(picLabel); // either do titleContainer or this, or else it'll be duplicated
+            typingApplication.add(picLabel);
             picLabel.setVisible(true);
             typingApplication.setVisible(true);
         } catch (Exception e) {

@@ -4,10 +4,15 @@ import model.TypingPractice;
 import ui.TypingApplication;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Time;
+import java.util.ArrayList;
+
+import static java.lang.Thread.sleep;
 
 // represents the centre panel that shows the typing test area of the application
 public class TypingScreen extends MainScreen {
@@ -15,6 +20,9 @@ public class TypingScreen extends MainScreen {
     private JLabel typingScreenLabel;
     private static final int TYPING_AREA_COL = 40;
     private String userInput; //todo: clear this after
+    private ArrayList<String> phraseToTypeArray;
+    private JPanel typingArea;
+    private JTextArea textArea;
 
     public TypingScreen(TypingApplication typingApplication) {
         super(typingApplication);
@@ -25,8 +33,10 @@ public class TypingScreen extends MainScreen {
     }
 
     public void loadRegularTyping() {
-        System.out.println("pretend that the regular typing screen loaded");
-        setupTypingPanel("THIS IS THE TYPING SCREEN", "regular");
+        setupTypingPanel("REGULAR TYPING PRACTICE", "regular");
+//        countdown();
+// todo: change the body (second or whatever field of the gridpanel and replace with countdown panel)
+
     }
 
     public void loadShortTyping() {
@@ -43,26 +53,47 @@ public class TypingScreen extends MainScreen {
 
     // helper that sets up a new typingScreenPanel, label, and validates panel
     public void setupTypingPanel(String labelText, String focus) {
+        JLabel typingScreenLabel = new JLabel();
+        JPanel typingScreenPanel = new JPanel();
         typingScreenLabel.setText(labelText);
         typingScreenPanel.setBackground(MAINCONTAINER_COLOR);
         typingScreenLabel.setBackground(MAINCONTAINER_COLOR);
         setLabelFont(typingScreenLabel, SIDEPANEL_FONT_COLOR, 20);
         typingScreenLabel.setBorder(new EmptyBorder(10, 0, 20,0));
-        typingScreenPanel.removeAll();
         typingScreenPanel.add(typingScreenLabel);
-        typingScreenPanel.add(setupTypingText(getTypingText(focus)));
+        typingScreenPanel.add(setupTextToShow(getTypingText(focus)));
         typingScreenPanel.add(setupTypingArea());
+        mainContainer.add(centrePanel, BorderLayout.CENTER);
         mainContainer.add(typingScreenPanel, BorderLayout.CENTER);
         mainContainer.validate();
         mainContainer.revalidate();
     }
-    // try to recycle the panel
 
-    public JLabel setupTypingText(String phraseToType) {
-        JLabel phraseToTypeLabel = new JLabel(phraseToType);
-        setLabelFont(phraseToTypeLabel, SIDEPANEL_FONT_COLOR, 20); // todo: not sure how it'll have breaks here
-        // todo: maybe run a for loop and for every n words we'll make a breakpoint with <br> in html?
-        return phraseToTypeLabel;
+    public JTextArea setupTextToShow(String phraseToType) {
+        String actualPhraseToType = "";
+
+        phraseToTypeArray = new ArrayList<String>();
+        String[] wordsToTypeArray = phraseToType.split(" ");
+        for (String next: wordsToTypeArray) {
+            phraseToTypeArray.add(next);
+        }
+        for (int i = 0; i < phraseToTypeArray.size(); i++) {
+            if (i % 10 == 0) {
+                phraseToTypeArray.add(i, "\n");
+            }
+        }
+        for (String next: phraseToTypeArray) {
+            actualPhraseToType = actualPhraseToType + " " + next;
+        }
+
+        textArea = new JTextArea();
+        textArea.setEditable(false);
+        textArea.setFocusable(false);
+        textArea.setFont(new Font(textArea.getFont().toString(), Font.PLAIN, 20));
+        textArea.setBackground(MAINCONTAINER_COLOR);
+        textArea.setForeground(SIDEPANEL_FONT_COLOR);
+        textArea.setText(actualPhraseToType);
+        return textArea;
     }
 
     // REQUIRES: focus must be one of: regular, short, punctuation, or number //todo: exceptions
@@ -75,8 +106,8 @@ public class TypingScreen extends MainScreen {
     // todo: setup a typing area and save the data somewhere and return it to somewhere we can process it
 
     public JPanel setupTypingArea() {
-        JPanel typingAreaEncapsulator = new JPanel();
-        typingAreaEncapsulator.setBackground(MAINCONTAINER_COLOR);
+        typingArea = new JPanel();
+        typingArea.setBackground(MAINCONTAINER_COLOR);
         JTextField textField = new JTextField(TYPING_AREA_COL);
         setupTypingAreaTextField(textField);
         KeyListener doneTypingListener = new KeyListener() {
@@ -100,12 +131,13 @@ public class TypingScreen extends MainScreen {
             }
         };
         textField.addKeyListener(doneTypingListener);
-        typingAreaEncapsulator.add(textField);
-        return typingAreaEncapsulator;
+        typingArea.add(textField);
+        return typingArea;
     }
 
     public void setupTypingAreaTextField(JTextField textField) {
         textField.setBackground(MAINCONTAINER_COLOR);
+        //        textField.setBackground(MAINCONTAINER_COLOR);
         textField.setForeground(SIDEPANEL_FONT_COLOR);
         textField.setFont(new Font(textField.getFont().toString(), Font.PLAIN, 18));
         textField.setEditable(true);

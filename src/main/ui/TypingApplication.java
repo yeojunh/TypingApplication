@@ -8,9 +8,12 @@ import ui.screens.WelcomeScreen;
 import ui.screens.TypingScreen;
 
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 // Graphical User Interface Implementation with Swing
@@ -32,7 +35,7 @@ public class TypingApplication extends JFrame {
     // https://stackoverflow.com/questions/19025366/wait-until-boolean-value-changes-it-state
     public final CountDownLatch latch = new CountDownLatch(1);      // "type anything to continue" from welcomeScreen
 
-    public TypingApplication() throws InterruptedException {
+    public TypingApplication() throws InterruptedException, IOException {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -42,7 +45,7 @@ public class TypingApplication extends JFrame {
         initializeTypingApplication();
     }
 
-    public void initializeTypingApplication() throws InterruptedException {
+    public void initializeTypingApplication() throws InterruptedException, IOException {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
