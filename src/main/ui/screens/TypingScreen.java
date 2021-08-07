@@ -83,6 +83,8 @@ public class TypingScreen extends MainScreen {
         mainContainer.revalidate();
     }
 
+    // todo: if extra time, refactor to make these into labels instead of textArea (refer to historyScreen)
+    // ^ the screen error is due to textArea
     public JTextArea setupTextToShow(String phraseToType) {
         String actualPhraseToType = "";
 

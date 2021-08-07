@@ -1,9 +1,6 @@
 package ui.screens;
 
-import model.Record;
 import model.TypingPractice;
-import persistence.JsonReader;
-import persistence.JsonWriter;
 import ui.TypingApplication;
 
 import javax.swing.*;
@@ -43,35 +40,69 @@ public class HistoryScreen extends MainScreen {
 
     // redo but with labels instead of TypingArea
     public void loadTypingHistory() {
-//        clearTypingHistoryPanel();
-//        typingApplication.getTypingScreen().clearScreen();
-        typingHistoryPanel.setVisible(true);
-
-        JPanel newTypingHistoryPanel = new JPanel();        // todo: change this to boxLayout
-//        newTypingHistoryPanel.setLayout(new GridLayout(100, 1));
+        int numRows = 0;
+        JPanel typingHistoryViewerPanel = new JPanel();
+        typingHistoryViewerPanel.setBackground(MAINCONTAINER_COLOR);
         record.getUserHistory();
         if (record.size() == 0) {
-            newTypingHistoryPanel.add(new JLabel("You have no previous typing practice history. Try one out now!"));
+            setupInitialHistoryText(typingHistoryViewerPanel,
+                    "You have no previous typing practice history. Try one out now!");
+            numRows = 1;
         } else {
-            newTypingHistoryPanel.add(new JLabel("You have practiced " + record.size() + " time(s).\n\n"));
+            setupInitialHistoryText(typingHistoryViewerPanel, "You have practiced " + record.size() + " time(s).\n");
             for (int i = 0; i < record.size(); i++) {
-                newTypingHistoryPanel.add(new JLabel("Your run #" + (i + 1)));
-                newTypingHistoryPanel.add(new JLabel("Option selected: " + record.getNthTypingPrac(i).getFocus()));
-                newTypingHistoryPanel.add(new JLabel("Typing Speed (wpm): " + record.getNthTypingPrac(i).getWpm()));
-                newTypingHistoryPanel.add(new JLabel("Accuracy (%): " + record.getNthTypingPrac(i).getAccuracy()));
+                setupRunData(typingHistoryViewerPanel, i);
+                numRows++;
             }
-            newTypingHistoryPanel.add(new JLabel("Your average typing speed is " + record.calculateAverageTypingSpeed()
-                    + " words per minute."));
-            newTypingHistoryPanel.add(new JLabel("Your average accuracy is "
-                    + record.calculateAverageAccuracy() + "%."));
+            setupAverageData(typingHistoryViewerPanel);
+            numRows += 2;
         }
-        // todo: try to get the grid going for newtypinghistory
-        typingApplication.add(newTypingHistoryPanel);
-        newTypingHistoryPanel.setVisible(true);
-//        setupTypingHistoryPanel(loadResult);
-        System.out.println("ahhhh");
-        newTypingHistoryPanel.revalidate();
-        newTypingHistoryPanel.repaint();
+        typingHistoryViewerPanel.setLayout(new GridLayout(numRows, 2));
+        typingApplication.add(typingHistoryViewerPanel);
+        typingHistoryViewerPanel.setVisible(true);
+        typingHistoryViewerPanel.revalidate();
+        typingHistoryViewerPanel.repaint();
+    }
+
+    private void setupInitialHistoryText(JPanel panel, String s) {
+        JLabel initialHistoryText = new JLabel(s);
+        setLabelFont(initialHistoryText, SIDEPANEL_FONT_COLOR, 15);
+        JPanel blankPanelForLayout = new JPanel();
+        blankPanelForLayout.setBackground(MAINCONTAINER_COLOR);
+        panel.add(initialHistoryText);
+        panel.add(blankPanelForLayout);
+    }
+
+    private void setupRunData(JPanel typingHistoryViewerPanel, int i) {
+        JPanel gridForARun = new JPanel(new GridLayout(5, 1));
+        gridForARun.setBackground(MAINCONTAINER_COLOR);
+        JLabel yourRunNum = new JLabel("Your run #" + (i + 1));
+        JLabel optionSelected = new JLabel("Option selected: " + record.getNthTypingPrac(i).getFocus());
+        JLabel typingSpeed = new JLabel("Typing Speed (wpm): " + record.getNthTypingPrac(i).getWpm());
+        JLabel accuracy = new JLabel("Accuracy (%): " + record.getNthTypingPrac(i).getAccuracy());
+        gridForARun.add(yourRunNum);
+        gridForARun.add(optionSelected);
+        gridForARun.add(typingSpeed);
+        gridForARun.add(accuracy);
+        setLabelFont(yourRunNum, SIDEPANEL_FONT_COLOR, 12);
+        setLabelFont(optionSelected, SIDEPANEL_FONT_COLOR, 12);
+        setLabelFont(typingSpeed, SIDEPANEL_FONT_COLOR, 12);
+        setLabelFont(accuracy, SIDEPANEL_FONT_COLOR, 12);
+        typingHistoryViewerPanel.add(gridForARun);
+    }
+
+    private void setupAverageData(JPanel typingHistoryViewerPanel) {
+        JPanel gridForAvgResult = new JPanel(new GridLayout(4, 1));
+        gridForAvgResult.setBackground(MAINCONTAINER_COLOR);
+        JLabel avgWpm = new JLabel("Your average typing speed is " + record.calculateAverageTypingSpeed()
+                + " words per minute.");
+        JLabel avgAcc = new JLabel("Your average accuracy is "
+                + record.calculateAverageAccuracy() + "%.");
+        gridForAvgResult.add(avgWpm);
+        gridForAvgResult.add(avgAcc);
+        setLabelFont(avgWpm, SIDEPANEL_FONT_COLOR, 12);
+        setLabelFont(avgAcc, SIDEPANEL_FONT_COLOR, 12);
+        typingHistoryViewerPanel.add(gridForAvgResult);
     }
 
     private void setupTypingHistoryPanel(String loadResult) {
