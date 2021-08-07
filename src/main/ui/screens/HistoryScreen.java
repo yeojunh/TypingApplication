@@ -48,6 +48,7 @@ public class HistoryScreen extends MainScreen {
         typingHistoryPanel.setVisible(true);
 
         JPanel newTypingHistoryPanel = new JPanel();        // todo: change this to boxLayout
+//        newTypingHistoryPanel.setLayout(new GridLayout(100, 1));
         record.getUserHistory();
         if (record.size() == 0) {
             newTypingHistoryPanel.add(new JLabel("You have no previous typing practice history. Try one out now!"));
@@ -64,7 +65,9 @@ public class HistoryScreen extends MainScreen {
             newTypingHistoryPanel.add(new JLabel("Your average accuracy is "
                     + record.calculateAverageAccuracy() + "%."));
         }
+        // todo: try to get the grid going for newtypinghistory
         typingApplication.add(newTypingHistoryPanel);
+        newTypingHistoryPanel.setVisible(true);
 //        setupTypingHistoryPanel(loadResult);
         System.out.println("ahhhh");
         newTypingHistoryPanel.revalidate();
@@ -92,7 +95,7 @@ public class HistoryScreen extends MainScreen {
 
     public void clearTypingHistoryPanel() {
 //        typingApplication.remove(typingHistoryPanel);         // works but only for typingScreen, not history
-        typingHistoryPanel.setVisible(false);
+//        typingHistoryPanel.setVisible(false);
 //        typingHistoryPanel.removeAll();                         // removes all components... but doesn't come back?
         typingHistoryPanel.revalidate();
         typingHistoryPanel.repaint();
