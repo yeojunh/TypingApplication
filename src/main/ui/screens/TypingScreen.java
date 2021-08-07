@@ -173,12 +173,12 @@ public class TypingScreen extends MainScreen {
         resultTextArea.setBackground(TOPPANEL_COLOR);
         resultTextArea.setFont(new Font(resultTextArea.getFont().toString(), Font.ITALIC, 15));
 
-        resultPanel.add(setupResultAreaSavePrompt());
+//        resultPanel.add(setupResultAreaSavePrompt());
         return resultPanel;
     }
 
-    public JPanel setupResultAreaSavePrompt() {
-        JPanel savePromptPanel = new JPanel();
-        return savePromptPanel;
-    }
+//    public JPanel setupResultAreaSavePrompt() {
+////        JPanel savePromptPanel = new JPanel();
+////        return null;
+//    }
 }

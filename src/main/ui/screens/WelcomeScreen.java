@@ -12,11 +12,9 @@ import java.io.File;
 public class WelcomeScreen extends Screen {
     private TypingApplication typingApplication;
     JLabel picLabel;
-    JFrame frame;
 
     public WelcomeScreen(TypingApplication typingApplication) {
         this.typingApplication = typingApplication;
-        frame = typingApplication.getFrame();
     }
 
     @Override

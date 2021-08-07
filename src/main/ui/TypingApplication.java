@@ -26,7 +26,6 @@ public class TypingApplication extends JFrame {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private static final String JSON_STORE = "./data/record.json";
-    private JFrame frame;
 
     private WelcomeScreen welcomeScreen;
     private MainScreen mainScreen;
@@ -37,11 +36,8 @@ public class TypingApplication extends JFrame {
     public final CountDownLatch latch = new CountDownLatch(1);      // "type anything to continue" from welcomeScreen
 
     public TypingApplication() throws InterruptedException, IOException {
-        frame = new JFrame();
+        JFrame frame = new JFrame();
         JPanel panel = new JPanel();
-        frame.add(panel);
-        frame.setTitle("Bread Nut Typing App Pro :)");
-        frame.setVisible(true);
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         panel.setLayout(new GridLayout());
         jsonWriter = new JsonWriter(JSON_STORE);
@@ -49,11 +45,10 @@ public class TypingApplication extends JFrame {
         initializeTypingApplication();
     }
 
-    // todo: edit the cats are rebellious... quote
     public void initializeTypingApplication() throws InterruptedException, IOException {
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        frame.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         initializeWelcome();
         welcomeScreen.load();       // runTyping();
         latch.await();
@@ -117,9 +112,5 @@ public class TypingApplication extends JFrame {
 
     public HistoryScreen getHistoryScreen() {
         return historyScreen;
-    }
-
-    public JFrame getFrame() {
-        return frame;
     }
 }
