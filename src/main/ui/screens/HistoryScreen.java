@@ -47,7 +47,7 @@ public class HistoryScreen extends MainScreen {
 //        typingApplication.getTypingScreen().clearScreen();
         typingHistoryPanel.setVisible(true);
 
-        JPanel newTypingHistoryPanel = new JPanel();
+        JPanel newTypingHistoryPanel = new JPanel();        // todo: change this to boxLayout
         record.getUserHistory();
         if (record.size() == 0) {
             newTypingHistoryPanel.add(new JLabel("You have no previous typing practice history. Try one out now!"));
@@ -61,7 +61,8 @@ public class HistoryScreen extends MainScreen {
             }
             newTypingHistoryPanel.add(new JLabel("Your average typing speed is " + record.calculateAverageTypingSpeed()
                     + " words per minute."));
-            newTypingHistoryPanel.add(new JLabel("Your average accuracy is " + record.calculateAverageAccuracy() + "%."));
+            newTypingHistoryPanel.add(new JLabel("Your average accuracy is "
+                    + record.calculateAverageAccuracy() + "%."));
         }
         typingApplication.add(newTypingHistoryPanel);
 //        setupTypingHistoryPanel(loadResult);

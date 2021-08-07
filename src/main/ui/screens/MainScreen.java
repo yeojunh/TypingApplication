@@ -30,6 +30,7 @@ public class MainScreen extends Screen implements ActionListener {
     protected JButton loadBtn;
     protected JButton clearBtn;
     protected Container mainContainer;
+    protected boolean cleared; // to know whether we already cleared the screen or not
 
     protected JsonWriter jsonWriter;
     protected JsonReader jsonReader;
