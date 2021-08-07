@@ -35,30 +35,9 @@ public class TypingScreen extends MainScreen {
         userInput = "";
     }
 
-    // todo: might not need this
-    public JLabel countdown() {
-        JLabel countdownLabel = new JLabel("Start in 3...");
-        System.out.println("3");
-        try {
-            sleep(1000);
-            countdownLabel.setText("Start in 2...");
-            System.out.println("2");
-            sleep(1000);
-            countdownLabel.setText("Start in 1...");
-            System.out.println("1");
-            sleep(1000);
-        } catch (InterruptedException e) {
-            System.err.println("oh no, countdown was interrupted!!");
-            e.printStackTrace();
-        }
-        return countdownLabel;
-    }
-
     public void loadRegularTyping() {
         clearScreen();
         setupTypingPanel("REGULAR TYPING PRACTICE", "regular");
-// todo: change the body (second or whatever field of the gridpanel and replace with countdown panel)
-
     }
 
     public void loadShortTyping() {
@@ -149,30 +128,30 @@ public class TypingScreen extends MainScreen {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    userInput = textField.getText();
-                    System.out.println(userInput);
-                    textField.setText("");
-                    textField.setEditable(false);
-                    typingPractice.finishedTyping();
-                    typingScreenPanel.add(setupResultArea());
-                    typingScreenPanel.revalidate();
-                    typingScreenPanel.repaint();
+                    keyPressedActions(textField);
                 }
             }
 
             @Override
-            public void keyReleased(KeyEvent e) {
-                // we don't need this
-            }
+            public void keyReleased(KeyEvent e) {}
         };
         textField.addKeyListener(doneTypingListener);
         typingArea.add(textField);
         return typingArea;
     }
 
+    private void keyPressedActions(JTextField textField) {
+        userInput = textField.getText();
+        textField.setText("");
+        textField.setEditable(false);
+        typingPractice.finishedTyping();
+        typingScreenPanel.add(setupResultArea());
+        typingScreenPanel.revalidate();
+        typingScreenPanel.repaint();
+    }
+
     public void setupTypingAreaTextField(JTextField textField) {
         textField.setBackground(MAINCONTAINER_COLOR);
-        //        textField.setBackground(MAINCONTAINER_COLOR);
         textField.setForeground(SIDEPANEL_FONT_COLOR);
         textField.setFont(new Font(textField.getFont().toString(), Font.PLAIN, 18));
         textField.setEditable(true);
@@ -181,6 +160,7 @@ public class TypingScreen extends MainScreen {
     public JPanel setupResultArea() {
         JPanel resultPanel = new JPanel();
         JTextArea resultTextArea = new JTextArea();
+        resultTextArea.setEditable(false);
         resultPanel.add(resultTextArea);
         resultPanel.setBackground(MAINCONTAINER_COLOR);
         typingPractice.setUserTypingInput(userInput);
@@ -192,22 +172,13 @@ public class TypingScreen extends MainScreen {
         resultTextArea.setText(output);
         resultTextArea.setBackground(TOPPANEL_COLOR);
         resultTextArea.setFont(new Font(resultTextArea.getFont().toString(), Font.ITALIC, 15));
+
+        resultPanel.add(setupResultAreaSavePrompt());
         return resultPanel;
     }
 
-    public void loadTypingHistory() {
-        System.out.println("pretend that the app successfully loaded local typing history");
-    }
-
-    public void saveData() {
-        System.out.println("pretend that the app successfully saved the file");
-    }
-
-    public void loadData() {
-        System.out.println("pretend that the app successfully loaded the file");
-    }
-
-    public void clearData() {
-        System.out.println("pretend that the app successfully cleared the data");
+    public JPanel setupResultAreaSavePrompt() {
+        JPanel savePromptPanel = new JPanel();
+        return savePromptPanel;
     }
 }

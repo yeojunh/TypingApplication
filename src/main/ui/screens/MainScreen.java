@@ -229,6 +229,7 @@ public class MainScreen extends Screen implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         TypingScreen typingScreen = typingApplication.getTypingScreen();
+        HistoryScreen historyScreen = typingApplication.getHistoryScreen();
         centrePanel.setVisible(false);
         if ("Regular".equals(e.getActionCommand())) {
             typingScreen.loadRegularTyping();
@@ -239,13 +240,13 @@ public class MainScreen extends Screen implements ActionListener {
         } else if ("Number".equals(e.getActionCommand())) {
             typingScreen.loadNumberTyping();
         } else if ("View Typing History".equals(e.getActionCommand())) {
-            typingScreen.loadTypingHistory(); // maybe this shouldn't be on typing screen...?
+            historyScreen.loadTypingHistory(); // maybe this shouldn't be on typing screen...?
         } else if ("Save Data".equals(e.getActionCommand())) {
-            typingScreen.saveData();
+            historyScreen.saveData();
         } else if ("Load Data".equals(e.getActionCommand())) {
-            typingScreen.loadData();
+            historyScreen.loadData();
         } else {
-            typingScreen.clearData();
+            historyScreen.clearData();
         }
     }
 
