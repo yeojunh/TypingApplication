@@ -1,35 +1,92 @@
 package ui.screens;
 
+import model.Record;
+import model.TypingPractice;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 import ui.TypingApplication;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.FileNotFoundException;
+import java.rmi.server.RemoteRef;
 
 public class HistoryScreen extends MainScreen {
-    private TypingApplication typingApplication;
-
+    private JPanel typingHistoryPanel;
     public HistoryScreen(TypingApplication typingApplication) {
         super(typingApplication);
     }
 
     public void loadTypingHistory() {
-        System.out.println("pretend that the app successfully loaded local typing history");
+        record.getUserHistory();
+        String loadResult;
+        if (record.size() == 0) {
+            loadResult = "You have no previous typing practice history. Try one out now!";
+        } else {
+            loadResult = "You have practiced " + record.size() + " time(s).\n\n";
+            for (int i = 0; i < record.size(); i++) {
+                loadResult += "Your run #" + (i + 1) + "\n  Option selected: "
+                        + record.getNthTypingPrac(i).getFocus() + "\n  Typing Speed (wpm):  "
+                        + record.getNthTypingPrac(i).getWpm() + "\n  Accuracy (%): "
+                        + record.getNthTypingPrac(i).getAccuracy() + "\n";
+            }
+            loadResult += "\nYour average typing speed is " + record.calculateAverageTypingSpeed()
+                    + " words per minute.\n";
+            loadResult += "Your average accuracy is " + record.calculateAverageAccuracy() + "%.";
+        }
+        setupTypingHistoryPanel(loadResult);
+        System.out.println(loadResult);
     }
 
-    // saves data and returns String so that it can used in TypingScreen for a good use (displays it below buttons)
-    public String saveData() {
-
-        // in the catch clause, do
-//        return "Save unsuccessful :(" so that TypingScreen displays it
-
-        System.out.println("pretend that the app successfully saved the file");
-        return "";
+    private void setupTypingHistoryPanel(String loadResult) {
+        typingHistoryPanel = new JPanel();
+        JTextArea typingHistoryTextArea = new JTextArea();
+        typingHistoryTextArea.setText(loadResult);
+        typingHistoryPanel.add(typingHistoryTextArea);
+        typingHistoryTextArea.setVisible(true);
+        typingHistoryTextArea.setFocusable(false);
+        typingHistoryPanel.setBackground(MAINCONTAINER_COLOR);
+        typingHistoryTextArea.setFont(new Font(typingHistoryTextArea.getFont().toString(), Font.PLAIN, 16));
+        typingHistoryTextArea.setForeground(SIDEPANEL_FONT_COLOR);
+        typingHistoryTextArea.setBackground(MAINCONTAINER_COLOR);
+        typingHistoryPanel.setVisible(true);
+        typingApplication.getTypingScreen().clearScreen();
+        typingApplication.add(typingHistoryPanel);
     }
 
-    public void loadData() {
+    public void clearTypingHistoryPanel() {
+        typingHistoryPanel.removeAll();
+        typingHistoryPanel.revalidate();
+        typingHistoryPanel.repaint();
+    }
+
+    // saves data to Record and returns String so it can used in TypingScreen for a good use (displays it below buttons)
+    public String saveData(TypingPractice typingPractice) {
+        record.addUserHistory(typingPractice);
+        return "Saved successfully!";
+    }
+
+    // todo: need to be revised, i just copied this from TypingApp
+    public String saveDataToJson() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(record);
+            jsonWriter.close();
+        } catch (FileNotFoundException e) {
+            return "Unable to write to file: " + JSON_STORE;
+        }
+        return "Saved current history to " + JSON_STORE;
+    }
+
+    public void loadDataFromJson() {
         System.out.println("pretend that the app successfully loaded the file");
     }
 
     public void clearData() {
         System.out.println("pretend that the app successfully cleared the data");
+    }
+
+    public JPanel getTypingHistoryPanel() {
+        return typingHistoryPanel;
     }
 }

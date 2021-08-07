@@ -64,6 +64,7 @@ public class TypingScreen extends MainScreen {
         typingScreenPanel.removeAll();
         typingScreenPanel.revalidate();
         typingScreenPanel.repaint();
+//        typingApplication.getHistoryScreen().clearTypingHistoryPanel();
     }
 
     // helper that sets up a new typingScreenPanel, label, and validates panel
@@ -205,7 +206,7 @@ public class TypingScreen extends MainScreen {
         HistoryScreen historyScreen = typingApplication.getHistoryScreen();
         centrePanel.setVisible(false);
         if ("Save".equals(e.getActionCommand())) {
-            displayBelowButton(historyScreen.saveData());
+            displayBelowButton(historyScreen.saveData(typingPractice));
             yesBtn.setEnabled(false);
             noBtn.setEnabled(false);
         } else {

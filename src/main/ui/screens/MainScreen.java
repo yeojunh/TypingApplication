@@ -2,6 +2,9 @@ package ui.screens;
 
 import javafx.beans.property.adapter.JavaBeanLongPropertyBuilder;
 import jdk.nashorn.internal.ir.ContinueNode;
+import model.Record;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 import ui.TypingApplication;
 
 import javax.swing.*;
@@ -27,6 +30,12 @@ public class MainScreen extends Screen implements ActionListener {
     protected JButton loadBtn;
     protected JButton clearBtn;
     protected Container mainContainer;
+
+    protected JsonWriter jsonWriter;
+    protected JsonReader jsonReader;
+    protected static final String JSON_STORE = "./data/record.json";
+    protected Record record;
+
     private static final int HGAP = 8;
     private static final int VGAP = 6;
     protected static final Color MAINCONTAINER_COLOR = new Color(10, 46, 79);
@@ -48,6 +57,10 @@ public class MainScreen extends Screen implements ActionListener {
         setupLeftPanel(mainContainer);
         setupRightPanel(mainContainer);
         setupCentrePanel();
+
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        record = new Record();
     }
 
     @Override
@@ -242,9 +255,9 @@ public class MainScreen extends Screen implements ActionListener {
         } else if ("View Typing History".equals(e.getActionCommand())) {
             historyScreen.loadTypingHistory(); // maybe this shouldn't be on typing screen...?
         } else if ("Save Data".equals(e.getActionCommand())) {
-            historyScreen.saveData();
+            historyScreen.saveDataToJson();
         } else if ("Load Data".equals(e.getActionCommand())) {
-            historyScreen.loadData();
+            historyScreen.loadDataFromJson();
         } else {
             historyScreen.clearData();
         }

@@ -95,6 +95,7 @@ public class TypingApplication extends JFrame {
     private void initializeHistory() {
         historyScreen = new HistoryScreen(this);
         historyScreen.initialize();
+
     }
 
     // getters

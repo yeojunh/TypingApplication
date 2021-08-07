@@ -84,12 +84,6 @@ public class Record implements Writable {
         return jsonArray;
     }
 
-    // MODIFIES: this
-    // EFFECTS: adds typing practice to this record
-    public void addTypingPractice(TypingPractice typingPractice) {
-        record.add(typingPractice);
-    }
-
 
     // getters
     public int size() {

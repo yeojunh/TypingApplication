@@ -61,7 +61,7 @@ public class JsonReader {
         TypingPractice typingPractice = new TypingPractice(jsonObject.getString("focus"));
         typingPractice.setWpm(jsonObject.getDouble("wpm"));
         typingPractice.setAccuracy(jsonObject.getDouble("accuracy"));
-        record.addTypingPractice(typingPractice);
+        record.addUserHistory(typingPractice);
         record.calculateAverageTypingSpeed();
         record.calculateAverageAccuracy();
     }
