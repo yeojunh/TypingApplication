@@ -6,7 +6,9 @@ import ui.TypingApplication;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.Time;
@@ -24,6 +26,7 @@ public class TypingScreen extends MainScreen {
     private ArrayList<String> phraseToTypeArray;
     private JPanel typingArea;
     private JTextArea textArea;
+    private JPanel resultPanel;
     private TypingPractice typingPractice;
 
     public TypingScreen(TypingApplication typingApplication) {
@@ -158,7 +161,7 @@ public class TypingScreen extends MainScreen {
     }
 
     public JPanel setupResultArea() {
-        JPanel resultPanel = new JPanel();
+        resultPanel = new JPanel();
         JTextArea resultTextArea = new JTextArea();
         resultTextArea.setEditable(false);
         resultPanel.add(resultTextArea);
@@ -173,12 +176,52 @@ public class TypingScreen extends MainScreen {
         resultTextArea.setBackground(TOPPANEL_COLOR);
         resultTextArea.setFont(new Font(resultTextArea.getFont().toString(), Font.ITALIC, 15));
 
-//        resultPanel.add(setupResultAreaSavePrompt());
+        resultPanel.add(setupResultAreaSavePrompt());
+        resultPanel.setLayout(new BoxLayout(resultPanel, 1));
         return resultPanel;
     }
 
-//    public JPanel setupResultAreaSavePrompt() {
-////        JPanel savePromptPanel = new JPanel();
-////        return null;
-//    }
+    public JPanel setupResultAreaSavePrompt() {
+        JPanel savePromptPanel = new JPanel();
+        JLabel savePromptLabel = new JLabel("Save this run to your typing history?");
+        JButton yesBtn = new JButton("Yes");
+        JButton noBtn = new JButton("No");
+        yesBtn.setActionCommand("Save");
+        yesBtn.addActionListener(this);
+        noBtn.setActionCommand("Do not save");
+        noBtn.addActionListener(this::chooseAnOptionFromSidesPrompt);
+        yesBtn.setEnabled(true);
+        noBtn.setEnabled(true);
+        savePromptPanel.add(savePromptLabel);
+        savePromptPanel.add(yesBtn);
+        savePromptPanel.add(noBtn);
+        savePromptPanel.setBackground(TOPPANEL_COLOR);
+        savePromptPanel.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, MAINCONTAINER_COLOR));
+        setLabelFont(savePromptLabel, Color.black, 15);
+        return savePromptPanel;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        HistoryScreen historyScreen = typingApplication.getHistoryScreen();
+        centrePanel.setVisible(false);
+        if ("Save".equals(e.getActionCommand())) {
+            historyScreen.saveData();
+        } else {
+            chooseAnOptionFromSidesPrompt(e);
+        }
+    }
+
+    public void chooseAnOptionFromSidesPrompt(ActionEvent actionEvent) {
+        System.out.println("it's working!");
+        JPanel chooseAnOptionPanel = new JPanel();
+        JLabel chooseAnOptionLabel = new JLabel("Choose an option from the sides!");
+        chooseAnOptionPanel.add(chooseAnOptionLabel);
+        chooseAnOptionPanel.setBackground(TOPPANEL_COLOR);
+        chooseAnOptionPanel.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, MAINCONTAINER_COLOR));
+        setLabelFont(chooseAnOptionLabel, Color.black, 15);
+        chooseAnOptionLabel.setVisible(true);
+        chooseAnOptionPanel.setVisible(true);
+        mainContainer.revalidate();
+        resultPanel.add(chooseAnOptionPanel);
+    }
 }
