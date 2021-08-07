@@ -49,7 +49,7 @@ public class HistoryScreen extends MainScreen {
                     "You have no previous typing practice history. Try one out now!");
             numRows = 1;
         } else {
-            setupInitialHistoryText(typingHistoryViewerPanel, "You have practiced " + record.size() + " time(s).\n");
+            setupInitialHistoryText(typingHistoryViewerPanel, "You have practiced " + record.size() + " time(s)\n");
             for (int i = 0; i < record.size(); i++) {
                 setupRunData(typingHistoryViewerPanel, i);
                 numRows++;
@@ -67,10 +67,7 @@ public class HistoryScreen extends MainScreen {
     private void setupInitialHistoryText(JPanel panel, String s) {
         JLabel initialHistoryText = new JLabel(s);
         setLabelFont(initialHistoryText, SIDEPANEL_FONT_COLOR, 15);
-        JPanel blankPanelForLayout = new JPanel();
-        blankPanelForLayout.setBackground(MAINCONTAINER_COLOR);
         panel.add(initialHistoryText);
-        panel.add(blankPanelForLayout);
     }
 
     private void setupRunData(JPanel typingHistoryViewerPanel, int i) {
@@ -122,14 +119,6 @@ public class HistoryScreen extends MainScreen {
         typingHistoryPanel.repaint();
         typingApplication.revalidate();
         typingApplication.repaint();
-    }
-
-    public void clearTypingHistoryPanel() {
-//        typingApplication.remove(typingHistoryPanel);         // works but only for typingScreen, not history
-//        typingHistoryPanel.setVisible(false);
-//        typingHistoryPanel.removeAll();                         // removes all components... but doesn't come back?
-        typingHistoryPanel.revalidate();
-        typingHistoryPanel.repaint();
     }
 
     // saves data to Record and returns String so it can used in TypingScreen for a good use (displays it below buttons)
