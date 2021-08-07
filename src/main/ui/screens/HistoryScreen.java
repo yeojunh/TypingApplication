@@ -2,6 +2,8 @@ package ui.screens;
 
 import ui.TypingApplication;
 
+import javax.swing.*;
+
 public class HistoryScreen extends MainScreen {
     private TypingApplication typingApplication;
 
@@ -13,8 +15,14 @@ public class HistoryScreen extends MainScreen {
         System.out.println("pretend that the app successfully loaded local typing history");
     }
 
-    public void saveData() {
+    // saves data and returns String so that it can used in TypingScreen for a good use (displays it below buttons)
+    public String saveData() {
+
+        // in the catch clause, do
+//        return "Save unsuccessful :(" so that TypingScreen displays it
+
         System.out.println("pretend that the app successfully saved the file");
+        return "";
     }
 
     public void loadData() {

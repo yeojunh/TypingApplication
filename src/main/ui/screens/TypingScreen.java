@@ -28,6 +28,8 @@ public class TypingScreen extends MainScreen {
     private JTextArea textArea;
     private JPanel resultPanel;
     private TypingPractice typingPractice;
+    private JButton yesBtn;
+    private JButton noBtn;
 
     public TypingScreen(TypingApplication typingApplication) {
         super(typingApplication);
@@ -184,14 +186,12 @@ public class TypingScreen extends MainScreen {
     public JPanel setupResultAreaSavePrompt() {
         JPanel savePromptPanel = new JPanel();
         JLabel savePromptLabel = new JLabel("Save this run to your typing history?");
-        JButton yesBtn = new JButton("Yes");
-        JButton noBtn = new JButton("No");
+        yesBtn = new JButton("Yes");
+        noBtn = new JButton("No");
         yesBtn.setActionCommand("Save");
         yesBtn.addActionListener(this);
         noBtn.setActionCommand("Do not save");
-        noBtn.addActionListener(this::chooseAnOptionFromSidesPrompt);
-        yesBtn.setEnabled(true);
-        noBtn.setEnabled(true);
+        noBtn.addActionListener(this);
         savePromptPanel.add(savePromptLabel);
         savePromptPanel.add(yesBtn);
         savePromptPanel.add(noBtn);
@@ -205,16 +205,19 @@ public class TypingScreen extends MainScreen {
         HistoryScreen historyScreen = typingApplication.getHistoryScreen();
         centrePanel.setVisible(false);
         if ("Save".equals(e.getActionCommand())) {
-            historyScreen.saveData();
+            displayBelowButton(historyScreen.saveData());
+            yesBtn.setEnabled(false);
+            noBtn.setEnabled(false);
         } else {
-            chooseAnOptionFromSidesPrompt(e);
+            displayBelowButton("Choose an option from the sides!");
+            yesBtn.setEnabled(false);
+            noBtn.setEnabled(false);
         }
     }
 
-    public void chooseAnOptionFromSidesPrompt(ActionEvent actionEvent) {
-        System.out.println("it's working!");
+    public void displayBelowButton(String displayString) {
         JPanel chooseAnOptionPanel = new JPanel();
-        JLabel chooseAnOptionLabel = new JLabel("Choose an option from the sides!");
+        JLabel chooseAnOptionLabel = new JLabel(displayString);
         chooseAnOptionPanel.add(chooseAnOptionLabel);
         chooseAnOptionPanel.setBackground(TOPPANEL_COLOR);
         chooseAnOptionPanel.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, MAINCONTAINER_COLOR));
@@ -223,5 +226,9 @@ public class TypingScreen extends MainScreen {
         chooseAnOptionPanel.setVisible(true);
         mainContainer.revalidate();
         resultPanel.add(chooseAnOptionPanel);
+    }
+
+    public JPanel getResultPanel() {
+        return resultPanel;
     }
 }
