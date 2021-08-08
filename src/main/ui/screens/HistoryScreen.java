@@ -16,6 +16,7 @@ public class HistoryScreen extends MainScreen {
     }
 
     public void loadTypingHistory() {
+        playAudio("menuAudio");
         int numRows = 0;
         JPanel typingHistoryViewerPanel = new JPanel();
         typingHistoryViewerPanel.setBackground(MAINCONTAINER_COLOR);
@@ -25,7 +26,7 @@ public class HistoryScreen extends MainScreen {
                     "You have no previous typing practice history. Try one out now!");
             numRows = 1;
         } else {
-            setupInitialHistoryText(typingHistoryViewerPanel, "You have practiced " + record.size() + " time(s)\n");
+            setupInitialHistoryText(typingHistoryViewerPanel, "You have practiced " + record.size() + " time(s):\n");
             for (int i = 0; i < record.size(); i++) {
                 setupRunData(typingHistoryViewerPanel, i);
                 numRows++;
@@ -42,7 +43,7 @@ public class HistoryScreen extends MainScreen {
 
     private void setupInitialHistoryText(JPanel panel, String s) {
         JLabel initialHistoryText = new JLabel(s);
-        setLabelFont(initialHistoryText, SIDEPANEL_FONT_COLOR, 15);
+        setLabelFont(initialHistoryText, SIDEPANEL_FONT_COLOR, 18);
         panel.add(initialHistoryText);
     }
 
@@ -57,10 +58,10 @@ public class HistoryScreen extends MainScreen {
         gridForARun.add(optionSelected);
         gridForARun.add(typingSpeed);
         gridForARun.add(accuracy);
-        setLabelFont(yourRunNum, SIDEPANEL_FONT_COLOR, 12);
-        setLabelFont(optionSelected, SIDEPANEL_FONT_COLOR, 12);
-        setLabelFont(typingSpeed, SIDEPANEL_FONT_COLOR, 12);
-        setLabelFont(accuracy, SIDEPANEL_FONT_COLOR, 12);
+        setLabelFont(yourRunNum, SIDEPANEL_FONT_COLOR, 14);
+        setLabelFont(optionSelected, SIDEPANEL_FONT_COLOR, 14);
+        setLabelFont(typingSpeed, SIDEPANEL_FONT_COLOR, 14);
+        setLabelFont(accuracy, SIDEPANEL_FONT_COLOR, 14);
         typingHistoryViewerPanel.add(gridForARun);
     }
 

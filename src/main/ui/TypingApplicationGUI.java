@@ -19,8 +19,6 @@ import java.util.concurrent.CountDownLatch;
 // Graphical User Interface Implementation with Swing
 // Familiarizing Swing's GUI before actual implementation
 public class TypingApplicationGUI extends JFrame {
-    private static final int SCREEN_WIDTH = 1500;       // title image width
-    private static final int SCREEN_HEIGHT = 866;       // title image height but only works in frames...
     private static final int MIN_WIDTH = 1250;
     private static final int MIN_HEIGHT = 700;
     private JsonWriter jsonWriter;
@@ -36,7 +34,7 @@ public class TypingApplicationGUI extends JFrame {
     // https://stackoverflow.com/questions/19025366/wait-until-boolean-value-changes-it-state
     public final CountDownLatch latch = new CountDownLatch(1);      // "type anything to continue" from welcomeScreen
 
-    public TypingApplicationGUI() throws InterruptedException, IOException {
+    public TypingApplicationGUI() throws InterruptedException {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         initializeTypingApplication();
@@ -44,7 +42,7 @@ public class TypingApplicationGUI extends JFrame {
 
     // effects for runTyping(): while the app is on, keeps the typing test going
     //          and prompts the user to choose an option
-    public void initializeTypingApplication() throws InterruptedException, IOException {
+    public void initializeTypingApplication() throws InterruptedException {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bread Nut Typing App Pro :)");
         setResizable(false);
@@ -74,9 +72,7 @@ public class TypingApplicationGUI extends JFrame {
     }
 
     private void initializeMain() {
-//        mainScreen = new MainScreen(this);
         mainScreen.initialize();
-//        mainScreen.setVisible(false);
     }
 
     private void initializeTyping() {
@@ -91,14 +87,6 @@ public class TypingApplicationGUI extends JFrame {
     }
 
     // getters
-    public WelcomeScreen getWelcomeScreen() {
-        return welcomeScreen;
-    }
-
-    public MainScreen getMainScreen() {
-        return mainScreen;
-    }
-
     public TypingScreen getTypingScreen() {
         return typingScreen;
     }

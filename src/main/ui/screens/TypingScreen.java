@@ -10,8 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-
-import static java.lang.Thread.sleep;
+import java.util.Arrays;
 
 // represents the centre panel that shows the typing test area of the application
 public class TypingScreen extends MainScreen {
@@ -20,9 +19,6 @@ public class TypingScreen extends MainScreen {
     private static final int TYPING_AREA_COL = 40;
     private String userInput;
     private String phraseToType;
-    private ArrayList<String> phraseToTypeArray;
-    private JPanel typingArea;
-    private JTextArea textArea;
     private JPanel resultPanel;
     private TypingPractice typingPractice;
     private JButton yesBtn;
@@ -31,7 +27,6 @@ public class TypingScreen extends MainScreen {
     public TypingScreen(TypingApplicationGUI typingApplicationGUI) {
         super(typingApplicationGUI);
         mainContainer = typingApplicationGUI.getContentPane();
-        centrePanel = typingApplicationGUI.getMainScreen().getCentrePanel();
         typingScreenPanel = new JPanel();
         typingScreenLabel = new JLabel();
         userInput = "";
@@ -65,6 +60,7 @@ public class TypingScreen extends MainScreen {
 
     // helper that sets up a new typingScreenPanel, label, and validates panel
     public void setupTypingPanel(String labelText, String focus) {
+        playAudio("boopAudio");
         typingScreenLabel.setText(labelText);
         typingScreenPanel.setBackground(MAINCONTAINER_COLOR);
         typingScreenLabel.setBackground(MAINCONTAINER_COLOR);
@@ -84,11 +80,8 @@ public class TypingScreen extends MainScreen {
     public JTextArea setupTextToShow(String phraseToType) {
         String actualPhraseToType = "";
 
-        phraseToTypeArray = new ArrayList<String>();
         String[] wordsToTypeArray = phraseToType.split(" ");
-        for (String next: wordsToTypeArray) {
-            phraseToTypeArray.add(next);
-        }
+        ArrayList<String> phraseToTypeArray = new ArrayList<>(Arrays.asList(wordsToTypeArray));
         for (int i = 0; i < phraseToTypeArray.size(); i++) {
             if (i % 10 == 0) {
                 phraseToTypeArray.add(i, "\n");
@@ -98,7 +91,7 @@ public class TypingScreen extends MainScreen {
             actualPhraseToType = actualPhraseToType + " " + next;
         }
 
-        textArea = new JTextArea();
+        JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setFocusable(false);
         textArea.setFont(new Font(textArea.getFont().toString(), Font.PLAIN, 20));
@@ -116,7 +109,7 @@ public class TypingScreen extends MainScreen {
     }
 
     public JPanel setupTypingArea() {
-        typingArea = new JPanel();
+        JPanel typingArea = new JPanel();
         typingArea.setBackground(MAINCONTAINER_COLOR);
         JTextField textField = new JTextField(TYPING_AREA_COL);
         setupTypingAreaTextField(textField);
@@ -177,7 +170,7 @@ public class TypingScreen extends MainScreen {
         resultTextArea.setFont(new Font(resultTextArea.getFont().toString(), Font.ITALIC, 15));
 
         resultPanel.add(setupResultAreaSavePrompt());
-        resultPanel.setLayout(new BoxLayout(resultPanel, 1));
+        resultPanel.setLayout(new BoxLayout(resultPanel,1));
         return resultPanel;
     }
 
@@ -203,14 +196,14 @@ public class TypingScreen extends MainScreen {
         HistoryScreen historyScreen = typingApplicationGUI.getHistoryScreen();
         centrePanel.setVisible(false);
         if ("Save".equals(e.getActionCommand())) {
+            playAudio("menuAudio");
             displayBelowButton(historyScreen.saveData(typingPractice));
-            yesBtn.setEnabled(false);
-            noBtn.setEnabled(false);
         } else {
+            playAudio("clearAudio");
             displayBelowButton("Choose an option from the sides!");
-            yesBtn.setEnabled(false);
-            noBtn.setEnabled(false);
         }
+        yesBtn.setEnabled(false);
+        noBtn.setEnabled(false);
     }
 
     public void displayBelowButton(String displayString) {
@@ -224,9 +217,5 @@ public class TypingScreen extends MainScreen {
         chooseAnOptionPanel.setVisible(true);
         mainContainer.revalidate();
         resultPanel.add(chooseAnOptionPanel);
-    }
-
-    public JPanel getResultPanel() {
-        return resultPanel;
     }
 }

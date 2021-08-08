@@ -5,11 +5,13 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 import ui.TypingApplicationGUI;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -18,7 +20,7 @@ import java.io.IOException;
 
 // represents a main screen for the UI, including the top, left, right, and center panels
 public class MainScreen extends Screen implements ActionListener {
-    protected TypingApplicationGUI typingApplicationGUI;
+    protected TypingApplicationGUI typingApplicationGUI;        // UI-related
     protected JPanel centrePanel;
     protected JButton regularBtn;
     protected JButton shortBtn;
@@ -30,19 +32,21 @@ public class MainScreen extends Screen implements ActionListener {
     protected JButton clearBtn;
     protected Container mainContainer;
 
-    protected JsonWriter jsonWriter;
+    protected JsonWriter jsonWriter;                            // JSON-related
     protected JsonReader jsonReader;
     protected static final String JSON_STORE = "./data/record.json";
     protected Record record;
 
-    private static final int HGAP = 8;
+    private static final int HGAP = 8;                          // design-related
     private static final int VGAP = 6;
     protected static final Color MAINCONTAINER_COLOR = new Color(10, 46, 79);
-//        private static final Color TOPPANEL_COLOR = new Color(255, 246, 230); // beige
     protected static final Color TOPPANEL_COLOR = new Color(173, 177, 237);
     protected static final Color SIDEPANEL_COLOR = new Color(1,30,61);
     protected static final Color SIDEPANEL_FONT_COLOR = Color.white;
     protected String filler = "    ";
+
+    private AudioInputStream audioInputStream;
+    private Clip clip;
 
     public MainScreen(TypingApplicationGUI typingApplicationGUI) {
         this.typingApplicationGUI = typingApplicationGUI;
@@ -68,7 +72,7 @@ public class MainScreen extends Screen implements ActionListener {
     }
 
     // higher caller of the top panel creator
-    public void setupTopPanel(Container mainContainer) {
+    private void setupTopPanel(Container mainContainer) {
         JPanel topPanel = new JPanel();
         JPanel topLabelPanel = new JPanel();
         setupTopLabelPanel(topLabelPanel);
@@ -77,7 +81,7 @@ public class MainScreen extends Screen implements ActionListener {
     }
 
     // higher caller method of the centre panel creator
-    public void setupCentrePanel() {
+    private void setupCentrePanel() {
         centrePanel = new JPanel();
         centrePanel.setBackground(MAINCONTAINER_COLOR);
         setupCentreLabelPanel(centrePanel);
@@ -86,7 +90,7 @@ public class MainScreen extends Screen implements ActionListener {
 
     // creates labels with welcome writing and puts them into a panel, then adds the panel to mainContainer
     // these will disappear once the user clicks any of the buttons
-    public void setupCentreLabelPanel(JPanel centrePanel) {
+    private void setupCentreLabelPanel(JPanel centrePanel) {
         JPanel labelEncapsulator = new JPanel();
         labelEncapsulator.setLayout(new GridLayout(4, 0));
         labelEncapsulator.setBackground(MAINCONTAINER_COLOR);
@@ -119,7 +123,7 @@ public class MainScreen extends Screen implements ActionListener {
     }
 
     // higher caller of the left panel creator
-    public void setupLeftPanel(Container mainContainer) {
+    private void setupLeftPanel(Container mainContainer) {
         JPanel leftPanel = new JPanel();
         JPanel leftLabelPanel = new JPanel();
         setupSidePanelGrid(leftLabelPanel, "left");
@@ -129,7 +133,7 @@ public class MainScreen extends Screen implements ActionListener {
     }
 
     // higher caller of the right panel creator
-    public void setupRightPanel(Container mainContainer) {
+    private void setupRightPanel(Container mainContainer) {
         JPanel rightPanel = new JPanel();
         JPanel rightLabelPanel = new JPanel();
         setupSidePanelGrid(rightLabelPanel, "right");
@@ -139,7 +143,7 @@ public class MainScreen extends Screen implements ActionListener {
     }
 
     // creates a grid just for the labels so that left side can be in 2 lines
-    public void setupSidePanelGrid(JPanel panel, String side) {
+    private void setupSidePanelGrid(JPanel panel, String side) {
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(2, 1, 0, 5));
         if (side.equals("left")) {
@@ -162,13 +166,13 @@ public class MainScreen extends Screen implements ActionListener {
     }
 
     // method for side label setup
-    public void setupSideLabel(JLabel label) {
+    private void setupSideLabel(JLabel label) {
         label.setBackground(SIDEPANEL_COLOR);
         setLabelFont(label, SIDEPANEL_FONT_COLOR, 20);
     }
 
     // top/side panel background setup
-    public void setupSidePanel(JPanel panel, JPanel labelPanel, String side) {
+    private void setupSidePanel(JPanel panel, JPanel labelPanel, String side) {
         Color panelColor;
         if (side.equals("top")) {
             panelColor = TOPPANEL_COLOR;
@@ -181,7 +185,7 @@ public class MainScreen extends Screen implements ActionListener {
     }
 
     // makes a the top label into a panel so that it's easier to work with
-    public void setupTopLabelPanel(JPanel panel) {
+    private void setupTopLabelPanel(JPanel panel) {
         JLabel label = new JLabel("Bread Nut Typing App Pro :)", SwingConstants.CENTER);
         setLabelFont(label, label.getForeground(), 30);
         label.setBackground(TOPPANEL_COLOR);
@@ -190,7 +194,7 @@ public class MainScreen extends Screen implements ActionListener {
     }
 
     // puts panel buttons in a grid so that it's vertically organized
-    public void setupPanelButtons(JPanel panel, String side) {
+    private void setupPanelButtons(JPanel panel, String side) {
         panel.setLayout(new GridLayout(2, 1));
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(4, 1, 5, 5));
@@ -211,7 +215,7 @@ public class MainScreen extends Screen implements ActionListener {
     }
 
     // sets up the main (overall) container for the UI
-    public void setupMainContainer() {
+    private void setupMainContainer() {
         mainContainer = typingApplicationGUI.getContentPane();
         mainContainer.setLayout(new BorderLayout(HGAP, VGAP));
         mainContainer.setBackground(MAINCONTAINER_COLOR);
@@ -266,22 +270,22 @@ public class MainScreen extends Screen implements ActionListener {
     }
 
     // todo: make it output whatever response this is
-    public void loadDataFromJson() {
+    private void loadDataFromJson() {
         try {
             record = jsonReader.read();
-            System.out.println("Loaded previous typing history from " + JSON_STORE);
         } catch (IOException e) {
-            System.out.println("Unable to read from file " + JSON_STORE);
+            System.err.println("Unable to read from file " + JSON_STORE);
         }
     }
 
     // todo: make it output the response from writeToJson()
-    public void saveDataToJson() {
+    private void saveDataToJson() {
+        playAudio("menuAudio");
         typingApplicationGUI.add(new JLabel(writeToJson()));
     }
 
     // make it output whatever this is
-    public String writeToJson() {
+    private String writeToJson() {
         try {
             jsonWriter.open();
             jsonWriter.write(record);
@@ -292,7 +296,19 @@ public class MainScreen extends Screen implements ActionListener {
         return "Saved current history to " + JSON_STORE;
     }
 
-    public JPanel getCentrePanel() {
-        return centrePanel;
+    protected void playAudio(String fileName) {
+        String filePath = "./data/" + fileName + ".wav";
+        try {
+            audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (UnsupportedAudioFileException e) {
+            System.err.println("Audio from " + filePath + " is not supported.");
+        } catch (IOException e) {
+            System.err.println("Unable to load audio file from " + filePath);
+        } catch (LineUnavailableException e) {
+            System.err.println("Audio file is not available at " + filePath);
+        }
     }
 }
