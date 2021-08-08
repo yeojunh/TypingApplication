@@ -1,6 +1,6 @@
 package persistence;
 
-import model.Record;
+import model.History;
 import model.TypingPractice;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +14,7 @@ public class JsonWriterTest extends JsonTest {
     @Test
     void testWriterInvalidFile() {
         try {
-            Record record = new Record();
+            History history = new History();
             JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
             writer.open();
             fail("IOException was expected");
@@ -24,26 +24,26 @@ public class JsonWriterTest extends JsonTest {
     }
 
     @Test
-    void testWriterEmptyRecord() {
+    void testWriterEmptyHistory() {
         try {
-            Record record = new Record();
-            JsonWriter writer = new JsonWriter("./data/testWriterEmptyWorkroom.json");
+            History history = new History();
+            JsonWriter writer = new JsonWriter("./data/testWriterEmptyHistory.json");
             writer.open();
-            writer.write(record);
+            writer.write(history);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testWriterEmptyWorkroom.json");
-            record = reader.read();
-            assertEquals(0, record.size());
+            JsonReader reader = new JsonReader("./data/testWriterEmptyHistory.json");
+            history = reader.read();
+            assertEquals(0, history.size());
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
     }
 
     @Test
-    void testWriterGeneralWorkroom() {
+    void testWriterGeneralHistory() {
         try {
-            Record record = new Record();
+            History history = new History();
             TypingPractice tp1 = new TypingPractice("regular");
             tp1.setWpm(90);
             tp1.setAccuracy(100);
@@ -57,23 +57,23 @@ public class JsonWriterTest extends JsonTest {
             tp4.setWpm(100);
             tp4.setAccuracy(90);
 
-            record.addUserHistory(tp1);
-            record.addUserHistory(tp2);
-            record.addUserHistory(tp3);
-            record.addUserHistory(tp4);
-            JsonWriter writer = new JsonWriter("./data/testWriterGeneralWorkroom.json");
+            history.addUserHistory(tp1);
+            history.addUserHistory(tp2);
+            history.addUserHistory(tp3);
+            history.addUserHistory(tp4);
+            JsonWriter writer = new JsonWriter("./data/testWriterGeneralHistory.json");
             writer.open();
-            writer.write(record);
+            writer.write(history);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testWriterGeneralWorkroom.json");
-            record = reader.read();
-            List<TypingPractice> tps = record.getUserHistory();
+            JsonReader reader = new JsonReader("./data/testWriterGeneralHistory.json");
+            history = reader.read();
+            List<TypingPractice> tps = history.getUserHistory();
             assertEquals(4, tps.size());
-            checkRecord(90, 100, "regular", tps.get(0));
-            checkRecord(80, 90, "short", tps.get(1));
-            checkRecord(123, 80, "punctuation", tps.get(2));
-            checkRecord(100, 90, "number", tps.get(3));
+            checkHistory(90, 100, "regular", tps.get(0));
+            checkHistory(80, 90, "short", tps.get(1));
+            checkHistory(123, 80, "punctuation", tps.get(2));
+            checkHistory(100, 90, "number", tps.get(3));
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }

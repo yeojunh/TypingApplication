@@ -1,8 +1,7 @@
 package ui;
 
-import model.Record;
+import model.History;
 import model.TypingPractice;
-import org.json.JSONArray;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -15,9 +14,9 @@ import java.util.concurrent.TimeUnit;
 // Reference: CPSC 210 TellerApp example
 // https://github.students.cs.ubc.ca/CPSC210/TellerApp
 public class TypingApp {
-    private static final String JSON_STORE = "./data/record.json";
+    private static final String JSON_STORE = "./data/history.json";
     private TypingPractice typingPractice;
-    private Record record;
+    private History history;
     private Scanner input;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
@@ -35,7 +34,7 @@ public class TypingApp {
     private void runTyping() {
         boolean appOn = true;
         String command = null;
-        record = new Record();
+        history = new History();
         runIfFirstTimeRunning();
 
         while (appOn) {
@@ -125,7 +124,7 @@ public class TypingApp {
     private void saveHistory() {
         try {
             jsonWriter.open();
-            jsonWriter.write(record);
+            jsonWriter.write(history);
             jsonWriter.close();
             System.out.println("Saved current history to " + JSON_STORE);
         } catch (FileNotFoundException e) {
@@ -137,7 +136,7 @@ public class TypingApp {
     // EFFECTS: loads history from file
     private void loadHistory() {
         try {
-            record = jsonReader.read();
+            history = jsonReader.read();
             System.out.println("Loaded previous typing history from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file " + JSON_STORE);
@@ -148,7 +147,7 @@ public class TypingApp {
     // EFFECTS: clears user typing history
     //          user can still access the most recent deleted history if they load before saving again
     private void clearHistory() {
-        record = new Record();
+        history = new History();
         System.out.println("Successfully cleared typing history.");
         System.out.println("If you want to revert your history, please enter LOAD.");
     }
@@ -161,7 +160,7 @@ public class TypingApp {
         String command = input.next();
         command = command.toLowerCase();
         if (command.equals("y")) {
-            record.addUserHistory(typingPractice);
+            history.addUserHistory(typingPractice);
         } else if (command.equals("n")) {
             // do nothing
         } else {
@@ -208,22 +207,22 @@ public class TypingApp {
 
     // MODIFIES: this
     // EFFECTS: displays the user's previous typing history including number of times practiced, average wpm, accuracy
-    //          if the user has no previous records, prompt the user to start a typing test
+    //          if the user has no previous history, prompt the user to start a typing test
     private void runHistory() {
-        if (record.size() == 0) {
+        if (history.size() == 0) {
             System.out.println("You have no previous typing practice history. Try one out now!\n");
             runTyping();
         } else {
-            System.out.println("You have practiced " + record.size() + " times.");
-            for (int i = 0; i < record.size(); i++) {
+            System.out.println("You have practiced " + history.size() + " times.");
+            for (int i = 0; i < history.size(); i++) {
                 System.out.println("Your run #" + (i + 1) + "\n  Option selected: "
-                        + record.getNthTypingPrac(i).getFocus() + "\n  Typing Speed (wpm):  "
-                        + record.getNthTypingPrac(i).getWpm() + "\n  Accuracy (%): "
-                        + record.getNthTypingPrac(i).getAccuracy() + "\n");
+                        + history.getNthTypingPrac(i).getFocus() + "\n  Typing Speed (wpm):  "
+                        + history.getNthTypingPrac(i).getWpm() + "\n  Accuracy (%): "
+                        + history.getNthTypingPrac(i).getAccuracy() + "\n");
             }
-            System.out.println("Your average typing speed is " + record.calculateAverageTypingSpeed()
+            System.out.println("Your average typing speed is " + history.calculateAverageTypingSpeed()
                     + " words per minute.");
-            System.out.println("Your average accuracy is " + record.calculateAverageAccuracy() + "%.");
+            System.out.println("Your average accuracy is " + history.calculateAverageAccuracy() + "%.");
         }
     }
 

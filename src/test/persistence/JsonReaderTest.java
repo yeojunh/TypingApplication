@@ -1,6 +1,6 @@
 package persistence;
 
-import model.Record;
+import model.History;
 import model.TypingPractice;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ public class JsonReaderTest extends JsonTest {
     void testReaderNonExistentFile() {
         JsonReader reader = new JsonReader("./data/noSuchFile.json");
         try {
-            Record rec = reader.read();
+            History history = reader.read();
             fail("IOException expected");
         } catch (IOException e) {
             // all good!
@@ -24,25 +24,25 @@ public class JsonReaderTest extends JsonTest {
     }
 
     @Test
-    void testReaderEmptyRecord() {
+    void testReaderEmptyHistory() {
         JsonReader reader = new JsonReader("./data/testReaderEmptyHistory.json");
         try {
-            Record rec = reader.read();
-            assertEquals(0, rec.size());
+            History history = reader.read();
+            assertEquals(0, history.size());
         } catch (IOException e) {
             fail("Couldn't read from file");
         }
     }
 
     @Test
-    void testReaderGeneralRecord() {
+    void testReaderGeneralHistory() {
         JsonReader reader = new JsonReader("./data/testReaderGeneralHistory.json");
         try {
-            Record record = reader.read();
-            List<TypingPractice> typingPractices = record.getUserHistory();
+            History history = reader.read();
+            List<TypingPractice> typingPractices = history.getUserHistory();
             assertEquals(2, typingPractices.size());
-            checkRecord(90, 96, "regular", record.getNthTypingPrac(0));
-            checkRecord(80, 50, "short", record.getNthTypingPrac(1));
+            checkHistory(90, 96, "regular", history.getNthTypingPrac(0));
+            checkHistory(80, 50, "short", history.getNthTypingPrac(1));
         } catch (IOException e) {
             fail("Couldn't read from file");
         }

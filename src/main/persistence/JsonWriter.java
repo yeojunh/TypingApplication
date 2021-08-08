@@ -1,15 +1,13 @@
 package persistence;
 
-import model.Record;
-import model.TypingPractice;
-import org.json.JSONArray;
+import model.History;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-// Represents a writer that writes JSON representation of record to file
+// Represents a writer that writes JSON representation of history to file
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
@@ -29,8 +27,8 @@ public class JsonWriter {
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of TypingPractice to file
-    public void write(Record rec) {
-        JSONObject json = rec.toJson();
+    public void write(History history) {
+        JSONObject json = history.toJson();
         saveToFile(json.toString(TAB));
     }
 

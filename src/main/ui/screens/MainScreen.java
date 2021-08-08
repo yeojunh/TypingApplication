@@ -1,6 +1,6 @@
 package ui.screens;
 
-import model.Record;
+import model.History;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 import ui.TypingApplicationGUI;
@@ -19,8 +19,20 @@ import java.io.IOException;
 // https://www.youtube.com/watch?v=Cxp_HvXZh6g
 
 // represents a main screen for the UI, including the top, left, right, and center panels
-public class MainScreen extends Screen implements ActionListener {
+// superclass of TypingScreen and HistoryScreen classes
+public class MainScreen implements ActionListener {
+    private static final int HGAP = 8;                          // design-related
+    private static final int VGAP = 6;
+    protected static final Color MAIN_CONTAINER_COLOR = new Color(10, 46, 79);
+    protected static final Color TOP_PANEL_COLOR = new Color(173, 177, 237);
+    protected static final Color SIDE_PANEL_COLOR = new Color(1,30,61);
+    protected static final Color SIDE_PANEL_FONT_COLOR = Color.white;
+    protected static final int SIDE_PANEL_FONT_SIZE = 20;
+    protected static final String filler = "    ";
+
     protected TypingApplicationGUI typingApplicationGUI;        // UI-related
+    protected History history;
+    protected Container mainContainer;
     protected JPanel centrePanel;
     protected JButton regularBtn;
     protected JButton shortBtn;
@@ -30,31 +42,20 @@ public class MainScreen extends Screen implements ActionListener {
     protected JButton saveBtn;
     protected JButton loadBtn;
     protected JButton clearBtn;
-    protected Container mainContainer;
 
-    protected JsonWriter jsonWriter;                            // JSON-related
+    protected static final String JSON_STORE = "./data/history.json";  // JSON-related
+    protected JsonWriter jsonWriter;
     protected JsonReader jsonReader;
-    protected static final String JSON_STORE = "./data/record.json";
-    protected Record record;
 
-    private static final int HGAP = 8;                          // design-related
-    private static final int VGAP = 6;
-    protected static final Color MAINCONTAINER_COLOR = new Color(10, 46, 79);
-    protected static final Color TOPPANEL_COLOR = new Color(173, 177, 237);
-    protected static final Color SIDEPANEL_COLOR = new Color(1,30,61);
-    protected static final Color SIDEPANEL_FONT_COLOR = Color.white;
-    protected String filler = "    ";
-
-    private AudioInputStream audioInputStream;
-    private Clip clip;
-
+    // EFFECTS: initializes the MainScreen's typingApplication as the provided typingApplicationGUI
     public MainScreen(TypingApplicationGUI typingApplicationGUI) {
         this.typingApplicationGUI = typingApplicationGUI;
     }
 
-    @Override
+    // MODIFIES: this
+    // EFFECTS: sets up components for the main screen. mainContainer is initially set to invisible
     public void initialize() {
-        record = new Record();
+        history = new History();
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         loadDataFromJson();
@@ -66,12 +67,8 @@ public class MainScreen extends Screen implements ActionListener {
         setupCentrePanel();
     }
 
-    @Override
-    public void load() {
-        mainContainer.setVisible(true);
-    }
-
-    // higher caller of the top panel creator
+    // MODIFIES: mainContainer
+    // EFFECTS: constructs the top panel of the mainContainer passed in as a parameter
     private void setupTopPanel(Container mainContainer) {
         JPanel topPanel = new JPanel();
         JPanel topLabelPanel = new JPanel();
@@ -80,49 +77,17 @@ public class MainScreen extends Screen implements ActionListener {
         mainContainer.add(topPanel, BorderLayout.NORTH);
     }
 
-    // higher caller method of the centre panel creator
+    // MODIFIES: this, mainContainer
+    // EFFECTS: constructs the centre panel of the mainContainer passed in as a parameter
     private void setupCentrePanel() {
         centrePanel = new JPanel();
-        centrePanel.setBackground(MAINCONTAINER_COLOR);
+        centrePanel.setBackground(MAIN_CONTAINER_COLOR);
         setupCentreLabelPanel(centrePanel);
         mainContainer.add(centrePanel, BorderLayout.CENTER);
     }
 
-    // creates labels with welcome writing and puts them into a panel, then adds the panel to mainContainer
-    // these will disappear once the user clicks any of the buttons
-    private void setupCentreLabelPanel(JPanel centrePanel) {
-        JPanel labelEncapsulator = new JPanel();
-        labelEncapsulator.setLayout(new GridLayout(4, 0));
-        labelEncapsulator.setBackground(MAINCONTAINER_COLOR);
-
-        JLabel centreLabel = new JLabel("Welcome to Bread Nut Typing App Pro :) !!!", SwingConstants.CENTER);
-        JLabel centreLabel2 = new JLabel("- 🍞🥜 -", SwingConstants.CENTER);
-        setLabelFont(centreLabel, SIDEPANEL_FONT_COLOR, 25);
-        setLabelFont(centreLabel2, SIDEPANEL_FONT_COLOR, 30);
-        centreLabel2.setBorder(new EmptyBorder(0,0,20,0));
-
-        JLabel introLabel1 = new JLabel("Press buttons on the left to start a new typing practice",
-                SwingConstants.CENTER);
-        JLabel introLabel2 = new JLabel("Press buttons on the right to view or change your saved history",
-                SwingConstants.CENTER);
-        setLabelFont(introLabel1, SIDEPANEL_FONT_COLOR, 20);
-        setLabelFont(introLabel2, SIDEPANEL_FONT_COLOR, 20);
-
-        labelEncapsulator.add(centreLabel);
-        labelEncapsulator.add(centreLabel2);
-        labelEncapsulator.add(introLabel1);
-        labelEncapsulator.add(introLabel2);
-        centrePanel.add(labelEncapsulator);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: changes the font colour and size of the given label to the given colour and size
-    public void setLabelFont(JLabel label, Color color, int size) {
-        label.setFont(new Font(label.getFont().toString(), Font.PLAIN, size));
-        label.setForeground(color);
-    }
-
-    // higher caller of the left panel creator
+    // MODIFIES: mainContainer
+    // EFFECTS: constructs the left panel of the mainContainer passed in as a parameter
     private void setupLeftPanel(Container mainContainer) {
         JPanel leftPanel = new JPanel();
         JPanel leftLabelPanel = new JPanel();
@@ -132,7 +97,8 @@ public class MainScreen extends Screen implements ActionListener {
         mainContainer.add(leftPanel, BorderLayout.WEST);
     }
 
-    // higher caller of the right panel creator
+    // MODIFIES: mainContainer
+    // EFFECTS: constructs the right panel of the mainContainer passed in as a parameter
     private void setupRightPanel(Container mainContainer) {
         JPanel rightPanel = new JPanel();
         JPanel rightLabelPanel = new JPanel();
@@ -142,7 +108,44 @@ public class MainScreen extends Screen implements ActionListener {
         mainContainer.add(rightPanel, BorderLayout.EAST);
     }
 
-    // creates a grid just for the labels so that left side can be in 2 lines
+    // MODIFIES: centrePanel
+    // EFFECTS: constructs labels with welcome texts and puts them into a panel
+    //          then adds this panel to centrePanel, which is the centre panel of mainContainer
+    private void setupCentreLabelPanel(JPanel centrePanel) {
+        JPanel labelEncapsulator = new JPanel();
+        labelEncapsulator.setLayout(new GridLayout(4, 0));
+        labelEncapsulator.setBackground(MAIN_CONTAINER_COLOR);
+
+        JLabel centreLabel = new JLabel("Welcome to Bread Nut Typing App Pro :) !!!", SwingConstants.CENTER);
+        JLabel centreLabel2 = new JLabel("- 🍞🥜 -", SwingConstants.CENTER);
+        setLabelFont(centreLabel, SIDE_PANEL_FONT_COLOR, 25);
+        setLabelFont(centreLabel2, SIDE_PANEL_FONT_COLOR, 30);
+        centreLabel2.setBorder(new EmptyBorder(0,0,20,0));
+
+        JLabel introLabel1 = new JLabel("Press buttons on the left to start a new typing practice",
+                SwingConstants.CENTER);
+        JLabel introLabel2 = new JLabel("Press buttons on the right to view or change your saved history",
+                SwingConstants.CENTER);
+        setLabelFont(introLabel1, SIDE_PANEL_FONT_COLOR, SIDE_PANEL_FONT_SIZE);
+        setLabelFont(introLabel2, SIDE_PANEL_FONT_COLOR, SIDE_PANEL_FONT_SIZE);
+
+        labelEncapsulator.add(centreLabel);
+        labelEncapsulator.add(centreLabel2);
+        labelEncapsulator.add(introLabel1);
+        labelEncapsulator.add(introLabel2);
+        centrePanel.add(labelEncapsulator);
+    }
+
+    // MODIFIES: label
+    // EFFECTS: changes the font colour and size of the given label to the given colour and size
+    public void setLabelFont(JLabel label, Color color, int size) {
+        label.setFont(new Font(label.getFont().toString(), Font.PLAIN, size));
+        label.setForeground(color);
+    }
+
+    // MODIFIES: panel
+    // EFFECTS: constructs a grid panel to encapsulate labels, allowing the left panel to have 2 lines
+    //          and the right panel to have 1 line with fillers
     private void setupSidePanelGrid(JPanel panel, String side) {
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(2, 1, 0, 5));
@@ -161,39 +164,45 @@ public class MainScreen extends Screen implements ActionListener {
             setupSideLabel(rightLabel);
             gridPanel.add(rightLabel);
         }
-        gridPanel.setBackground(SIDEPANEL_COLOR);
+        gridPanel.setBackground(SIDE_PANEL_COLOR);
         panel.add(gridPanel);
     }
 
-    // method for side label setup
+    // MODIFIES: label
+    // EFFECTS: sets the background colour of the label to the side panel's default colour
+    //          and sets the font and text colour to side panel's default font colour and size
     private void setupSideLabel(JLabel label) {
-        label.setBackground(SIDEPANEL_COLOR);
-        setLabelFont(label, SIDEPANEL_FONT_COLOR, 20);
+        label.setBackground(SIDE_PANEL_COLOR);
+        setLabelFont(label, SIDE_PANEL_FONT_COLOR, SIDE_PANEL_FONT_SIZE);
     }
 
-    // top/side panel background setup
+    // MODIFIES: panel, labelPanel
+    // EFFECTS: sets up the panel and label's background colour to the default panel colour for the side (top or side)
+    //          and adds the label to the panel
     private void setupSidePanel(JPanel panel, JPanel labelPanel, String side) {
         Color panelColor;
         if (side.equals("top")) {
-            panelColor = TOPPANEL_COLOR;
+            panelColor = TOP_PANEL_COLOR;
         } else {
-            panelColor = SIDEPANEL_COLOR;
+            panelColor = SIDE_PANEL_COLOR;
         }
         panel.setBackground(panelColor);
         labelPanel.setBackground(panelColor);
         panel.add(labelPanel);
     }
 
-    // makes a the top label into a panel so that it's easier to work with
+    // MODIFIES: panel
+    // EFFECTS: creates a new label with the title and adds the label to the given panel
     private void setupTopLabelPanel(JPanel panel) {
         JLabel label = new JLabel("Bread Nut Typing App Pro :)", SwingConstants.CENTER);
         setLabelFont(label, label.getForeground(), 30);
-        label.setBackground(TOPPANEL_COLOR);
-        panel.setBackground(TOPPANEL_COLOR);
+        label.setBackground(TOP_PANEL_COLOR);
+        panel.setBackground(TOP_PANEL_COLOR);
         panel.add(label);
     }
 
-    // puts panel buttons in a grid so that it's vertically organized
+    // MODIFIES: panel
+    // EFFECTS: adds appropriate buttons for the given side into a grid panel with 4 rows for vertical organization
     private void setupPanelButtons(JPanel panel, String side) {
         panel.setLayout(new GridLayout(2, 1));
         JPanel gridPanel = new JPanel();
@@ -210,18 +219,20 @@ public class MainScreen extends Screen implements ActionListener {
             gridPanel.add(loadBtn);
             gridPanel.add(clearBtn);
         }
-        gridPanel.setBackground(SIDEPANEL_COLOR);
+        gridPanel.setBackground(SIDE_PANEL_COLOR);
         panel.add(gridPanel);
     }
 
-    // sets up the main (overall) container for the UI
+    // MODIFIES: mainContainer
+    // EFFECTS: initializes the value of the mainContainer and sets the layout and background
     private void setupMainContainer() {
         mainContainer = typingApplicationGUI.getContentPane();
         mainContainer.setLayout(new BorderLayout(HGAP, VGAP));
-        mainContainer.setBackground(MAINCONTAINER_COLOR);
+        mainContainer.setBackground(MAIN_CONTAINER_COLOR);
     }
 
-    // sets up the list of buttons for the UI
+    // MODIFIES: this
+    // EFFECTS: initializes the list of buttons for the UI
     private void setupButtons() {
         regularBtn = setupButton("Regular");
         shortBtn = setupButton("Short");
@@ -234,6 +245,7 @@ public class MainScreen extends Screen implements ActionListener {
         clearBtn = setupButton("Clear Data");
     }
 
+    // EFFECTS: returns an active button with the given name
     private JButton setupButton(String name) {
         JButton button = new JButton(name);
         String font = button.getFont().toString();
@@ -243,7 +255,8 @@ public class MainScreen extends Screen implements ActionListener {
         return button;
     }
 
-    // todo: make it display the output when you save/load/clear
+    // MODIFIES: this
+    // EFFECTS: calls different methods depending on the button's action command activated
     public void actionPerformed(ActionEvent e) {
         TypingScreen typingScreen = typingApplicationGUI.getTypingScreen();
         HistoryScreen historyScreen = typingApplicationGUI.getHistoryScreen();
@@ -263,44 +276,49 @@ public class MainScreen extends Screen implements ActionListener {
         } else if ("Load Data".equals(e.getActionCommand())) {
             loadDataFromJson();
             historyScreen.loadTypingHistory();
-        } else {
+        } else { // clear data
             historyScreen.clearData();
             historyScreen.loadTypingHistory();
         }
     }
 
-    // todo: make it output whatever response this is
+    // MODIFIES: this
+    // EFFECTS: loads data from JSON, or outputs an error if JSON file is not found
     private void loadDataFromJson() {
         try {
-            record = jsonReader.read();
+            history = jsonReader.read();
         } catch (IOException e) {
             System.err.println("Unable to read from file " + JSON_STORE);
         }
     }
 
-    // todo: make it output the response from writeToJson()
+    // MODIFIES: this
+    // EFFECTS: saves data to JSON and plays audio
     private void saveDataToJson() {
         playAudio("menuAudio");
-        typingApplicationGUI.add(new JLabel(writeToJson()));
+        writeToJson();
     }
 
-    // make it output whatever this is
-    private String writeToJson() {
+    // MODIFIES: this
+    // EFFECTS: writes data to JSON or prints an error if file is not found
+    private void writeToJson() {
         try {
             jsonWriter.open();
-            jsonWriter.write(record);
+            jsonWriter.write(history);
             jsonWriter.close();
         } catch (FileNotFoundException e) {
-            return "Unable to write to file: " + JSON_STORE;
+            System.err.println("Unable to write to file: " + JSON_STORE);
         }
-        return "Saved current history to " + JSON_STORE;
     }
 
+    // https://stackoverflow.com/questions/15526255/best-way-to-get-sound-on-button-press-for-a-java-calculator
+    // EFFECTS: plays a .wav audio in the data folder
+    //          prints error if the audio file is of the incorrect type, given a wrong destination, or does not exist
     protected void playAudio(String fileName) {
         String filePath = "./data/" + fileName + ".wav";
         try {
-            audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
-            clip = AudioSystem.getClip();
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
+            Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
         } catch (UnsupportedAudioFileException e) {

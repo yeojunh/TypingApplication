@@ -1,33 +1,37 @@
 package ui.screens;
 
-import model.Record;
+import model.History;
 import model.TypingPractice;
 import ui.TypingApplicationGUI;
 
 import javax.swing.*;
 import java.awt.*;
 
+// represents the centre panel that handles the user's typing history display of the application
 public class HistoryScreen extends MainScreen {
-    private JPanel typingHistoryPanel;
+    public static final int LARGE_FONT_SIZE = 18;
+    public static final int SMALL_FONT_SIZE = 14;
 
+    // EFFECTS: creates a HistoryScreen with the given typingApplicationGUI
     public HistoryScreen(TypingApplicationGUI typingApplicationGUI) {
         super(typingApplicationGUI);
-        typingHistoryPanel = new JPanel();
     }
 
+    // MODIFIES: this
+    // EFFECTS: plays the menu audio and constructs a label and panel with the typing history of the user
+    //          if the user has no typing history, prompt the user to start a typing practice
     public void loadTypingHistory() {
         playAudio("menuAudio");
         int numRows = 0;
         JPanel typingHistoryViewerPanel = new JPanel();
-        typingHistoryViewerPanel.setBackground(MAINCONTAINER_COLOR);
-        record.getUserHistory();
-        if (record.size() == 0) {
+        typingHistoryViewerPanel.setBackground(MAIN_CONTAINER_COLOR);
+        if (history.size() == 0) {
             setupInitialHistoryText(typingHistoryViewerPanel,
                     "You have no previous typing practice history. Try one out now!");
             numRows = 1;
         } else {
-            setupInitialHistoryText(typingHistoryViewerPanel, "You have practiced " + record.size() + " time(s):\n");
-            for (int i = 0; i < record.size(); i++) {
+            setupInitialHistoryText(typingHistoryViewerPanel, "You have practiced " + history.size() + " time(s):\n");
+            for (int i = 0; i < history.size(); i++) {
                 setupRunData(typingHistoryViewerPanel, i);
                 numRows++;
             }
@@ -41,70 +45,60 @@ public class HistoryScreen extends MainScreen {
         typingHistoryViewerPanel.repaint();
     }
 
+    // MODIFIES: panel
+    // EFFECTS: constructs a label for the first line of typing history and places it inside the given panel
     private void setupInitialHistoryText(JPanel panel, String s) {
         JLabel initialHistoryText = new JLabel(s);
-        setLabelFont(initialHistoryText, SIDEPANEL_FONT_COLOR, 18);
+        setLabelFont(initialHistoryText, SIDE_PANEL_FONT_COLOR, LARGE_FONT_SIZE);
         panel.add(initialHistoryText);
     }
 
+    // MODIFIES: typingHistoryViewerPanel
+    // EFFECTS: constructs a panel with information of the ith typing practice and adds it to typingHistoryViewerPanel
     private void setupRunData(JPanel typingHistoryViewerPanel, int i) {
         JPanel gridForARun = new JPanel(new GridLayout(5, 1));
-        gridForARun.setBackground(MAINCONTAINER_COLOR);
+        gridForARun.setBackground(MAIN_CONTAINER_COLOR);
         JLabel yourRunNum = new JLabel("Your run #" + (i + 1));
-        JLabel optionSelected = new JLabel("Option selected: " + record.getNthTypingPrac(i).getFocus());
-        JLabel typingSpeed = new JLabel("Typing Speed (wpm): " + record.getNthTypingPrac(i).getWpm());
-        JLabel accuracy = new JLabel("Accuracy (%): " + record.getNthTypingPrac(i).getAccuracy());
+        JLabel optionSelected = new JLabel("Option selected: " + history.getNthTypingPrac(i).getFocus());
+        JLabel typingSpeed = new JLabel("Typing Speed (wpm): " + history.getNthTypingPrac(i).getWpm());
+        JLabel accuracy = new JLabel("Accuracy (%): " + history.getNthTypingPrac(i).getAccuracy());
         gridForARun.add(yourRunNum);
         gridForARun.add(optionSelected);
         gridForARun.add(typingSpeed);
         gridForARun.add(accuracy);
-        setLabelFont(yourRunNum, SIDEPANEL_FONT_COLOR, 14);
-        setLabelFont(optionSelected, SIDEPANEL_FONT_COLOR, 14);
-        setLabelFont(typingSpeed, SIDEPANEL_FONT_COLOR, 14);
-        setLabelFont(accuracy, SIDEPANEL_FONT_COLOR, 14);
+        setLabelFont(yourRunNum, SIDE_PANEL_FONT_COLOR, SMALL_FONT_SIZE);
+        setLabelFont(optionSelected, SIDE_PANEL_FONT_COLOR, SMALL_FONT_SIZE);
+        setLabelFont(typingSpeed, SIDE_PANEL_FONT_COLOR, SMALL_FONT_SIZE);
+        setLabelFont(accuracy, SIDE_PANEL_FONT_COLOR, SMALL_FONT_SIZE);
         typingHistoryViewerPanel.add(gridForARun);
     }
 
+    // MODIFIES: typingHistoryViewerPanel
+    // EFFECTS: constructs a panel with information about the user's average wpm and accuracy
+    //          and adds it to tpingHistoryViewerPanel
     private void setupAverageData(JPanel typingHistoryViewerPanel) {
         JPanel gridForAvgResult = new JPanel(new GridLayout(4, 1));
-        gridForAvgResult.setBackground(MAINCONTAINER_COLOR);
-        JLabel avgWpm = new JLabel("Your average typing speed is " + record.calculateAverageTypingSpeed()
+        gridForAvgResult.setBackground(MAIN_CONTAINER_COLOR);
+        JLabel avgWpm = new JLabel("Your average typing speed is " + history.calculateAverageTypingSpeed()
                 + " words per minute.");
         JLabel avgAcc = new JLabel("Your average accuracy is "
-                + record.calculateAverageAccuracy() + "%.");
+                + history.calculateAverageAccuracy() + "%.");
         gridForAvgResult.add(avgWpm);
         gridForAvgResult.add(avgAcc);
-        setLabelFont(avgWpm, SIDEPANEL_FONT_COLOR, 12);
-        setLabelFont(avgAcc, SIDEPANEL_FONT_COLOR, 12);
+        setLabelFont(avgWpm, SIDE_PANEL_FONT_COLOR, SMALL_FONT_SIZE);
+        setLabelFont(avgAcc, SIDE_PANEL_FONT_COLOR, SMALL_FONT_SIZE);
         typingHistoryViewerPanel.add(gridForAvgResult);
     }
 
-    private void setupTypingHistoryPanel(String loadResult) {
-        JTextArea typingHistoryTextArea = new JTextArea();
-        typingHistoryTextArea.setText(loadResult);
-        typingHistoryPanel.add(typingHistoryTextArea);
-        typingHistoryTextArea.setVisible(true);
-        typingHistoryTextArea.setFocusable(false);
-        typingHistoryPanel.setBackground(MAINCONTAINER_COLOR);
-        typingHistoryTextArea.setFont(new Font(typingHistoryTextArea.getFont().toString(), Font.PLAIN, 16));
-        typingHistoryTextArea.setForeground(SIDEPANEL_FONT_COLOR);
-        typingHistoryTextArea.setBackground(MAINCONTAINER_COLOR);
-        typingHistoryPanel.setVisible(true);
-        typingApplicationGUI.getTypingScreen().clearScreen();
-        typingApplicationGUI.add(typingHistoryPanel);
-        typingHistoryPanel.revalidate();
-        typingHistoryPanel.repaint();
-        typingApplicationGUI.revalidate();
-        typingApplicationGUI.repaint();
+    // MODIFIES: this
+    // EFFECTS: adds the given typingPractice to history
+    public void saveData(TypingPractice typingPractice) {
+        history.addUserHistory(typingPractice);
     }
 
-    // saves data to Record and returns String so it can used in TypingScreen for a good use (displays it below buttons)
-    public String saveData(TypingPractice typingPractice) {
-        record.addUserHistory(typingPractice);
-        return "Saved successfully!";
-    }
-
+    // MODIFIES: this
+    // EFFECTS: constructs a new empty history
     public void clearData() {
-        record = new Record();
+        history = new History();
     }
 }

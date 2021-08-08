@@ -8,36 +8,41 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 
-public class WelcomeScreen extends Screen {
+// represents the GUI for a title screen of an image with a "press any key to continue" feature
+public class TitleScreen {
     private TypingApplicationGUI typingApplicationGUI;
     JLabel picLabel;
 
-    public WelcomeScreen(TypingApplicationGUI typingApplicationGUI) {
+    // MODIFIES: this
+    // EFFECTS: constructs a new welcome screen with
+    public TitleScreen(TypingApplicationGUI typingApplicationGUI) {
         this.typingApplicationGUI = typingApplicationGUI;
     }
 
-    @Override
     // anonymous class and KeyListener information from Edu4Java
     // http://www.edu4java.com/en/game/game4.html
+
+    // MODIFIES: this
+    // EFFECTS: initializes necessary components of title screen
+    //          throws exception if there is no image found at the given path
     public void initialize() {
         try {
-//            Container titleContainer = typingApplicationGUI.getContentPane();
-            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./images/titleImage.png")));
+            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./data/titleImage.png")));
             picLabel = new JLabel();
             picLabel.setIcon(icon);
             typingApplicationGUI.add(picLabel);
             picLabel.setVisible(true);
             typingApplicationGUI.setVisible(true);
         } catch (Exception e) {
-            System.err.println("no image found!! bad stuff!!!!!");
+            System.err.println("No image found at ./data/titleImage.png!");
             e.printStackTrace();
         }
     }
 
     // MODIFIES: this
-    // EFFECTS: display the welcome screen and goes away after any key press
+    // EFFECTS: displays the title screen and removes the image to reveal main screen after any key press from user
     public void load() {
-        KeyListener welcomeListener = new KeyListener() {
+        KeyListener titleListener = new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
                 // we don't need this
@@ -54,6 +59,6 @@ public class WelcomeScreen extends Screen {
                 // we don't need this
             }
         };
-        typingApplicationGUI.addKeyListener(welcomeListener);
+        typingApplicationGUI.addKeyListener(titleListener);
     }
 }

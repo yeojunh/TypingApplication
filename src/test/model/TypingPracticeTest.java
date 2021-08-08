@@ -106,8 +106,7 @@ class TypingPracticeTest {
         assertTrue(testTyping.getShortPrac().contains("Trust the natural recursion."));
         assertTrue(testTyping.getShortPrac().contains("A foolish man is lactose intolerant. "
                 + "A wise man simply tolerates it."));
-        assertTrue(testTyping.getShortPrac().contains("Cats are rebellious creatures, "
-                + "but cows... cows are docile creatures."));
+        assertTrue(testTyping.getShortPrac().contains("Cats are rebellious animals, but cows... cows are docile."));
     }
 
     @Test
@@ -145,10 +144,10 @@ class TypingPracticeTest {
 
     @Test
     public void testComparePhraseToTypeAndUserTypedNone() {
-        ArrayList<String> phrase = new ArrayList<String>();
+        ArrayList<String> phrase = new ArrayList<>();
         phrase.add("Hello,");
         phrase.add("world!");
-        ArrayList<String> userTyped = new ArrayList<String>();
+        ArrayList<String> userTyped = new ArrayList<>();
         testTyping.setPhraseToTypeInWords(phrase);
         testTyping.setUserTypedInWords(userTyped);
         testTyping.comparePhraseToTypeAndUserTyped();
@@ -157,10 +156,10 @@ class TypingPracticeTest {
 
     @Test
     public void testComparePhraseToTypeAndUserTypedEqual() {
-        ArrayList<String> phrase = new ArrayList<String>();
+        ArrayList<String> phrase = new ArrayList<>();
         phrase.add("Hello,");
         phrase.add("world!");
-        ArrayList<String> userTyped = new ArrayList<String>();
+        ArrayList<String> userTyped = new ArrayList<>();
         userTyped.add("Hello,");
         userTyped.add("world!");
         testTyping.setPhraseToTypeInWords(phrase);
@@ -171,10 +170,10 @@ class TypingPracticeTest {
 
     @Test
     public void testComparePhraseToTypedAndUserTypedTooShort() {
-        ArrayList<String> phrase = new ArrayList<String>();
+        ArrayList<String> phrase = new ArrayList<>();
         phrase.add("Hello,");
         phrase.add("world!");
-        ArrayList<String> userTyped = new ArrayList<String>();
+        ArrayList<String> userTyped = new ArrayList<>();
         userTyped.add("Hello,");
         testTyping.setPhraseToTypeInWords(phrase);
         testTyping.setUserTypedInWords(userTyped);
@@ -184,10 +183,10 @@ class TypingPracticeTest {
 
     @Test
     public void testComparePhraseToTypedAndUserTypedTooLong() {
-        ArrayList<String> phrase = new ArrayList<String>();
+        ArrayList<String> phrase = new ArrayList<>();
         phrase.add("Hello,");
         phrase.add("world!");
-        ArrayList<String> userTyped = new ArrayList<String>();
+        ArrayList<String> userTyped = new ArrayList<>();
         userTyped.add("Hello,");
         userTyped.add("world!");
         userTyped.add(":)");
@@ -199,10 +198,10 @@ class TypingPracticeTest {
 
     @Test
     public void testComparePhraseToTypedAndUserTypedWrong() {
-        ArrayList<String> phrase = new ArrayList<String>();
+        ArrayList<String> phrase = new ArrayList<>();
         phrase.add("Hello,");
         phrase.add("world!");
-        ArrayList<String> userTyped = new ArrayList<String>();
+        ArrayList<String> userTyped = new ArrayList<>();
         userTyped.add("Hello,");
         userTyped.add("world????");
         userTyped.add(":)");
@@ -214,27 +213,16 @@ class TypingPracticeTest {
 
     @Test
     public void testComparePhraseToTypeAndUserTypedTooFewWordsAndTypo() {
-        ArrayList<String> phrase = new ArrayList<String>();
+        ArrayList<String> phrase = new ArrayList<>();
         phrase.add("Hello,");
         phrase.add("world!");
-        ArrayList<String> userTyped = new ArrayList<String>();
+        ArrayList<String> userTyped = new ArrayList<>();
         userTyped.add("world????");
         testTyping.setPhraseToTypeInWords(phrase);
         testTyping.setUserTypedInWords(userTyped);
         testTyping.comparePhraseToTypeAndUserTyped();
         assertEquals(2,testTyping.getNumWordsTypedIncorrectly());
     }
-
-//    @Test
-//    public void testCountdown() {
-//        // countdown() works the same regardless of focus
-//        try {
-//            testTyping.countdown();
-//        } catch (InterruptedException e) {
-//            fail();
-//        }
-//        assertTrue(testTyping.getIsTyping());
-//    }
 
     @Test
     public void testDetermineNumWordsAttemptedZero() {
@@ -315,7 +303,7 @@ class TypingPracticeTest {
         } catch (EmptyStringException e) {
             fail("It is not supposed to throw an exception");
         }
-        List<String> answer = new ArrayList<String>();
+        List<String> answer = new ArrayList<>();
         answer.add("Hello");
         assertEquals(answer, testTyping.getUserTypedInWords());
     }
@@ -328,7 +316,7 @@ class TypingPracticeTest {
         } catch (EmptyStringException e) {
             fail("It is not supposed to throw an exception");
         }
-        List<String> answer = new ArrayList<String>();
+        List<String> answer = new ArrayList<>();
         answer.add("Hello,");
         answer.add("world!");
         assertEquals(answer, testTyping.getUserTypedInWords());

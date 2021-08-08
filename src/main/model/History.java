@@ -10,21 +10,21 @@ import java.util.List;
 import static java.lang.Math.round;
 
 // Represents a list for a user's typing runs including the average wpm and accuracy
-public class Record implements Writable {
-    List<TypingPractice> record;
+public class History implements Writable {
+    List<TypingPractice> history;
     private double averageWpm;
     private double averageAccuracy;
 
     // constructor
     // EFFECTS: creates a new list of past typing practices for the current user
-    public Record() {
-        record = new ArrayList<TypingPractice>();
+    public History() {
+        history = new ArrayList<>();
     }
 
     // MODIFIES: this
     // EFFECTS: adds given typing practice result to user history
     public void addUserHistory(TypingPractice tp) {
-        record.add(tp);
+        history.add(tp);
         // we will not remove certain runs from user history - it defeats the purpose of having a history
     }
 
@@ -32,13 +32,13 @@ public class Record implements Writable {
     // EFFECTS: calculates, sets, and returns the average typing speed across all recorded runs
     public double calculateAverageTypingSpeed() {
         double avgWpm = 0;
-        if (record.isEmpty()) {
+        if (history.isEmpty()) {
             averageWpm = 0;
         } else {
-            for (TypingPractice next : record) {
+            for (TypingPractice next : history) {
                 avgWpm += next.getWpm();
             }
-            averageWpm = avgWpm / record.size();
+            averageWpm = avgWpm / history.size();
             averageWpm = roundToTwoDecimalPlaces(averageWpm);
         }
         return averageWpm;
@@ -48,13 +48,13 @@ public class Record implements Writable {
     // EFFECTS: calculates, sets, and returns the average accuracy across all recorded runs
     public double calculateAverageAccuracy() {
         double avgAcc = 0;
-        if (record.isEmpty()) {
+        if (history.isEmpty()) {
             averageAccuracy = 0;
         } else {
-            for (TypingPractice next: record) {
+            for (TypingPractice next: history) {
                 avgAcc += next.getAccuracy();
             }
-            averageAccuracy = avgAcc / record.size();
+            averageAccuracy = avgAcc / history.size();
             averageAccuracy = roundToTwoDecimalPlaces(averageAccuracy);
         }
         return averageAccuracy;
@@ -71,14 +71,14 @@ public class Record implements Writable {
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
-        json.put("history", recordToJson());
+        json.put("history", historyToJson());
         return json;
     }
 
-    // EFFECTS: returns typing practices in this record as JSONArray
-    public JSONArray recordToJson() {
+    // EFFECTS: returns typing practices in this history as JSONArray
+    public JSONArray historyToJson() {
         JSONArray jsonArray = new JSONArray();
-        for (TypingPractice tp : record) {
+        for (TypingPractice tp : history) {
             jsonArray.put(tp.toJson());
         }
         return jsonArray;
@@ -87,7 +87,7 @@ public class Record implements Writable {
 
     // getters
     public int size() {
-        return record.size();
+        return history.size();
     }
 
     public double getAverageWpm() {
@@ -99,10 +99,10 @@ public class Record implements Writable {
     }
 
     public List<TypingPractice> getUserHistory() {
-        return record;
+        return history;
     }
 
     public TypingPractice getNthTypingPrac(int n) {
-        return record.get(n);
+        return history.get(n);
     }
 }

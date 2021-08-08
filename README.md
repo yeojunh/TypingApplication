@@ -20,7 +20,7 @@ There are many online typing practices like [monkeytype](https://monkeytype.com/
 - As a user, I want to be able to view my typing speed and accuracy 
 - As a user, I want to be able to select which area I want to focus on 
             (regular, short phrases, punctuation-focused, number-focused)
-- As a user, I want to be able to add my current typing run to my record of typing results, and any upcoming runs 
+- As a user, I want to be able to add my current typing run to my history of typing results, and any upcoming runs 
 - As a user, I want to be able to view a list of previous typing results 
             with their respective typing speed and accuracy, and the overall typing speed and accuracy
 - As a user, I want to be able to save my typing history to file

@@ -22,13 +22,13 @@ public class TypingPractice implements Writable {
     private double startTime;
     private double endTime;
 
-    private List<String> regularPrac = new ArrayList<String>();
-    private List<String> shortPrac = new ArrayList<String>();
-    private List<String> punctuationPrac = new ArrayList<String>();
-    private List<String> numberPrac = new ArrayList<String>();
+    private List<String> regularPrac = new ArrayList<>();
+    private List<String> shortPrac = new ArrayList<>();
+    private List<String> punctuationPrac = new ArrayList<>();
+    private List<String> numberPrac = new ArrayList<>();
 
-    private ArrayList<String> phraseToTypeInWords = new ArrayList<String>();
-    private ArrayList<String> userTypedInWords = new ArrayList<String>();
+    private ArrayList<String> phraseToTypeInWords = new ArrayList<>();
+    private ArrayList<String> userTypedInWords = new ArrayList<>();
     private String userTypingInput;
 
     // constructor
@@ -138,14 +138,14 @@ public class TypingPractice implements Writable {
             }
         } else if (phraseToTypeInWords.size() > userTypedInWords.size()) { // user typed too few words
             numWordsTypedIncorrectly += phraseToTypeInWords.size() - userTypedInWords.size();
-            for (int i = 0; i < userTypedInWords.size(); i++) {
-                if (!phraseToTypeInWords.contains(userTypedInWords.get(i))) {
+            for (String userTypedInWord : userTypedInWords) {
+                if (!phraseToTypeInWords.contains(userTypedInWord)) {
                     numWordsTypedIncorrectly++;
                 }
             }
         } else { // phraseToTypeWords.size() < userTypedWords.size(), user typed too many words
-            for (int i = 0; i < phraseToTypeInWords.size(); i++) {
-                if (!userTypedInWords.contains(phraseToTypeInWords.get(i))) {
+            for (String phraseToTypeInWord : phraseToTypeInWords) {
+                if (!userTypedInWords.contains(phraseToTypeInWord)) {
                     numWordsTypedIncorrectly++;
                 }
             }
@@ -159,25 +159,18 @@ public class TypingPractice implements Writable {
     public void setupWordsAndArrayLists(String userTyped) throws EmptyStringException {
         if (userTyped.equals("")) {
             String[] phraseToTypeWords0 = phraseToType.split(" ");
-            for (String next : phraseToTypeWords0) {
-                phraseToTypeInWords.add(next);
-            }
+            Collections.addAll(phraseToTypeInWords, phraseToTypeWords0);
             throw new EmptyStringException();
         } else if (!userTyped.contains(" ")) {
             String[] phraseToTypeWords0 = phraseToType.split(" ");
-            for (String next : phraseToTypeWords0) {
-                phraseToTypeInWords.add(next);
-            }
+            Collections.addAll(phraseToTypeInWords, phraseToTypeWords0);
             userTypedInWords.add(userTyped);
         } else {
             String[] phraseToTypeWords0 = phraseToType.split(" ");
             String[] userTypedWords0 = userTyped.split(" ");
-            for (String next : phraseToTypeWords0) {
-                phraseToTypeInWords.add(next);
-            } // put the word into ArrayList - ArrayList is easier to work with than Array
-            for (String next : userTypedWords0) {
-                userTypedInWords.add(next);
-            }
+            // put the word into ArrayList - ArrayList is easier to work with than Array
+            phraseToTypeInWords.addAll(Arrays.asList(phraseToTypeWords0));
+            userTypedInWords.addAll(Arrays.asList(userTypedWords0));
         }
     }
 
@@ -210,7 +203,7 @@ public class TypingPractice implements Writable {
                 "The quick brown fox jumps over the lazy dog.",
                 "Trust the natural recursion.",
                 "A foolish man is lactose intolerant. A wise man simply tolerates it.",
-                "Cats are rebellious creatures, but cows... cows are docile creatures."};
+                "Cats are rebellious animals, but cows... cows are docile."};
         shortPrac.addAll(Arrays.asList(shortPhrases));
     }
 
