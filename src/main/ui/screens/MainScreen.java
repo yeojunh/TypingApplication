@@ -1,18 +1,16 @@
 package ui.screens;
 
-import javafx.beans.property.adapter.JavaBeanLongPropertyBuilder;
-import jdk.nashorn.internal.ir.ContinueNode;
 import model.Record;
 import persistence.JsonReader;
 import persistence.JsonWriter;
-import ui.TypingApplication;
+import ui.TypingApplicationGUI;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 // Layout tutorial from Madsycode on YouTube
@@ -20,7 +18,7 @@ import java.io.IOException;
 
 // represents a main screen for the UI, including the top, left, right, and center panels
 public class MainScreen extends Screen implements ActionListener {
-    protected TypingApplication typingApplication;
+    protected TypingApplicationGUI typingApplicationGUI;
     protected JPanel centrePanel;
     protected JButton regularBtn;
     protected JButton shortBtn;
@@ -46,8 +44,8 @@ public class MainScreen extends Screen implements ActionListener {
     protected static final Color SIDEPANEL_FONT_COLOR = Color.white;
     protected String filler = "    ";
 
-    public MainScreen(TypingApplication typingApplication) {
-        this.typingApplication = typingApplication;
+    public MainScreen(TypingApplicationGUI typingApplicationGUI) {
+        this.typingApplicationGUI = typingApplicationGUI;
     }
 
     @Override
@@ -214,7 +212,7 @@ public class MainScreen extends Screen implements ActionListener {
 
     // sets up the main (overall) container for the UI
     public void setupMainContainer() {
-        mainContainer = typingApplication.getContentPane();
+        mainContainer = typingApplicationGUI.getContentPane();
         mainContainer.setLayout(new BorderLayout(HGAP, VGAP));
         mainContainer.setBackground(MAINCONTAINER_COLOR);
     }
@@ -241,9 +239,10 @@ public class MainScreen extends Screen implements ActionListener {
         return button;
     }
 
+    // todo: make it display the output when you save/load/clear
     public void actionPerformed(ActionEvent e) {
-        TypingScreen typingScreen = typingApplication.getTypingScreen();
-        HistoryScreen historyScreen = typingApplication.getHistoryScreen();
+        TypingScreen typingScreen = typingApplicationGUI.getTypingScreen();
+        HistoryScreen historyScreen = typingApplicationGUI.getHistoryScreen();
         centrePanel.setVisible(false);
         if ("Regular".equals(e.getActionCommand())) {
             typingScreen.loadRegularTyping();
@@ -254,9 +253,9 @@ public class MainScreen extends Screen implements ActionListener {
         } else if ("Number".equals(e.getActionCommand())) {
             typingScreen.loadNumberTyping();
         } else if ("View Typing History".equals(e.getActionCommand())) {
-            historyScreen.loadTypingHistory(); // maybe this shouldn't be on typing screen...?
+            historyScreen.loadTypingHistory();
         } else if ("Save Data".equals(e.getActionCommand())) {
-            historyScreen.saveDataToJson();
+            saveDataToJson();
         } else if ("Load Data".equals(e.getActionCommand())) {
             loadDataFromJson();
             historyScreen.loadTypingHistory();
@@ -266,6 +265,7 @@ public class MainScreen extends Screen implements ActionListener {
         }
     }
 
+    // todo: make it output whatever response this is
     public void loadDataFromJson() {
         try {
             record = jsonReader.read();
@@ -273,7 +273,23 @@ public class MainScreen extends Screen implements ActionListener {
         } catch (IOException e) {
             System.out.println("Unable to read from file " + JSON_STORE);
         }
-        System.out.println("pretend that the app successfully loaded the file");
+    }
+
+    // todo: make it output the response from writeToJson()
+    public void saveDataToJson() {
+        typingApplicationGUI.add(new JLabel(writeToJson()));
+    }
+
+    // make it output whatever this is
+    public String writeToJson() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(record);
+            jsonWriter.close();
+        } catch (FileNotFoundException e) {
+            return "Unable to write to file: " + JSON_STORE;
+        }
+        return "Saved current history to " + JSON_STORE;
     }
 
     public JPanel getCentrePanel() {

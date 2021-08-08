@@ -18,7 +18,7 @@ import java.util.concurrent.CountDownLatch;
 
 // Graphical User Interface Implementation with Swing
 // Familiarizing Swing's GUI before actual implementation
-public class TypingApplication extends JFrame {
+public class TypingApplicationGUI extends JFrame {
     private static final int SCREEN_WIDTH = 1500;       // title image width
     private static final int SCREEN_HEIGHT = 866;       // title image height but only works in frames...
     private static final int MIN_WIDTH = 1250;
@@ -26,6 +26,7 @@ public class TypingApplication extends JFrame {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private static final String JSON_STORE = "./data/record.json";
+    private JFrame frame;
 
     private WelcomeScreen welcomeScreen;
     private MainScreen mainScreen;
@@ -35,8 +36,8 @@ public class TypingApplication extends JFrame {
     // https://stackoverflow.com/questions/19025366/wait-until-boolean-value-changes-it-state
     public final CountDownLatch latch = new CountDownLatch(1);      // "type anything to continue" from welcomeScreen
 
-    public TypingApplication() throws InterruptedException, IOException {
-        JFrame frame = new JFrame();
+    public TypingApplicationGUI() throws InterruptedException, IOException {
+        frame = new JFrame();
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         panel.setLayout(new GridLayout());
@@ -44,6 +45,9 @@ public class TypingApplication extends JFrame {
         jsonReader = new JsonReader(JSON_STORE);
         initializeTypingApplication();
     }
+
+    // effects for runTyping(): while the app is on, keeps the typing test going
+    //          and prompts the user to choose an option
 
     public void initializeTypingApplication() throws InterruptedException, IOException {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -62,20 +66,10 @@ public class TypingApplication extends JFrame {
         setResizable(true);
         setLocationRelativeTo(null); // this line makes the window centered (only mainScreen though)
 
-        runTyping();
-    }
-
-    // EFFECTS: while the app is on, keeps the typing test going
-    //          and prompts the user to choose an option 
-    public void runTyping() {
-        // initial setup for the GUI screen
         mainScreen.load();
-
-//        while (appOn) {
-//            // todo: repetition stuff
-//
-//        }
     }
+
+
 
     private void initializeWelcome() {
         welcomeScreen = new WelcomeScreen(this);

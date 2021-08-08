@@ -105,7 +105,6 @@ public class TypingApp {
             runTyping();
         }
     }
-    // todo: if extra time: make loading default and allow user to start from scratch if wanted
 
     // MODIFIES: this
     // EFFECTS: starts the typing test run and asks the user if they want to add this run to their typing history
@@ -227,7 +226,6 @@ public class TypingApp {
             System.out.println("Your average accuracy is " + record.calculateAverageAccuracy() + "%.");
         }
     }
-    // todo: if extra time, add user's name to persistence it so that they can retrieve their own data
 
     // MODIFIES: typingPractice
     // EFFECTS: counts down 3 seconds until the user can type and starts stopwatch

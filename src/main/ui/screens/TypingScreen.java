@@ -1,17 +1,14 @@
 package ui.screens;
 
 import model.TypingPractice;
-import ui.TypingApplication;
+import ui.TypingApplicationGUI;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.sql.Time;
 import java.util.ArrayList;
 
 import static java.lang.Thread.sleep;
@@ -31,10 +28,10 @@ public class TypingScreen extends MainScreen {
     private JButton yesBtn;
     private JButton noBtn;
 
-    public TypingScreen(TypingApplication typingApplication) {
-        super(typingApplication);
-        mainContainer = typingApplication.getContentPane();
-        centrePanel = typingApplication.getMainScreen().getCentrePanel();
+    public TypingScreen(TypingApplicationGUI typingApplicationGUI) {
+        super(typingApplicationGUI);
+        mainContainer = typingApplicationGUI.getContentPane();
+        centrePanel = typingApplicationGUI.getMainScreen().getCentrePanel();
         typingScreenPanel = new JPanel();
         typingScreenLabel = new JLabel();
         userInput = "";
@@ -111,7 +108,6 @@ public class TypingScreen extends MainScreen {
         return textArea;
     }
 
-    // REQUIRES: focus must be one of: regular, short, punctuation, or number //todo: exceptions
     // EFFECTS: returns the typing practice phrase for the user to type
     public String getTypingText(String focus) {
         typingPractice = new TypingPractice(focus);
@@ -204,7 +200,7 @@ public class TypingScreen extends MainScreen {
     }
 
     public void actionPerformed(ActionEvent e) {
-        HistoryScreen historyScreen = typingApplication.getHistoryScreen();
+        HistoryScreen historyScreen = typingApplicationGUI.getHistoryScreen();
         centrePanel.setVisible(false);
         if ("Save".equals(e.getActionCommand())) {
             displayBelowButton(historyScreen.saveData(typingPractice));

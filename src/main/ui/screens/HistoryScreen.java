@@ -2,45 +2,19 @@ package ui.screens;
 
 import model.Record;
 import model.TypingPractice;
-import ui.TypingApplication;
+import ui.TypingApplicationGUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class HistoryScreen extends MainScreen {
     private JPanel typingHistoryPanel;
 
-    public HistoryScreen(TypingApplication typingApplication) {
-        super(typingApplication);
+    public HistoryScreen(TypingApplicationGUI typingApplicationGUI) {
+        super(typingApplicationGUI);
         typingHistoryPanel = new JPanel();
     }
 
-//    public void loadTypingHistory() {
-//        clearTypingHistoryPanel();
-//        typingHistoryPanel.setVisible(true);
-//        record.getUserHistory();
-//        String loadResult;
-//        if (record.size() == 0) {
-//            loadResult = "You have no previous typing practice history. Try one out now!";
-//        } else {
-//            loadResult = "You have practiced " + record.size() + " time(s).\n\n";
-//            for (int i = 0; i < record.size(); i++) {
-//                loadResult += "Your run #" + (i + 1) + "\n  Option selected: "
-//                        + record.getNthTypingPrac(i).getFocus() + "\n  Typing Speed (wpm):  "
-//                        + record.getNthTypingPrac(i).getWpm() + "\n  Accuracy (%): "
-//                        + record.getNthTypingPrac(i).getAccuracy() + "\n";
-//            }
-//            loadResult += "\nYour average typing speed is " + record.calculateAverageTypingSpeed()
-//                    + " words per minute.\n";
-//            loadResult += "Your average accuracy is " + record.calculateAverageAccuracy() + "%.";
-//        }
-//        setupTypingHistoryPanel(loadResult);
-//        System.out.println(loadResult);
-//    }
-
-    // redo but with labels instead of TypingArea
     public void loadTypingHistory() {
         int numRows = 0;
         JPanel typingHistoryViewerPanel = new JPanel();
@@ -60,7 +34,7 @@ public class HistoryScreen extends MainScreen {
             numRows += 2;
         }
         typingHistoryViewerPanel.setLayout(new GridLayout(numRows, 2));
-        typingApplication.add(typingHistoryViewerPanel);
+        typingApplicationGUI.add(typingHistoryViewerPanel);
         typingHistoryViewerPanel.setVisible(true);
         typingHistoryViewerPanel.revalidate();
         typingHistoryViewerPanel.repaint();
@@ -115,12 +89,12 @@ public class HistoryScreen extends MainScreen {
         typingHistoryTextArea.setForeground(SIDEPANEL_FONT_COLOR);
         typingHistoryTextArea.setBackground(MAINCONTAINER_COLOR);
         typingHistoryPanel.setVisible(true);
-        typingApplication.getTypingScreen().clearScreen();
-        typingApplication.add(typingHistoryPanel);
+        typingApplicationGUI.getTypingScreen().clearScreen();
+        typingApplicationGUI.add(typingHistoryPanel);
         typingHistoryPanel.revalidate();
         typingHistoryPanel.repaint();
-        typingApplication.revalidate();
-        typingApplication.repaint();
+        typingApplicationGUI.revalidate();
+        typingApplicationGUI.repaint();
     }
 
     // saves data to Record and returns String so it can used in TypingScreen for a good use (displays it below buttons)
@@ -129,24 +103,7 @@ public class HistoryScreen extends MainScreen {
         return "Saved successfully!";
     }
 
-    // todo: need to be revised, i just copied this from TypingApp
-    public void saveDataToJson() {
-        typingApplication.add(new JLabel(writeToJson()));
-    }
-
-    public String writeToJson() {
-        try {
-            jsonWriter.open();
-            jsonWriter.write(record);
-            jsonWriter.close();
-        } catch (FileNotFoundException e) {
-            return "Unable to write to file: " + JSON_STORE;
-        }
-        return "Saved current history to " + JSON_STORE;
-    }
-
     public void clearData() {
         record = new Record();
-        System.out.println("pretend that the app successfully cleared the data");
     }
 }

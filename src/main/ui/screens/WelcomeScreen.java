@@ -1,20 +1,19 @@
 package ui.screens;
 
-import ui.TypingApplication;
+import ui.TypingApplicationGUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 
 public class WelcomeScreen extends Screen {
-    private TypingApplication typingApplication;
+    private TypingApplicationGUI typingApplicationGUI;
     JLabel picLabel;
 
-    public WelcomeScreen(TypingApplication typingApplication) {
-        this.typingApplication = typingApplication;
+    public WelcomeScreen(TypingApplicationGUI typingApplicationGUI) {
+        this.typingApplicationGUI = typingApplicationGUI;
     }
 
     @Override
@@ -22,13 +21,13 @@ public class WelcomeScreen extends Screen {
     // http://www.edu4java.com/en/game/game4.html
     public void initialize() {
         try {
-//            Container titleContainer = typingApplication.getContentPane();
+//            Container titleContainer = typingApplicationGUI.getContentPane();
             ImageIcon icon = new ImageIcon(ImageIO.read(new File("./images/titleImage.png")));
             picLabel = new JLabel();
             picLabel.setIcon(icon);
-            typingApplication.add(picLabel);
+            typingApplicationGUI.add(picLabel);
             picLabel.setVisible(true);
-            typingApplication.setVisible(true);
+            typingApplicationGUI.setVisible(true);
         } catch (Exception e) {
             System.err.println("no image found!! bad stuff!!!!!");
             e.printStackTrace();
@@ -47,7 +46,7 @@ public class WelcomeScreen extends Screen {
             @Override
             public void keyPressed(KeyEvent e) {
                 picLabel.setVisible(false);
-                typingApplication.latch.countDown();
+                typingApplicationGUI.latch.countDown();
             }
 
             @Override
@@ -55,6 +54,6 @@ public class WelcomeScreen extends Screen {
                 // we don't need this
             }
         };
-        typingApplication.addKeyListener(welcomeListener);
+        typingApplicationGUI.addKeyListener(welcomeListener);
     }
 }

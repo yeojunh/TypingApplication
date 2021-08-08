@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
 //        new TypingApp();
         try {
-            new TypingApplication();
+            new TypingApplicationGUI();
         } catch (InterruptedException | IOException e) {
             System.err.println("interrupted latch call");
         }

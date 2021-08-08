@@ -8,5 +8,10 @@
         "wpm": 75.61,
         "focus": "short",
         "accuracy": 100
+    },
+    {
+        "wpm": 77.37,
+        "focus": "short",
+        "accuracy": 90
     }
 ]}
