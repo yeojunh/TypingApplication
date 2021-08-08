@@ -37,10 +37,6 @@ public class TypingApplicationGUI extends JFrame {
     public final CountDownLatch latch = new CountDownLatch(1);      // "type anything to continue" from welcomeScreen
 
     public TypingApplicationGUI() throws InterruptedException, IOException {
-        frame = new JFrame();
-        JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
-        panel.setLayout(new GridLayout());
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         initializeTypingApplication();
@@ -48,9 +44,9 @@ public class TypingApplicationGUI extends JFrame {
 
     // effects for runTyping(): while the app is on, keeps the typing test going
     //          and prompts the user to choose an option
-
     public void initializeTypingApplication() throws InterruptedException, IOException {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Bread Nut Typing App Pro :)");
         setResizable(false);
 //        setPreferredSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
