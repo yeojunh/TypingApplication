@@ -1,11 +1,13 @@
 package ui.screens;
 
+import model.Record;
 import model.TypingPractice;
 import ui.TypingApplication;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class HistoryScreen extends MainScreen {
     private JPanel typingHistoryPanel;
@@ -128,7 +130,11 @@ public class HistoryScreen extends MainScreen {
     }
 
     // todo: need to be revised, i just copied this from TypingApp
-    public String saveDataToJson() {
+    public void saveDataToJson() {
+        typingApplication.add(new JLabel(writeToJson()));
+    }
+
+    public String writeToJson() {
         try {
             jsonWriter.open();
             jsonWriter.write(record);
@@ -139,11 +145,8 @@ public class HistoryScreen extends MainScreen {
         return "Saved current history to " + JSON_STORE;
     }
 
-    public void loadDataFromJson() {
-        System.out.println("pretend that the app successfully loaded the file");
-    }
-
     public void clearData() {
+        record = new Record();
         System.out.println("pretend that the app successfully cleared the data");
     }
 }

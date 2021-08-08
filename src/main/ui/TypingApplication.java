@@ -20,7 +20,7 @@ import java.util.concurrent.CountDownLatch;
 // Familiarizing Swing's GUI before actual implementation
 public class TypingApplication extends JFrame {
     private static final int SCREEN_WIDTH = 1500;       // title image width
-    private static final int SCREEN_HEIGHT = 866;       // title image height
+    private static final int SCREEN_HEIGHT = 866;       // title image height but only works in frames...
     private static final int MIN_WIDTH = 1250;
     private static final int MIN_HEIGHT = 700;
     private JsonWriter jsonWriter;

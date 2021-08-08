@@ -13,6 +13,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 // Layout tutorial from Madsycode on YouTube
 // https://www.youtube.com/watch?v=Cxp_HvXZh6g
@@ -51,16 +52,16 @@ public class MainScreen extends Screen implements ActionListener {
 
     @Override
     public void initialize() {
+        record = new Record();
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        loadDataFromJson();
         setupButtons();
         setupMainContainer();
         setupTopPanel(mainContainer);
         setupLeftPanel(mainContainer);
         setupRightPanel(mainContainer);
         setupCentrePanel();
-
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
-        record = new Record();
     }
 
     @Override
@@ -257,17 +258,25 @@ public class MainScreen extends Screen implements ActionListener {
         } else if ("Save Data".equals(e.getActionCommand())) {
             historyScreen.saveDataToJson();
         } else if ("Load Data".equals(e.getActionCommand())) {
-            historyScreen.loadDataFromJson();
+            loadDataFromJson();
+            historyScreen.loadTypingHistory();
         } else {
             historyScreen.clearData();
+            historyScreen.loadTypingHistory();
         }
+    }
+
+    public void loadDataFromJson() {
+        try {
+            record = jsonReader.read();
+            System.out.println("Loaded previous typing history from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file " + JSON_STORE);
+        }
+        System.out.println("pretend that the app successfully loaded the file");
     }
 
     public JPanel getCentrePanel() {
         return centrePanel;
-    }
-
-    public Container getMainContainer() {
-        return mainContainer;
     }
 }
