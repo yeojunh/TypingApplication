@@ -12,9 +12,12 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-// represents the centre panel that handles the typing test area of the application
+// Represents the centre panel that handles the typing test area of the application
 public class TypingScreen extends MainScreen {
     private static final int TYPING_AREA_COL = 40;
+    private static final int TYPING_FIELD_FONT_SIZE = 20;
+    private static final int RESULT_AREA_FONT_SIZE = 18;
+    private static final int NEW_LINE_EVERY_N_WORDS = 8;
     private TypingPractice typingPractice;
     private JPanel resultPanel;
     private JPanel typingScreenPanel;
@@ -69,16 +72,21 @@ public class TypingScreen extends MainScreen {
         typingScreenPanel.repaint();
     }
 
+    // REQUIRES: focus must be one of "regular", "short", "punctuation", or "number"
     // MODIFIES: this
     // EFFECTS: plays audio and set sets up a new typingScreenPanel, label, and validates panel
     public void setupTypingPanel(String labelText, String focus) {
         playAudio("boopAudio");
         typingScreenLabel.setText(labelText);
+        JLabel pressEnterWhenDoneLabel = new JLabel("Press ENTER when finished to calculate your result!");
+        setLabelFont(pressEnterWhenDoneLabel, SIDE_PANEL_FONT_COLOR, TYPING_FIELD_FONT_SIZE);
+        pressEnterWhenDoneLabel.setBackground(MAIN_CONTAINER_COLOR);
         typingScreenPanel.setBackground(MAIN_CONTAINER_COLOR);
         typingScreenLabel.setBackground(MAIN_CONTAINER_COLOR);
-        setLabelFont(typingScreenLabel, SIDE_PANEL_FONT_COLOR, 20);
+        setLabelFont(typingScreenLabel, SIDE_PANEL_FONT_COLOR, SIDE_PANEL_FONT_SIZE);
         typingScreenLabel.setBorder(new EmptyBorder(10, 0, 20,0));
         typingScreenPanel.add(typingScreenLabel);
+        typingScreenPanel.add(pressEnterWhenDoneLabel);
         typingScreenPanel.add(setupTextToShow(getTypingText(focus)));
         typingScreenPanel.add(setupTypingArea());
         mainContainer.add(centrePanel, BorderLayout.CENTER);
@@ -87,14 +95,14 @@ public class TypingScreen extends MainScreen {
         mainContainer.revalidate();
     }
 
-    // EFFECTS: returns a JTextArea for the phrase the user has to type, with a new line every 10 words
+    // EFFECTS: returns a JTextArea for the phrase the user has to type, with a new line every n words
     public JTextArea setupTextToShow(String phraseToType) {
         String actualPhraseToType = "";
 
         String[] wordsToTypeArray = phraseToType.split(" ");
         ArrayList<String> phraseToTypeArray = new ArrayList<>(Arrays.asList(wordsToTypeArray));
         for (int i = 0; i < phraseToTypeArray.size(); i++) {
-            if (i % 10 == 0) {
+            if (i % NEW_LINE_EVERY_N_WORDS == 0) {
                 phraseToTypeArray.add(i, "\n");
             }
         }
@@ -105,7 +113,7 @@ public class TypingScreen extends MainScreen {
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setFocusable(false);
-        textArea.setFont(new Font(textArea.getFont().toString(), Font.PLAIN, 20));
+        textArea.setFont(new Font(textArea.getFont().toString(), Font.PLAIN, SIDE_PANEL_FONT_SIZE));
         textArea.setBackground(MAIN_CONTAINER_COLOR);
         textArea.setForeground(SIDE_PANEL_FONT_COLOR);
         textArea.setText(actualPhraseToType);
@@ -120,6 +128,7 @@ public class TypingScreen extends MainScreen {
         return phraseToType;
     }
 
+    // MODIFIES: this
     // EFFECTS: constructs a typing field for the user to type with a key listener
     //          Registers the end of user input when the user presses enter
     public JPanel setupTypingArea() {
@@ -168,7 +177,7 @@ public class TypingScreen extends MainScreen {
     public void setupTypingAreaTextField(JTextField textField) {
         textField.setBackground(MAIN_CONTAINER_COLOR);
         textField.setForeground(SIDE_PANEL_FONT_COLOR);
-        textField.setFont(new Font(textField.getFont().toString(), Font.PLAIN, 18));
+        textField.setFont(new Font(textField.getFont().toString(), Font.PLAIN, TYPING_FIELD_FONT_SIZE));
         textField.setEditable(true);
     }
 
@@ -188,7 +197,7 @@ public class TypingScreen extends MainScreen {
                 + "  Your accuracy is: " + typingPractice.getAccuracy() + "%  \n";
         resultTextArea.setText(output);
         resultTextArea.setBackground(TOP_PANEL_COLOR);
-        resultTextArea.setFont(new Font(resultTextArea.getFont().toString(), Font.ITALIC, 15));
+        resultTextArea.setFont(new Font(resultTextArea.getFont().toString(), Font.ITALIC, RESULT_AREA_FONT_SIZE));
 
         resultPanel.add(setupResultAreaSavePrompt());
         resultPanel.setLayout(new BoxLayout(resultPanel,1));
@@ -211,7 +220,7 @@ public class TypingScreen extends MainScreen {
         savePromptPanel.add(noBtn);
         savePromptPanel.setBackground(TOP_PANEL_COLOR);
         savePromptPanel.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, MAIN_CONTAINER_COLOR));
-        setLabelFont(savePromptLabel, Color.black, 15);
+        setLabelFont(savePromptLabel, Color.black, RESULT_AREA_FONT_SIZE);
         return savePromptPanel;
     }
 
@@ -241,7 +250,7 @@ public class TypingScreen extends MainScreen {
         chooseAnOptionPanel.add(chooseAnOptionLabel);
         chooseAnOptionPanel.setBackground(TOP_PANEL_COLOR);
         chooseAnOptionPanel.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, MAIN_CONTAINER_COLOR));
-        setLabelFont(chooseAnOptionLabel, Color.black, 15);
+        setLabelFont(chooseAnOptionLabel, Color.black, RESULT_AREA_FONT_SIZE);
         chooseAnOptionLabel.setVisible(true);
         chooseAnOptionPanel.setVisible(true);
         resultPanel.add(chooseAnOptionPanel);

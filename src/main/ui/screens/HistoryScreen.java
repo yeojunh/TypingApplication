@@ -7,10 +7,10 @@ import ui.TypingApplicationGUI;
 import javax.swing.*;
 import java.awt.*;
 
-// represents the centre panel that handles the user's typing history display of the application
+// Represents the centre panel that handles the user's typing history display of the application
 public class HistoryScreen extends MainScreen {
-    public static final int LARGE_FONT_SIZE = 18;
-    public static final int SMALL_FONT_SIZE = 14;
+    public static final int HISTORY_TITLE_FONT_SIZE = 20;
+    public static final int HISTORY_CONTENT_FONT_SIZE = 18;
 
     // EFFECTS: creates a HistoryScreen with the given typingApplicationGUI
     public HistoryScreen(TypingApplicationGUI typingApplicationGUI) {
@@ -26,9 +26,8 @@ public class HistoryScreen extends MainScreen {
         JPanel typingHistoryViewerPanel = new JPanel();
         typingHistoryViewerPanel.setBackground(MAIN_CONTAINER_COLOR);
         if (history.size() == 0) {
-            setupInitialHistoryText(typingHistoryViewerPanel,
-                    "You have no previous typing practice history. Try one out now!");
-            numRows = 1;
+            setupInitialHistoryTexts(typingHistoryViewerPanel);
+            numRows = 5;
         } else {
             setupInitialHistoryText(typingHistoryViewerPanel, "You have practiced " + history.size() + " time(s):\n");
             for (int i = 0; i < history.size(); i++) {
@@ -45,11 +44,22 @@ public class HistoryScreen extends MainScreen {
         typingHistoryViewerPanel.repaint();
     }
 
+    // MODIFIES: typingHIstoryViewerPanel
+    // EFFECTS: sets up the instructions for typing history viewer panel for when the user has no previous history
+    private void setupInitialHistoryTexts(JPanel typingHistoryViewerPanel) {
+        setupInitialHistoryText(typingHistoryViewerPanel,
+                "You have no previous typing practice history. Try one out now!");
+        setupInitialHistoryText(typingHistoryViewerPanel,
+                "If you have just cleared your typing history and would like to retrieve it,");
+        setupInitialHistoryText(typingHistoryViewerPanel,
+                "then press the LOAD button!");
+    }
+
     // MODIFIES: panel
     // EFFECTS: constructs a label for the first line of typing history and places it inside the given panel
     private void setupInitialHistoryText(JPanel panel, String s) {
         JLabel initialHistoryText = new JLabel(s);
-        setLabelFont(initialHistoryText, SIDE_PANEL_FONT_COLOR, LARGE_FONT_SIZE);
+        setLabelFont(initialHistoryText, SIDE_PANEL_FONT_COLOR, HISTORY_TITLE_FONT_SIZE);
         panel.add(initialHistoryText);
     }
 
@@ -66,10 +76,10 @@ public class HistoryScreen extends MainScreen {
         gridForARun.add(optionSelected);
         gridForARun.add(typingSpeed);
         gridForARun.add(accuracy);
-        setLabelFont(yourRunNum, SIDE_PANEL_FONT_COLOR, SMALL_FONT_SIZE);
-        setLabelFont(optionSelected, SIDE_PANEL_FONT_COLOR, SMALL_FONT_SIZE);
-        setLabelFont(typingSpeed, SIDE_PANEL_FONT_COLOR, SMALL_FONT_SIZE);
-        setLabelFont(accuracy, SIDE_PANEL_FONT_COLOR, SMALL_FONT_SIZE);
+        setLabelFont(yourRunNum, SIDE_PANEL_FONT_COLOR, HISTORY_CONTENT_FONT_SIZE);
+        setLabelFont(optionSelected, SIDE_PANEL_FONT_COLOR, HISTORY_CONTENT_FONT_SIZE);
+        setLabelFont(typingSpeed, SIDE_PANEL_FONT_COLOR, HISTORY_CONTENT_FONT_SIZE);
+        setLabelFont(accuracy, SIDE_PANEL_FONT_COLOR, HISTORY_CONTENT_FONT_SIZE);
         typingHistoryViewerPanel.add(gridForARun);
     }
 
@@ -85,8 +95,8 @@ public class HistoryScreen extends MainScreen {
                 + history.calculateAverageAccuracy() + "%.");
         gridForAvgResult.add(avgWpm);
         gridForAvgResult.add(avgAcc);
-        setLabelFont(avgWpm, SIDE_PANEL_FONT_COLOR, SMALL_FONT_SIZE);
-        setLabelFont(avgAcc, SIDE_PANEL_FONT_COLOR, SMALL_FONT_SIZE);
+        setLabelFont(avgWpm, SIDE_PANEL_FONT_COLOR, HISTORY_CONTENT_FONT_SIZE);
+        setLabelFont(avgAcc, SIDE_PANEL_FONT_COLOR, HISTORY_CONTENT_FONT_SIZE);
         typingHistoryViewerPanel.add(gridForAvgResult);
     }
 

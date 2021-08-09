@@ -10,9 +10,10 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-// Typing practice application with Console User Interface
 // Reference: CPSC 210 TellerApp example
 // https://github.students.cs.ubc.ca/CPSC210/TellerApp
+
+// Typing practice application with Console User Interface
 public class TypingApp {
     private static final String JSON_STORE = "./data/history.json";
     private TypingPractice typingPractice;

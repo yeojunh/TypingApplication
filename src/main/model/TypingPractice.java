@@ -201,7 +201,7 @@ public class TypingPractice implements Writable {
     public void setupShortPhrases() {
         String[] shortPhrases = new String[] {
                 "The quick brown fox jumps over the lazy dog.",
-                "Trust the natural recursion.",
+                "Trust the natural recursion. Make him proud!",
                 "A foolish man is lactose intolerant. A wise man simply tolerates it.",
                 "Cats are rebellious animals, but cows... cows are docile."};
         shortPrac.addAll(Arrays.asList(shortPhrases));

@@ -5,7 +5,6 @@ import ui.screens.MainScreen;
 import ui.screens.TitleScreen;
 import ui.screens.TypingScreen;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.CountDownLatch;
@@ -34,8 +33,7 @@ public class TypingApplicationGUI extends JFrame {
     public void initializeTypingApplication() throws InterruptedException {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bread Nut Typing App Pro :)");
-        this.setResizable(false);
-        setResizable(true);
+        setResizable(false);
         setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         setLocationRelativeTo(null);
 

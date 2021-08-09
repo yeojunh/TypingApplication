@@ -8,19 +8,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 
-// represents the GUI for a title screen of an image with a "press any key to continue" feature
+// Represents the GUI for a title screen of an image with a "press any key to continue" feature
 public class TitleScreen {
     private TypingApplicationGUI typingApplicationGUI;
-    JLabel picLabel;
+    private JLabel picLabel;
 
     // MODIFIES: this
     // EFFECTS: constructs a new welcome screen with
     public TitleScreen(TypingApplicationGUI typingApplicationGUI) {
         this.typingApplicationGUI = typingApplicationGUI;
     }
-
-    // anonymous class and KeyListener information from Edu4Java
-    // http://www.edu4java.com/en/game/game4.html
 
     // MODIFIES: this
     // EFFECTS: initializes necessary components of title screen
@@ -38,6 +35,9 @@ public class TitleScreen {
             e.printStackTrace();
         }
     }
+
+    // Anonymous class and KeyListener information from Edu4Java
+    // http://www.edu4java.com/en/game/game4.html
 
     // MODIFIES: this
     // EFFECTS: displays the title screen and removes the image to reveal main screen after any key press from user

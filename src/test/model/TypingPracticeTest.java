@@ -103,7 +103,7 @@ class TypingPracticeTest {
         testTyping.setupShortPhrases();
         assertEquals(4, testTyping.getShortPrac().size());
         assertTrue(testTyping.getShortPrac().contains("The quick brown fox jumps over the lazy dog."));
-        assertTrue(testTyping.getShortPrac().contains("Trust the natural recursion."));
+        assertTrue(testTyping.getShortPrac().contains("Trust the natural recursion. Make him proud!"));
         assertTrue(testTyping.getShortPrac().contains("A foolish man is lactose intolerant. "
                 + "A wise man simply tolerates it."));
         assertTrue(testTyping.getShortPrac().contains("Cats are rebellious animals, but cows... cows are docile."));
