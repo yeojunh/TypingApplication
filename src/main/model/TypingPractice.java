@@ -1,18 +1,21 @@
 package model;
 
 import exception.EmptyStringException;
+import exception.IllegalFinishException;
+import exception.IllegalFocusException;
 import org.json.JSONObject;
 import persistence.Writable;
 
-import java.io.WriteAbortedException;
 import java.util.*;
 
+// todo: is there a way to know that I'm not missing any REQUIRES clause? just by checking?
+// todo: for readme, do I have to go into detail about how a change in a method affects the GUI?
 // Represents a typing practice run with a specific focus (regular, short, punctuation, numbers)
 // Records the run's typing speed (in wpm) and accuracy
 public class TypingPractice implements Writable {
     private double wpm;
     private double accuracy;
-    private String focus;                   // regular, short punctuation, numbers
+    private final String focus;                   // regular, short punctuation, numbers
     private boolean isTyping;               // true if the user can type, false otherwise
     private String phraseToType;
     private int numWordsTyped;              // for wpm calculation
@@ -22,19 +25,21 @@ public class TypingPractice implements Writable {
     private double startTime;
     private double endTime;
 
-    private List<String> regularPrac = new ArrayList<>();
-    private List<String> shortPrac = new ArrayList<>();
-    private List<String> punctuationPrac = new ArrayList<>();
-    private List<String> numberPrac = new ArrayList<>();
+    private List<String> regularPrac;
+    private List<String> shortPrac;
+    private List<String> punctuationPrac;
+    private List<String> numberPrac;
 
-    private ArrayList<String> phraseToTypeInWords = new ArrayList<>();
-    private ArrayList<String> userTypedInWords = new ArrayList<>();
+    private ArrayList<String> phraseToTypeInWords;
+    private ArrayList<String> userTypedInWords;
     private String userTypingInput;
 
     // constructor
     // EFFECTS: creates a new typing practice given the focus of typing test
     public TypingPractice(String focus) {
         this.focus = focus;
+        phraseToTypeInWords = new ArrayList<>();
+        userTypedInWords = new ArrayList<>();
     }
 
     // MODIFIES: this
@@ -46,7 +51,12 @@ public class TypingPractice implements Writable {
 
     // MODIFIES: this
     // EFFECTS: stops timer, sets isTyping to false and calculates timeElapsed in minutes
-    public void finishedTyping() {
+    //          throws IllegalFinishException if isTyping is not true
+    public void finishedTyping() throws IllegalFinishException {
+        if (!isTyping) {
+            // startTime must be recorded beforehand
+            throw new IllegalFinishException();
+        }
         endTime = System.currentTimeMillis();
         isTyping = false;
         timeElapsed = (endTime - startTime) / 1000 / 60;
@@ -113,7 +123,6 @@ public class TypingPractice implements Writable {
         }
     }
 
-    // REQUIRES: user input must not be empty
     // MODIFIES: this
     // EFFECTS: determines the number of words the user typed incorrectly, including empty inputs
     public void determineNumWordsTypedIncorrectly() {
@@ -156,16 +165,19 @@ public class TypingPractice implements Writable {
     // helper for determineNumWordsTypedIncorrectly
     // MODIFIES: this
     // EFFECTS: splits phraseToType by words into phraseToTypeInWords
+    //          throws EmptyStringException if the user input is empty
     public void setupWordsAndArrayLists(String userTyped) throws EmptyStringException {
-        if (userTyped.equals("")) {
+        if (userTyped.equals("")) { // empty input
             String[] phraseToTypeWords0 = phraseToType.split(" ");
             Collections.addAll(phraseToTypeInWords, phraseToTypeWords0);
+
+            // cannot assign userTypedInWords (arraylist of user input split by word) if there is no input
             throw new EmptyStringException();
-        } else if (!userTyped.contains(" ")) {
+        } else if (!userTyped.contains(" ")) { // one-word input
             String[] phraseToTypeWords0 = phraseToType.split(" ");
             Collections.addAll(phraseToTypeInWords, phraseToTypeWords0);
             userTypedInWords.add(userTyped);
-        } else {
+        } else { // multiple word input
             String[] phraseToTypeWords0 = phraseToType.split(" ");
             String[] userTypedWords0 = userTyped.split(" ");
             // put the word into ArrayList - ArrayList is easier to work with than Array
@@ -178,6 +190,7 @@ public class TypingPractice implements Writable {
     // MODIFIES: this
     // EFFECTS: adds all phrases available to type for regularPrac
     public void setupRegularPhrases() {
+        regularPrac = new ArrayList<>();
         String[] regularPhrases = new String[]{
                 "He walked down the steps from the train station in a bit of a hurry knowing the secrets in the "
                         + "briefcase must be secured as quickly as possible.\n",
@@ -199,6 +212,7 @@ public class TypingPractice implements Writable {
     // MODIFIES: this
     // EFFECTS: adds all phrases available to type for shortPrac
     public void setupShortPhrases() {
+        shortPrac = new ArrayList<>();
         String[] shortPhrases = new String[] {
                 "The quick brown fox jumps over the lazy dog.",
                 "Trust the natural recursion. Make him proud!",
@@ -210,6 +224,7 @@ public class TypingPractice implements Writable {
     // MODIFIES: this
     // EFFECTS: adds all phrases available to type for punctuationPrac
     public void setupPunctuationPhrases() {
+        punctuationPrac = new ArrayList<>();
         String[] punctuationPhrases = new String[] {
                 "Facing his greatest fear, he ate his first marshmallow! It was a slippery slope, but was he willing "
                         + "to 'slide' all the way to the deepest depths?\n",
@@ -224,6 +239,7 @@ public class TypingPractice implements Writable {
     // MODIFIES: this
     // EFFECTS: adds all phrases available to type for numberPrac
     public void setupNumberPhrases() {
+        numberPrac = new ArrayList<>();
         String[] numberPhrases = new String[] {
                 "The tart lemonade cost 3 dollars and 79 cents. "
                         + "Our zoo showcases 5 killer whales and 23 emperor penguins.\n",
@@ -241,7 +257,8 @@ public class TypingPractice implements Writable {
 
     // MODIFIES: this
     // EFFECTS: choose a random phrase for the user to type based on the given focus
-    public String choosePhraseToType(String focus) {
+    //          throws IllegalFocusException if the focus is not one of "regular", "short", "punctuation", "number"
+    public String choosePhraseToType(String focus) throws IllegalFocusException {
         if (focus.equals("regular")) {
             this.setupRegularPhrases();
             choosePhraseByFocus(regularPrac);
@@ -251,9 +268,11 @@ public class TypingPractice implements Writable {
         } else if (focus.equals("punctuation")) {
             this.setupPunctuationPhrases();
             choosePhraseByFocus(punctuationPrac);
-        } else {
+        } else if (focus.equals("number")) {
             this.setupNumberPhrases();
             choosePhraseByFocus(numberPrac);
+        } else {
+            throw new IllegalFocusException();
         }
         return phraseToType;
     }

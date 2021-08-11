@@ -27,3 +27,12 @@ There are many online typing practices like [monkeytype](https://monkeytype.com/
 - As a user, I want to be able to load my last typing history automatically when I open the application
 - As a user, I want to be able to clear my typing history
 - As a user, I want to be able to reload my last deleted typing history, just in case I accidentally clear it
+
+## Phase 4: Task 2
+- Test and design a class in your model package that is robust.  You must have at least one method that throws a checked exception.  You must have one test for the case where the exception is expected and another where the exception is not expected.
+
+The robust class: TypingPractice in model package
+The methods with a robust design: 
+- finishedTyping(): alerts the caller that the program has not registered the start of the typing, and therefore has not started the timer for typing speed calculation. By throwing IllegalFinishException, we can ensure that the elapsed time calculates properly.
+- setupWordsAndArrayLists(String userTyped): alerts the caller that the user input is empty. We cannot split the user input (String) into an arraylist of words if there are no words in the String. 
+- choosePhraseToType(String focus): alerts the caller that the focus that the caller has input is invalid. We catch this exception in load___Typing() (where ___ is Regular/Short/Punctuation/Number), and send an error that the focus is invalid. 

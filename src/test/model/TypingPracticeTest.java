@@ -1,6 +1,8 @@
 package model;
 
 import exception.EmptyStringException;
+import exception.IllegalFinishException;
+import exception.IllegalFocusException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestTemplate;
@@ -20,26 +22,57 @@ class TypingPracticeTest {
 
     @Test
     public void testChoosePhraseToTypeRegular() {
-        String phraseToType = testTyping.choosePhraseToType("regular");
+        String phraseToType = null;
+        try {
+            phraseToType = testTyping.choosePhraseToType("regular");
+        } catch (IllegalFocusException e) {
+            fail("Should not throw IllegalFocusException");
+        }
         assertTrue(testTyping.getRegularPrac().contains(phraseToType));
     }
 
     @Test
     public void testChoosePhraseToTypeShort() {
-        String phraseToType = testTyping.choosePhraseToType("short");
+        String phraseToType = null;
+        try {
+            phraseToType = testTyping.choosePhraseToType("short");
+        } catch (IllegalFocusException e) {
+            fail("Should not throw IllegalFocusException");
+        }
         assertTrue(testTyping.getShortPrac().contains(phraseToType));
     }
 
     @Test
     public void testChoosePhraseToTypePunctuation() {
-        String phraseToType = testTyping.choosePhraseToType("punctuation");
+        String phraseToType = null;
+        try {
+            phraseToType = testTyping.choosePhraseToType("punctuation");
+        } catch (IllegalFocusException e) {
+            fail("Should not throw IllegalFocusException");
+        }
         assertTrue(testTyping.getPunctuationPrac().contains(phraseToType));
     }
 
     @Test
     public void testChoosePhraseToTypeNumber() {
-        String phraseToType = testTyping.choosePhraseToType("number");
+        String phraseToType = null;
+        try {
+            phraseToType = testTyping.choosePhraseToType("number");
+        } catch (IllegalFocusException e) {
+            fail("Should not throw IllegalFocusException");
+        }
         assertTrue(testTyping.getNumberPrac().contains(phraseToType));
+    }
+
+    @Test
+    public void testChoosePhraseToTypeIllegalFocus() {
+        String phraseToType = null;
+        try {
+            phraseToType = testTyping.choosePhraseToType("IllegalFocus");
+            fail("Should not throw IllegalFocusException");
+        } catch (IllegalFocusException e) {
+            // all good!
+        }
     }
 
     @Test
@@ -357,15 +390,39 @@ class TypingPracticeTest {
     @Test
     public void testFinishedTyping() {
         testTyping.setIsTyping(true);
-        testTyping.finishedTyping();
+        try {
+            testTyping.finishedTyping();
+        } catch (IllegalFinishException e) {
+            fail("isTyping is true, so should not have thrown IllegalFinishException");
+        }
         assertFalse(testTyping.getIsTyping());
         assertTrue(testTyping.getEndTime() > 0);
     }
 
     @Test
+    public void testFinishedTypingHaveNotStarted() {
+        try {
+            testTyping.finishedTyping();
+            fail("isTyping is false, so should have thrown IllegalFinishException");
+        } catch (IllegalFinishException e) {
+            // expected!
+        }
+    }
+
+    @Test
     public void testFinishedTypingAlreadyFinished() {
-        testTyping.setIsTyping(false);
-        testTyping.finishedTyping();
+        testTyping.startedTyping();
+        try {
+            testTyping.finishedTyping();
+        } catch (IllegalFinishException e) {
+            fail("isTyping is true, so should not have thrown IllegalFinishException");
+        }
+        try {
+            testTyping.finishedTyping();
+            fail("isTyping is false, so should have thrown IllegalFinishException");
+        } catch (IllegalFinishException e) {
+            // all good!
+        }
         assertFalse(testTyping.getIsTyping());
     }
 

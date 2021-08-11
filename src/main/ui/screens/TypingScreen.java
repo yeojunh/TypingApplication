@@ -1,5 +1,7 @@
 package ui.screens;
 
+import exception.IllegalFinishException;
+import exception.IllegalFocusException;
 import model.TypingPractice;
 import ui.TypingApplicationGUI;
 
@@ -40,28 +42,49 @@ public class TypingScreen extends MainScreen {
     // EFFECTS: clears the screen so that panels do not overlap, and sets up a typing panel for the focus "regular"
     public void loadRegularTyping() {
         clearScreen();
-        setupTypingPanel("STARTING REGULAR TYPING", "regular");
+        try {
+            setupTypingPanel("STARTING REGULAR TYPING", "regular");
+        } catch (IllegalFocusException e) {
+            System.err.println("\"regular\" is not a valid typing practice focus. Try again.");
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: clears the screen so that panels do not overlap, and sets up a typing panel for the focus "short"
     public void loadShortTyping() {
         clearScreen();
-        setupTypingPanel("STARTING SHORT TYPING", "short");
+        try {
+            setupTypingPanel("STARTING SHORT TYPING", "short");
+        } catch (IllegalFocusException e) {
+            setupTextToShow("short is not a valid typing practice focus.");
+            System.err.println("\"short\" is not a valid typing practice focus. Try again.");
+            // todo: ask if this can be just in console??
+            // todo: exceptions are working but it isn't pretty
+            //  (spanning across multiple classes, notify by serr in GUI),
+            //  is it okay as long as one class is robust?
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: clears the screen so that panels do not overlap, and sets up a typing panel for the focus "punctuation"
     public void loadPunctuationTyping() {
         clearScreen();
-        setupTypingPanel("STARTING PUNCTUATION TYPING", "punctuation");
+        try {
+            setupTypingPanel("STARTING PUNCTUATION TYPING", "punctuation");
+        } catch (IllegalFocusException e) {
+            System.err.println("\"punctuation\" is not a valid typing practice focus. Try again.");
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: clears the screen so that panels do not overlap, and sets up a typing panel for the focus "number"
     public void loadNumberTyping() {
         clearScreen();
-        setupTypingPanel("STARTING NUMBER TYPING", "number");
+        try {
+            setupTypingPanel("STARTING NUMBER TYPING", "number");
+        } catch (IllegalFocusException e) {
+            System.err.println("\"number\" is not a valid typing practice focus. Try again.");
+        }
     }
 
     // MODIFIES: this
@@ -75,7 +98,7 @@ public class TypingScreen extends MainScreen {
     // REQUIRES: focus must be one of "regular", "short", "punctuation", or "number"
     // MODIFIES: this
     // EFFECTS: plays audio and set sets up a new typingScreenPanel, label, and validates panel
-    public void setupTypingPanel(String labelText, String focus) {
+    public void setupTypingPanel(String labelText, String focus) throws IllegalFocusException {
         playAudio("boopAudio");
         typingScreenLabel.setText(labelText);
         JLabel pressEnterWhenDoneLabel = new JLabel("Press ENTER when finished to calculate your result!");
@@ -122,7 +145,7 @@ public class TypingScreen extends MainScreen {
 
     // MODIFIES: this
     // EFFECTS: returns the typing practice phrase for the user to type
-    public String getTypingText(String focus) {
+    public String getTypingText(String focus) throws IllegalFocusException {
         typingPractice = new TypingPractice(focus);
         phraseToType = typingPractice.choosePhraseToType(focus);
         return phraseToType;
@@ -136,6 +159,12 @@ public class TypingScreen extends MainScreen {
         typingArea.setBackground(MAIN_CONTAINER_COLOR);
         JTextField textField = new JTextField(TYPING_AREA_COL);
         setupTypingAreaTextField(textField);
+        textField.addKeyListener(keyListenerSetup(textField));
+        typingArea.add(textField);
+        return typingArea;
+    }
+
+    public KeyListener keyListenerSetup(JTextField textField) {
         KeyListener doneTypingListener = new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -147,22 +176,24 @@ public class TypingScreen extends MainScreen {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    keyPressedActions(textField);
+                    try {
+                        keyPressedActions(textField);
+                    } catch (IllegalFinishException illegalFinishException) {
+                        System.err.println("Typing practice finished before it started.");
+                    }
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {}
         };
-        textField.addKeyListener(doneTypingListener);
-        typingArea.add(textField);
-        return typingArea;
+        return doneTypingListener;
     }
 
     // MODIFIES: this, textField
     // EFFECTS: sets the user input to the text field's value, clears the text field, and notifies to typingPractice
     //          that the user has finished typing
-    private void keyPressedActions(JTextField textField) {
+    private void keyPressedActions(JTextField textField) throws IllegalFinishException {
         userInput = textField.getText();
         textField.setText("");
         textField.setEditable(false);

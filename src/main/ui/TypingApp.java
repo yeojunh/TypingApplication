@@ -1,5 +1,7 @@
 package ui;
 
+import exception.IllegalFinishException;
+import exception.IllegalFocusException;
 import model.History;
 import model.TypingPractice;
 import persistence.JsonReader;
@@ -46,18 +48,30 @@ public class TypingApp {
             command = input.next();
             command = command.toLowerCase();
 
-            if (command.equals("q")) {
+            appOn = runCommand(command, appOn);
+
+        }
+    }
+
+    public boolean runCommand(String command, boolean appOn) {
+        if (command.equals("q")) {
+            appOn = false;
+        } else {
+            try {
+                processCommand(command);
+            } catch (InterruptedException e) {
+                System.out.println("Something interrupted execution. Quitting program.");
                 appOn = false;
-            } else {
-                try {
-                    processCommand(command);
-                } catch (InterruptedException e) {
-                    System.out.println("Something interrupted execution. Quitting program.");
-                    appOn = false;
-                    e.printStackTrace();
-                }
+                e.printStackTrace();
+            } catch (IllegalFocusException e) {
+                System.out.println("Illegal focus detected for the typing test. Quitting program.");
+                appOn = false;
+            } catch (IllegalFinishException e) {
+                System.out.println("The call to start the typing test was ignored. Quitting program.");
+                appOn = false;
             }
         }
+        return appOn;
     }
 
     // EFFECTS: runs loadHistory if the application was just opened
@@ -83,7 +97,8 @@ public class TypingApp {
 
     // MODIFIES: this
     // EFFECTS: processes user command
-    private void processCommand(String command) throws InterruptedException {
+    private void processCommand(String command)
+            throws InterruptedException, IllegalFocusException, IllegalFinishException {
         if (command.equals("r")) {
             runRegular();
         } else if (command.equals("s")) {
@@ -108,7 +123,7 @@ public class TypingApp {
 
     // MODIFIES: this
     // EFFECTS: starts the typing test run and asks the user if they want to add this run to their typing history
-    private void runTypingTest() throws InterruptedException {
+    private void runTypingTest() throws InterruptedException, IllegalFinishException {
         System.out.println(typingPractice.getPhraseToType());
         countdown();
         input = new Scanner(System.in);
@@ -172,7 +187,7 @@ public class TypingApp {
 
     // MODIFIES: this
     // EFFECTS: runs the regular typing practice
-    private void runRegular() throws InterruptedException {
+    private void runRegular() throws InterruptedException, IllegalFocusException, IllegalFinishException {
         typingPractice = new TypingPractice("regular");
         System.out.println("A regular typing practice will start in 3 seconds...");
         typingPractice.choosePhraseToType("regular");
@@ -181,7 +196,7 @@ public class TypingApp {
 
     // MODIFIES: this
     // EFFECTS: runs the short typing practice
-    private void runShort() throws InterruptedException {
+    private void runShort() throws InterruptedException, IllegalFocusException, IllegalFinishException {
         typingPractice = new TypingPractice("short");
         System.out.println("A short typing practice will start in 3 seconds...");
         typingPractice.choosePhraseToType("short");
@@ -190,7 +205,7 @@ public class TypingApp {
 
     // MODIFIES: this
     // EFFECTS: runs the punctuation-focused typing practice
-    private void runPunctuation() throws InterruptedException {
+    private void runPunctuation() throws InterruptedException, IllegalFocusException, IllegalFinishException {
         typingPractice = new TypingPractice("punctuation");
         System.out.println("A punctuation-focused typing practice will start in 3 seconds...");
         typingPractice.choosePhraseToType("punctuation");
@@ -199,7 +214,7 @@ public class TypingApp {
 
     // MODIFIES: this
     // EFFECTS: runs the number-focused typing practice
-    private void runNumber() throws InterruptedException {
+    private void runNumber() throws InterruptedException, IllegalFocusException, IllegalFinishException {
         typingPractice = new TypingPractice("number");
         System.out.println("A number-focused typing practice will start in 3 seconds...");
         typingPractice.choosePhraseToType("number");
