@@ -32,7 +32,7 @@ public class TypingScreen extends MainScreen {
     // EFFECTS: constructs a TypingScreen object with a mainContainer, main panel, main label, and an empty user input
     public TypingScreen(TypingApplicationGUI typingApplicationGUI) {
         super(typingApplicationGUI);
-        mainContainer = typingApplicationGUI.getContentPane();
+        mainContainer = super.typingApplicationGUI.getContentPane();
         typingScreenPanel = new JPanel();
         typingScreenLabel = new JLabel();
         userInput = "";
@@ -58,10 +58,6 @@ public class TypingScreen extends MainScreen {
         } catch (IllegalFocusException e) {
             setupTextToShow("short is not a valid typing practice focus.");
             System.err.println("\"short\" is not a valid typing practice focus. Try again.");
-            // todo: ask if this can be just in console??
-            // todo: exceptions are working but it isn't pretty
-            //  (spanning across multiple classes, notify by serr in GUI),
-            //  is it okay as long as one class is robust?
         }
     }
 

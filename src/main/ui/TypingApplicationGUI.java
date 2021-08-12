@@ -74,6 +74,42 @@ public class TypingApplicationGUI extends JFrame {
         historyScreen.initialize();
     }
 
+    // MODIFIES: this
+    // EFFECTS: runs loadRegularTyping() in TypingScreen
+    public void loadRegularTyping() {
+        typingScreen.loadRegularTyping();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: runs loadShortTyping() in TypingScreen
+    public void loadShortTyping() {
+        typingScreen.loadShortTyping();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: runs loadPunctuationTyping() in TypingScreen
+    public void loadPunctuationTyping() {
+        typingScreen.loadPunctuationTyping();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: runs loadNumberTyping() in TypingScreen
+    public void loadNumberTyping() {
+        typingScreen.loadNumberTyping();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: runs loadTypingHistory() in TypingScreen
+    public void loadTypingHistory() {
+        historyScreen.loadTypingHistory();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: runs clearData() in TypingScreen
+    public void clearTypingHistory() {
+        historyScreen.clearData();
+    }
+
     // getters
     public TypingScreen getTypingScreen() {
         return typingScreen;

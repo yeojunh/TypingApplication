@@ -8,31 +8,27 @@ import persistence.Writable;
 
 import java.util.*;
 
-// todo: is there a way to know that I'm not missing any REQUIRES clause? just by checking?
-// todo: for readme, do I have to go into detail about how a change in a method affects the GUI?
 // Represents a typing practice run with a specific focus (regular, short, punctuation, numbers)
 // Records the run's typing speed (in wpm) and accuracy
 public class TypingPractice implements Writable {
     private double wpm;
     private double accuracy;
-    private final String focus;                   // regular, short punctuation, numbers
-    private boolean isTyping;               // true if the user can type, false otherwise
-    private String phraseToType;
-    private int numWordsTyped;              // for wpm calculation
-    private double timeElapsed;             // for wpm calculation, in minutes
-    private int numWordsAttempted;           // for accuracy calculation
-    private int numWordsTypedIncorrectly;    // for accuracy calculation
     private double startTime;
     private double endTime;
-
+    private double timeElapsed;              // for wpm calculation, in minutes
+    private boolean isTyping;                // true if the user can type, false otherwise
+    private int numWordsTyped;               // for wpm calculation
+    private int numWordsAttempted;           // for accuracy calculation
+    private int numWordsTypedIncorrectly;    // for accuracy calculation
+    private String focus;                    // regular, short punctuation, numbers
+    private String phraseToType;
+    private String userTypingInput;
+    private ArrayList<String> phraseToTypeInWords;
+    private ArrayList<String> userTypedInWords;
     private List<String> regularPrac;
     private List<String> shortPrac;
     private List<String> punctuationPrac;
     private List<String> numberPrac;
-
-    private ArrayList<String> phraseToTypeInWords;
-    private ArrayList<String> userTypedInWords;
-    private String userTypingInput;
 
     // constructor
     // EFFECTS: creates a new typing practice given the focus of typing test
@@ -54,7 +50,7 @@ public class TypingPractice implements Writable {
     //          throws IllegalFinishException if isTyping is not true
     public void finishedTyping() throws IllegalFinishException {
         if (!isTyping) {
-            // startTime must be recorded beforehand
+            // startTime must be recorded beforehand, so isTyping must be true (called in the same method)
             throw new IllegalFinishException();
         }
         endTime = System.currentTimeMillis();

@@ -23,14 +23,15 @@ public class HistoryScreen extends MainScreen {
     public void loadTypingHistory() {
         playAudio("menuAudio");
         int numRows = 0;
+        int historySize = super.getHistorySize();
         JPanel typingHistoryViewerPanel = new JPanel();
         typingHistoryViewerPanel.setBackground(MAIN_CONTAINER_COLOR);
-        if (history.size() == 0) {
+        if (historySize == 0) {
             setupInitialHistoryTexts(typingHistoryViewerPanel);
             numRows = 5;
         } else {
-            setupInitialHistoryText(typingHistoryViewerPanel, "You have practiced " + history.size() + " time(s):\n");
-            for (int i = 0; i < history.size(); i++) {
+            setupInitialHistoryText(typingHistoryViewerPanel, "You have practiced " + historySize + " time(s):\n");
+            for (int i = 0; i < historySize; i++) {
                 setupRunData(typingHistoryViewerPanel, i);
                 numRows++;
             }
@@ -69,9 +70,9 @@ public class HistoryScreen extends MainScreen {
         JPanel gridForARun = new JPanel(new GridLayout(5, 1));
         gridForARun.setBackground(MAIN_CONTAINER_COLOR);
         JLabel yourRunNum = new JLabel("Your run #" + (i + 1));
-        JLabel optionSelected = new JLabel("Option selected: " + history.getNthTypingPrac(i).getFocus());
-        JLabel typingSpeed = new JLabel("Typing Speed (wpm): " + history.getNthTypingPrac(i).getWpm());
-        JLabel accuracy = new JLabel("Accuracy (%): " + history.getNthTypingPrac(i).getAccuracy());
+        JLabel optionSelected = new JLabel("Option selected: " + super.getFocusForNthPrac(i));
+        JLabel typingSpeed = new JLabel("Typing Speed (wpm): " + super.getWpmForNthPrac(i));
+        JLabel accuracy = new JLabel("Accuracy (%): " + super.getAccuracyForNthPrac(i));
         gridForARun.add(yourRunNum);
         gridForARun.add(optionSelected);
         gridForARun.add(typingSpeed);
@@ -85,14 +86,14 @@ public class HistoryScreen extends MainScreen {
 
     // MODIFIES: typingHistoryViewerPanel
     // EFFECTS: constructs a panel with information about the user's average wpm and accuracy
-    //          and adds it to tpingHistoryViewerPanel
+    //          and adds it to typingHistoryViewerPanel
     private void setupAverageData(JPanel typingHistoryViewerPanel) {
         JPanel gridForAvgResult = new JPanel(new GridLayout(4, 1));
         gridForAvgResult.setBackground(MAIN_CONTAINER_COLOR);
-        JLabel avgWpm = new JLabel("Your average typing speed is " + history.calculateAverageTypingSpeed()
+        JLabel avgWpm = new JLabel("Your average typing speed is " + super.calculateAverageTypingSpeed()
                 + " words per minute.");
         JLabel avgAcc = new JLabel("Your average accuracy is "
-                + history.calculateAverageAccuracy() + "%.");
+                + super.calculateAverageAccuracy() + "%.");
         gridForAvgResult.add(avgWpm);
         gridForAvgResult.add(avgAcc);
         setLabelFont(avgWpm, SIDE_PANEL_FONT_COLOR, HISTORY_CONTENT_FONT_SIZE);
@@ -100,15 +101,16 @@ public class HistoryScreen extends MainScreen {
         typingHistoryViewerPanel.add(gridForAvgResult);
     }
 
+
     // MODIFIES: this
     // EFFECTS: adds the given typingPractice to history
     public void saveData(TypingPractice typingPractice) {
-        history.addUserHistory(typingPractice);
+        super.addUserHistory(typingPractice);
     }
 
     // MODIFIES: this
     // EFFECTS: constructs a new empty history
     public void clearData() {
-        history = new History();
+        super.clearData();
     }
 }

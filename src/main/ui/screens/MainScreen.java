@@ -1,6 +1,7 @@
 package ui.screens;
 
 import model.History;
+import model.TypingPractice;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 import ui.TypingApplicationGUI;
@@ -21,7 +22,7 @@ import java.io.IOException;
 // Represents a main screen for the UI, including the top, left, right, and center panels
 // Superclass of TypingScreen and HistoryScreen classes
 public class MainScreen implements ActionListener {
-    protected static final Color MAIN_CONTAINER_COLOR = new Color(10, 46, 79);
+    protected static final Color MAIN_CONTAINER_COLOR = new Color(10, 46, 79); // design-related
     protected static final Color TOP_PANEL_COLOR = new Color(173, 177, 237);
     protected static final Color SIDE_PANEL_COLOR = new Color(1,30,61);
     protected static final Color SIDE_PANEL_FONT_COLOR = Color.white;
@@ -29,12 +30,12 @@ public class MainScreen implements ActionListener {
     protected static final int CENTRE_LABEL_FONT_SIZE = 25;
     private static final int TOP_PANEL_FONT_SIZE = 30;
     private static final int BUTTON_FONT_SIZE = 20;
+    protected static final String filler = "    ";
     private static final int HGAP = 8;
     private static final int VGAP = 6;
-    protected static final String filler = "    ";              // design-related
 
-    protected TypingApplicationGUI typingApplicationGUI;        // UI-related
-    protected History history;
+    protected TypingApplicationGUI typingApplicationGUI;                                // UI-related
+    private History history;
     protected Container mainContainer;
     protected JPanel centrePanel;
     protected JButton regularBtn;
@@ -46,9 +47,9 @@ public class MainScreen implements ActionListener {
     protected JButton loadBtn;
     protected JButton clearBtn;
 
-    protected static final String JSON_STORE = "./data/history.json";
+    protected static final String JSON_STORE = "./data/history.json";                   // JSON-related
     protected JsonWriter jsonWriter;
-    protected JsonReader jsonReader;                            // JSON-related
+    protected JsonReader jsonReader;
 
     // EFFECTS: initializes the MainScreen's typingApplication as the provided typingApplicationGUI
     public MainScreen(TypingApplicationGUI typingApplicationGUI) {
@@ -261,27 +262,25 @@ public class MainScreen implements ActionListener {
     // MODIFIES: this
     // EFFECTS: calls different methods depending on the button's action command activated
     public void actionPerformed(ActionEvent e) {
-        TypingScreen typingScreen = typingApplicationGUI.getTypingScreen();
-        HistoryScreen historyScreen = typingApplicationGUI.getHistoryScreen();
         centrePanel.setVisible(false);
         if ("Regular".equals(e.getActionCommand())) {
-            typingScreen.loadRegularTyping();
+            typingApplicationGUI.loadRegularTyping();
         } else if ("Short".equals(e.getActionCommand())) {
-            typingScreen.loadShortTyping();
+            typingApplicationGUI.loadShortTyping();
         } else if ("Punctuation".equals(e.getActionCommand())) {
-            typingScreen.loadPunctuationTyping();
+            typingApplicationGUI.loadPunctuationTyping();
         } else if ("Number".equals(e.getActionCommand())) {
-            typingScreen.loadNumberTyping();
+            typingApplicationGUI.loadNumberTyping();
         } else if ("View Typing History".equals(e.getActionCommand())) {
-            historyScreen.loadTypingHistory();
+            typingApplicationGUI.loadTypingHistory();
         } else if ("Save Data".equals(e.getActionCommand())) {
             saveDataToJson();
         } else if ("Load Data".equals(e.getActionCommand())) {
             loadDataFromJson();
-            historyScreen.loadTypingHistory();
+            typingApplicationGUI.loadTypingHistory();
         } else { // clear data
-            historyScreen.clearData();
-            historyScreen.loadTypingHistory();
+            typingApplicationGUI.clearTypingHistory();
+            typingApplicationGUI.loadTypingHistory();
         }
     }
 
@@ -331,5 +330,51 @@ public class MainScreen implements ActionListener {
         } catch (LineUnavailableException e) {
             System.err.println("Audio file is not available at " + filePath);
         }
+    }
+
+    // methods that HistoryScreen class uses that involve History
+
+    // EFFECTS: returns the history's focus for the n'th typing practice
+    public String getFocusForNthPrac(int n) {
+        return history.getNthTypingPrac(n).getFocus();
+    }
+
+    // EFFECTS: returns the history's focus for the i'th typing practice
+    public Double getWpmForNthPrac(int n) {
+        return history.getNthTypingPrac(n).getWpm();
+    }
+
+    // EFFECTS: returns the history's focus for the i'th typing practice
+    public Double getAccuracyForNthPrac(int n) {
+        return history.getNthTypingPrac(n).getAccuracy();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: returns the history's average typing speed
+    public Double calculateAverageTypingSpeed() {
+        return history.calculateAverageTypingSpeed();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: returns the history's average accuracy
+    public Double calculateAverageAccuracy() {
+        return history.calculateAverageAccuracy();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds the given typing practice to history
+    public void addUserHistory(TypingPractice typingPractice) {
+        history.addUserHistory(typingPractice);
+    }
+
+    // EFFECTS: returns the size of history
+    public int getHistorySize() {
+        return history.size();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: constructs a new empty history
+    public void clearData() {
+        history = new History();
     }
 }

@@ -13,8 +13,7 @@ The target audience is users who type frequently, including but not limited to:
 - Writers
 
 ## Why is this project of interest to you?
-There are many online typing practices like [monkeytype](https://monkeytype.com/), [typeracer](https://play.typeracer.com/), and [Typing.com Games](https://www.typing.com/student/games). My go-to is monkeytype for its simple graphics, but I love the interactive game aspect of the latter sites. So, I would like to mix these two for a simple typing practice with a clean design that initially focuses solely on typing, then encourages the user to improve with the accuracy discipline system. 
-
+As a student in computer science, typing is an essential aspect of my major. A higher typing speed and greater accuracy is an asset, and my go-to typing practice website is [monkeytype](https://monkeytype.com/) for its simple graphics. So, I would like to create a simple typing practice application with a clean design for an optimal typing practice. 
 
 ## User Stories
 - As a user, I want to be able to view my typing speed and accuracy 
@@ -31,8 +30,18 @@ There are many online typing practices like [monkeytype](https://monkeytype.com/
 ## Phase 4: Task 2
 - Test and design a class in your model package that is robust.  You must have at least one method that throws a checked exception.  You must have one test for the case where the exception is expected and another where the exception is not expected.
 
-The robust class: TypingPractice in model package
+The robust class
+- **TypingPractice** class in model package
+
 The methods with a robust design: 
-- finishedTyping(): alerts the caller that the program has not registered the start of the typing, and therefore has not started the timer for typing speed calculation. By throwing IllegalFinishException, we can ensure that the elapsed time calculates properly.
-- setupWordsAndArrayLists(String userTyped): alerts the caller that the user input is empty. We cannot split the user input (String) into an arraylist of words if there are no words in the String. 
-- choosePhraseToType(String focus): alerts the caller that the focus that the caller has input is invalid. We catch this exception in load___Typing() (where ___ is Regular/Short/Punctuation/Number), and send an error that the focus is invalid. 
+- **finishedTyping()**
+  - Throws IllegalFinishException if the program's isTyping field is false, and therefore has not started the timer for typing speed calculation. 
+  - By throwing IllegalFinishException, we can ensure that the elapsed time calculates properly.
+  - We catch this exception in TypingScreen's keyListenerSetup method and print an error message.
+- **setupWordsAndArrayLists(String userTyped)**
+  - Throws EmptyStringException if the user input is empty. 
+  - We cannot split the user input (String) into an arraylist of words if there are no words in the String. 
+  - We catch this exception in determineNumWordsTypedIncorrectly and utilize this indication to set the number of words typed incorrectly = the length of the phrase the user is prompted to type (everything is incorrect).
+- **choosePhraseToType(String focus)**
+  - Throws IllegalFocusException if the focus that the caller entered is invalid (must be one of "regular", "short", "punctuation" , "number". 
+  - We catch this exception in load___Typing() (where ___ is Regular/Short/Punctuation/Number), and send an error message that the focus is invalid.
