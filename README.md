@@ -45,3 +45,18 @@ The methods with a robust design:
 - **choosePhraseToType(String focus)**
   - Throws IllegalFocusException if the focus that the caller entered is invalid (must be one of "regular", "short", "punctuation" , "number". 
   - We catch this exception in load___Typing() (where ___ is Regular/Short/Punctuation/Number), and send an error message that the focus is invalid.
+
+## Phase 4: Task 3
+If you had more time to work on the project, is there any refactoring that you would do to improve your design?
+- In the MainScreen, TypingScreen, HistoryScreen relationship, I would construct a series of methods in MainScreen (the superclass) to allow TypingScreen and HistoryScreen to make changes to mainScreen (a part of TypingApplicationGUI) by calling super.\<method>.
+    - Currently, TypingScreen and HistoryScreen obtains mainScreen by creating a local variable 'mainScreen = super.getMainScreen()', and calls methods directly, creating a dependency. 
+    - This change will remove the dependency from TypingScreen and HistoryScreen to TypingApplicationGUI, and therefore reduce coupling.
+
+- In UI classes, I would extract a method that constructs a JPanel with the given String value, with appropriate new lines.
+  - This method would take a string as parameter, construct a JLabel with that string, construct a JPanel and place that JLabel inside, and return that JPanel. 
+  - Currently, there are a couple instances of similar methods, but they take in no parameters and simply return panels with hard-coded label texts.
+  - A close example would be setupTextToShow method in TypingScreen that displays a phrase the user needs to type with new lines every 8 words, given a String as a parameter.
+
+- In the MainScreen, TypingScreen, HistoryScreen relationship, I would refactor the UI design to completely remove the existing centre panel before deploying a new panel when the user clicks a button.
+  - Currently, the UI displays a new JPanel over the existing one (although clearScreen method exists in TypingScreen class, it is not perfect), which is not ideal for large number of panels.
+  - I would create a method that clears all items on the centre panel of the BorderLayout of GUI, regardless of it being JPanel, JLabel, JTextArea, etc., and call this method before new information is displayed on the GUI.

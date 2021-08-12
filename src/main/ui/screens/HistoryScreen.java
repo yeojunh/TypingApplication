@@ -39,7 +39,8 @@ public class HistoryScreen extends MainScreen {
             numRows += 2;
         }
         typingHistoryViewerPanel.setLayout(new GridLayout(numRows, 2));
-        typingApplicationGUI.add(typingHistoryViewerPanel);
+        // using TypingAppGUI in MainScreen, so no dependency
+        super.typingApplicationGUI.add(typingHistoryViewerPanel);
         typingHistoryViewerPanel.setVisible(true);
         typingHistoryViewerPanel.revalidate();
         typingHistoryViewerPanel.repaint();
@@ -100,7 +101,6 @@ public class HistoryScreen extends MainScreen {
         setLabelFont(avgAcc, SIDE_PANEL_FONT_COLOR, HISTORY_CONTENT_FONT_SIZE);
         typingHistoryViewerPanel.add(gridForAvgResult);
     }
-
 
     // MODIFIES: this
     // EFFECTS: adds the given typingPractice to history

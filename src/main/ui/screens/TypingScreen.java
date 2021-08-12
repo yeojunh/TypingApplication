@@ -32,7 +32,6 @@ public class TypingScreen extends MainScreen {
     // EFFECTS: constructs a TypingScreen object with a mainContainer, main panel, main label, and an empty user input
     public TypingScreen(TypingApplicationGUI typingApplicationGUI) {
         super(typingApplicationGUI);
-        mainContainer = super.typingApplicationGUI.getContentPane();
         typingScreenPanel = new JPanel();
         typingScreenLabel = new JLabel();
         userInput = "";
@@ -108,10 +107,10 @@ public class TypingScreen extends MainScreen {
         typingScreenPanel.add(pressEnterWhenDoneLabel);
         typingScreenPanel.add(setupTextToShow(getTypingText(focus)));
         typingScreenPanel.add(setupTypingArea());
-        mainContainer.add(centrePanel, BorderLayout.CENTER);
-        mainContainer.add(typingScreenPanel, BorderLayout.CENTER);
-        mainContainer.validate();
-        mainContainer.revalidate();
+        super.mainContainer.add(centrePanel, BorderLayout.CENTER);
+        super.mainContainer.add(typingScreenPanel, BorderLayout.CENTER);
+        super.mainContainer.validate();
+        super.mainContainer.revalidate();
     }
 
     // EFFECTS: returns a JTextArea for the phrase the user has to type, with a new line every n words
@@ -256,10 +255,10 @@ public class TypingScreen extends MainScreen {
     //          if the user did not want to save, displays a prompt to choose an option from the sides
     //          plays a menu audio regardless of option selected
     public void actionPerformed(ActionEvent e) {
-        HistoryScreen historyScreen = typingApplicationGUI.getHistoryScreen();
         centrePanel.setVisible(false);
         if ("Save".equals(e.getActionCommand())) {
-            historyScreen.saveData(typingPractice);
+            // using TypingAppGUI in MainScreen, so no dependency
+            super.typingApplicationGUI.getHistoryScreen().saveData(typingPractice);
             displayBelowButton("Saved successfully!");
         } else {
             displayBelowButton("Choose an option from the sides!");
@@ -281,6 +280,6 @@ public class TypingScreen extends MainScreen {
         chooseAnOptionLabel.setVisible(true);
         chooseAnOptionPanel.setVisible(true);
         resultPanel.add(chooseAnOptionPanel);
-        mainContainer.revalidate();
+        super.mainContainer.revalidate();
     }
 }
