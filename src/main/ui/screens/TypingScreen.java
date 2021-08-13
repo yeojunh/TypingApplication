@@ -257,7 +257,7 @@ public class TypingScreen extends MainScreen {
     public void actionPerformed(ActionEvent e) {
         centrePanel.setVisible(false);
         if ("Save".equals(e.getActionCommand())) {
-            // using TypingAppGUI in MainScreen, so no dependency
+            // using TypingAppGUI from MainScreen, so no dependency
             super.typingApplicationGUI.getHistoryScreen().saveData(typingPractice);
             displayBelowButton("Saved successfully!");
         } else {
@@ -280,6 +280,7 @@ public class TypingScreen extends MainScreen {
         chooseAnOptionLabel.setVisible(true);
         chooseAnOptionPanel.setVisible(true);
         resultPanel.add(chooseAnOptionPanel);
+        // using mainContainer from MainScreen, so no dependency
         super.mainContainer.revalidate();
     }
 }
