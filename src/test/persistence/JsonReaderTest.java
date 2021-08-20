@@ -14,7 +14,7 @@ public class JsonReaderTest extends JsonTest {
 
     @Test
     void testReaderNonExistentFile() {
-        JsonReader reader = new JsonReader("./data/noSuchFile.json");
+        JsonReader reader = new JsonReader("./data/jsonTest/noSuchFile.json");
         try {
             History history = reader.read();
             fail("IOException expected");
@@ -25,7 +25,7 @@ public class JsonReaderTest extends JsonTest {
 
     @Test
     void testReaderEmptyHistory() {
-        JsonReader reader = new JsonReader("./data/testReaderEmptyHistory.json");
+        JsonReader reader = new JsonReader("./data/jsonTest/testReaderEmptyHistory.json");
         try {
             History history = reader.read();
             assertEquals(0, history.size());
@@ -36,7 +36,7 @@ public class JsonReaderTest extends JsonTest {
 
     @Test
     void testReaderGeneralHistory() {
-        JsonReader reader = new JsonReader("./data/testReaderGeneralHistory.json");
+        JsonReader reader = new JsonReader("./data/jsonTest/testReaderGeneralHistory.json");
         try {
             History history = reader.read();
             List<TypingPractice> typingPractices = history.getUserHistory();

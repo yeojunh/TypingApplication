@@ -15,7 +15,7 @@ public class JsonWriterTest extends JsonTest {
     void testWriterInvalidFile() {
         try {
             History history = new History();
-            JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
+            JsonWriter writer = new JsonWriter("./data/jsonTest/my\0illegal:fileName.json");
             writer.open();
             fail("IOException was expected");
         } catch (IOException e) {
@@ -27,12 +27,12 @@ public class JsonWriterTest extends JsonTest {
     void testWriterEmptyHistory() {
         try {
             History history = new History();
-            JsonWriter writer = new JsonWriter("./data/testWriterEmptyHistory.json");
+            JsonWriter writer = new JsonWriter("./data/jsonTest/testWriterEmptyHistory.json");
             writer.open();
             writer.write(history);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testWriterEmptyHistory.json");
+            JsonReader reader = new JsonReader("./data/jsonTest/testWriterEmptyHistory.json");
             history = reader.read();
             assertEquals(0, history.size());
         } catch (IOException e) {
@@ -61,12 +61,12 @@ public class JsonWriterTest extends JsonTest {
             history.addUserHistory(tp2);
             history.addUserHistory(tp3);
             history.addUserHistory(tp4);
-            JsonWriter writer = new JsonWriter("./data/testWriterGeneralHistory.json");
+            JsonWriter writer = new JsonWriter("./data/jsonTest/testWriterGeneralHistory.json");
             writer.open();
             writer.write(history);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testWriterGeneralHistory.json");
+            JsonReader reader = new JsonReader("./data/jsonTest/testWriterGeneralHistory.json");
             history = reader.read();
             List<TypingPractice> tps = history.getUserHistory();
             assertEquals(4, tps.size());

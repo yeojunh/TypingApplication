@@ -12,6 +12,7 @@ import java.io.File;
 public class TitleScreen {
     private TypingApplicationGUI typingApplicationGUI;
     private JLabel picLabel;
+    private final String titleImagePath = "./data/image/typingApplicationTitleImage.png";
 
     // MODIFIES: this
     // EFFECTS: constructs a new welcome screen with
@@ -24,14 +25,14 @@ public class TitleScreen {
     //          throws exception if there is no image found at the given path
     public void initialize() {
         try {
-            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./data/titleImage.png")));
+            ImageIcon icon = new ImageIcon(ImageIO.read(new File(titleImagePath)));
             picLabel = new JLabel();
             picLabel.setIcon(icon);
             typingApplicationGUI.add(picLabel);
             picLabel.setVisible(true);
             typingApplicationGUI.setVisible(true);
         } catch (Exception e) {
-            System.err.println("No image found at ./data/titleImage.png!");
+            System.err.println("No image found at " + titleImagePath);
             e.printStackTrace();
         }
     }

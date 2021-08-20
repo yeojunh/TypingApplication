@@ -47,7 +47,7 @@ public class MainScreen implements ActionListener {
     protected JButton loadBtn;
     protected JButton clearBtn;
 
-    protected static final String JSON_STORE = "./data/history.json";                   // JSON-related
+    protected static final String JSON_STORE = "./data/json/history.json";             // JSON-related
     protected JsonWriter jsonWriter;
     protected JsonReader jsonReader;
 
@@ -317,7 +317,7 @@ public class MainScreen implements ActionListener {
     // EFFECTS: plays a .wav audio in the data folder
     //          prints error if the audio file is of the incorrect type, given a wrong destination, or does not exist
     protected void playAudio(String fileName) {
-        String filePath = "./data/" + fileName + ".wav";
+        String filePath = "./data/audio/" + fileName + ".wav";
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
             Clip clip = AudioSystem.getClip();

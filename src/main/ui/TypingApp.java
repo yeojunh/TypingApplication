@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 // Typing practice application with Console User Interface
 public class TypingApp {
-    private static final String JSON_STORE = "./data/history.json";
+    private static final String JSON_STORE = "./data/json/history.json";
     private TypingPractice typingPractice;
     private History history;
     private Scanner input;
