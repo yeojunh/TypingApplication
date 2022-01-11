@@ -120,8 +120,8 @@ public class MainScreen implements ActionListener {
         labelEncapsulator.setLayout(new GridLayout(4, 0));
         labelEncapsulator.setBackground(MAIN_CONTAINER_COLOR);
 
-        JLabel centreLabel = new JLabel("Welcome to Bread Nut Typing App Pro :) !!!", SwingConstants.CENTER);
-        JLabel centreLabel2 = new JLabel("- 🍞🥜 -", SwingConstants.CENTER);
+        JLabel centreLabel = new JLabel("Welcome to Typing Application 2021 :) !!!", SwingConstants.CENTER);
+        JLabel centreLabel2 = new JLabel("- ʕ •ᴥ•ʔ -", SwingConstants.CENTER);
         setLabelFont(centreLabel, SIDE_PANEL_FONT_COLOR, CENTRE_LABEL_FONT_SIZE);
         setLabelFont(centreLabel2, SIDE_PANEL_FONT_COLOR, CENTRE_LABEL_FONT_SIZE);
         centreLabel2.setBorder(new EmptyBorder(0,0,20,0));
@@ -198,7 +198,7 @@ public class MainScreen implements ActionListener {
     // MODIFIES: panel
     // EFFECTS: creates a new label with the title and adds the label to the given panel
     private void setupTopLabelPanel(JPanel panel) {
-        JLabel label = new JLabel("Bread Nut Typing App Pro :)", SwingConstants.CENTER);
+        JLabel label = new JLabel("Typing Application 2021 :)", SwingConstants.CENTER);
         setLabelFont(label, label.getForeground(), TOP_PANEL_FONT_SIZE);
         label.setBackground(TOP_PANEL_COLOR);
         panel.setBackground(TOP_PANEL_COLOR);

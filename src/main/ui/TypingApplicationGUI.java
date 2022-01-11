@@ -32,7 +32,7 @@ public class TypingApplicationGUI extends JFrame {
     // EFFECTS: initializes necessary typing application components and JFrame, and starts the application
     public void initializeTypingApplication() throws InterruptedException {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Bread Nut Typing App Pro :)");
+        setTitle("Typing Application 2021 :)");
         setResizable(false);
         setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         setLocationRelativeTo(null);
